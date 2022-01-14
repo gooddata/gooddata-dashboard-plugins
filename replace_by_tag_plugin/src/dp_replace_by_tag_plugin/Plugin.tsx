@@ -5,10 +5,12 @@ import {
     IDashboardCustomizer,
     IDashboardEventHandling,
 } from "@gooddata/sdk-ui-dashboard";
+import { insightTags } from "@gooddata/sdk-model";
 
 import entryPoint from "../dp_replace_by_tag_plugin_entry";
+
 import { GaugeAdapter } from "./Gauge";
-import { insightTags, insightVisualizationUrl } from "@gooddata/sdk-model";
+import { isUsableForGauge } from "./utils/gaugeUtils";
 
 export class Plugin extends DashboardPluginV1 {
     public readonly author = entryPoint.author;
@@ -44,8 +46,10 @@ export class Plugin extends DashboardPluginV1 {
              * and the type of the insight is bullet chart, replace this insight with GaugeAdapter component.
              */
             if (
-                insightTags(insight).some(insightTag => this.tags.includes(insightTag)) &&
-                insightVisualizationUrl(insight).includes("bullet")
+                insightTags(insight).some((insightTag) =>
+                    this.tags.includes(insightTag)
+                ) &&
+                isUsableForGauge(insight)
             ) {
                 return GaugeAdapter;
             }
