@@ -13,13 +13,14 @@ import {
 import entryPoint from "../dp_replace_by_tag_plugin_entry";
 
 import React from "react";
+import { GaugeAdapter } from "./Gauge";
 
 /*
  * Component to render 'myCustomWidget'. If you create custom widget instance and also pass extra data,
  * then that data will be available in
  */
 function MyCustomWidget(_props: IDashboardWidgetProps): JSX.Element {
-    return <div>Hello from custom widget</div>;
+    return <div>Hello from custom widget it changes live</div>;
 }
 
 export class Plugin extends DashboardPluginV1 {
@@ -29,7 +30,10 @@ export class Plugin extends DashboardPluginV1 {
     public readonly minEngineVersion = entryPoint.minEngineVersion;
     public readonly maxEngineVersion = entryPoint.maxEngineVersion;
 
-    public onPluginLoaded(_ctx: DashboardContext, _parameters?: string): Promise<void> | void {
+    public onPluginLoaded(
+        _ctx: DashboardContext,
+        _parameters?: string
+    ): Promise<void> | void {
         /*
          * This will be called when the plugin is loaded in context of some dashboard and before
          * the register() method.
@@ -46,25 +50,31 @@ export class Plugin extends DashboardPluginV1 {
     public register(
         _ctx: DashboardContext,
         customize: IDashboardCustomizer,
-        handlers: IDashboardEventHandling,
+        handlers: IDashboardEventHandling
     ): void {
-        customize.customWidgets().addCustomWidget("myCustomWidget", MyCustomWidget);
+        customize
+            .customWidgets()
+            .addCustomWidget("myCustomWidget", MyCustomWidget);
         customize.layout().customizeFluidLayout((_layout, customizer) => {
             customizer.addSection(
                 0,
                 newDashboardSection(
                     "Section Added By Plugin",
-                    newDashboardItem(newCustomWidget("myWidget1", "myCustomWidget"), {
-                        xl: {
-                            // all 12 columns of the grid will be 'allocated' for this this new item
-                            gridWidth: 12,
-                            // minimum height since the custom widget now has just some one-liner text
-                            gridHeight: 1,
-                        },
-                    }),
-                ),
+                    newDashboardItem(
+                        newCustomWidget("myWidget1", "myCustomWidget"),
+                        {
+                            xl: {
+                                // all 12 columns of the grid will be 'allocated' for this this new item
+                                gridWidth: 6,
+                                // minimum height since the custom widget now has just some one-liner text
+                                gridHeight: 6,
+                            },
+                        }
+                    )
+                )
             );
         });
+        customize.insightWidgets().withTag("gauge", GaugeAdapter);
         handlers.addEventHandler("GDC.DASH/EVT.INITIALIZED", (evt) => {
             // eslint-disable-next-line no-console
             console.log("### Dashboard initialized", evt);
