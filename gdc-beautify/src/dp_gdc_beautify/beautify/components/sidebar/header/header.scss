@@ -11,5 +11,10 @@
     &-tab {
         height: 70px;
         width: 25%;
+
+        svg {
+            width: 2rem !important;
+            height: 2rem !important;
+        }
     }
 }

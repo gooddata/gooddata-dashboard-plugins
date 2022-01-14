@@ -1,19 +1,23 @@
 // (C) 2021 GoodData Corporation
-import React,{ FC } from "react";
+import React, { FC } from "react";
 import classNames from "classnames/bind";
 
 import { ITabProps } from "../interface";
 
 import styles from "./general.scss";
 
-import { ColorPicker } from "../../../../../components/colorPicker";
-import { List } from "../../../../../components/sidebar/list";
-import { Toggle } from "../../../../../components/toggle";
-import { Input } from "../../../../../components/input";
+import { ColorPicker } from "../../../../colorPicker";
+import { List } from "../../../list";
+import { Toggle } from "../../../../toggle";
+import { Input } from "../../../../input";
 
 const cx = classNames.bind(styles);
 
-export const GeneralTab: FC<ITabProps> = ({ getFieldMeta, getFieldProps, setFieldValue }) => {
+export const GeneralTab: FC<ITabProps> = ({
+    getFieldMeta,
+    getFieldProps,
+    setFieldValue,
+}) => {
     const FIELDS = [
         {
             label: "Highlighted components",
@@ -42,7 +46,8 @@ export const GeneralTab: FC<ITabProps> = ({ getFieldMeta, getFieldProps, setFiel
                     label: "Main Components",
                     value: "palette.complementary.c0",
                     component: "colorPicker",
-                    tooltip: "Background color of dashboard, widgets, dialogs, etc.",
+                    tooltip:
+                        "Background color of dashboard, widgets, dialogs, etc.",
                 },
                 {
                     label: "Hover",
@@ -92,7 +97,8 @@ export const GeneralTab: FC<ITabProps> = ({ getFieldMeta, getFieldProps, setFiel
                     label: "C8",
                     value: "palette.complementary.c8",
                     component: "colorPicker",
-                    tooltip: "Text color, table content, dropdown item text color",
+                    tooltip:
+                        "Text color, table content, dropdown item text color",
                 },
                 {
                     label: "C9",
@@ -220,7 +226,7 @@ export const GeneralTab: FC<ITabProps> = ({ getFieldMeta, getFieldProps, setFiel
             : {
                   label: field.label,
                   Component: renderComponent(field),
-              },
+              }
     );
 
     return (

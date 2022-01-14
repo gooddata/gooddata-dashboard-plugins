@@ -19,7 +19,11 @@ export const useCurrentTheme = () => {
                 setLink(link);
                 genericGetRequest(link)
                     .then((response) => {
-                        setRequestState({ isLoading: false, data: response, error: null });
+                        setRequestState({
+                            isLoading: false,
+                            data: response,
+                            error: null,
+                        });
                     })
                     .catch(onRequestError);
             })
