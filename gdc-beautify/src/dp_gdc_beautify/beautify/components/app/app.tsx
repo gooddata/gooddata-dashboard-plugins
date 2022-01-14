@@ -9,7 +9,7 @@ import { Sidebar } from "../sidebar";
 const cx = classNames.bind(styles);
 
 export const App: FC = () => {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const toggleSidebar = () => {
         setSidebarOpen((prev) => !prev);
