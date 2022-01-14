@@ -65,6 +65,36 @@ export const GaugeAdapter: CustomDashboardInsightComponent = (props) => {
 export const Gauge: React.FC<{
     max: number;
     value: number;
-}> = ({ max, value }) => {
-    return <div>GAUGE {[max, value].join(", ")}</div>;
+    format?: "%" | "#";
+    showLabels?: boolean;
+}> = ({ max, value, format = "#", showLabels = false }) => {
+    const percent = value / max;
+
+    return (
+        <div
+            style={{
+                padding: "1rem",
+            }}
+        >
+            <GaugeChart
+                animate={false}
+                nrOfLevels={20}
+                percent={percent}
+                textColor="black"
+                formatTextValue={(perValue: number) =>
+                    format === "#" ? value : `${perValue} %`
+                }
+            />
+            {showLabels && (
+                <svg viewBox="0 0 250 25">
+                    <text x="15%" y="20">
+                        {format === "#" ? "0" : "0%"}
+                    </text>
+                    <text x="75%" y="20">
+                        {format === "#" ? max : "100%"}
+                    </text>
+                </svg>
+            )}
+        </div>
+    );
 };
