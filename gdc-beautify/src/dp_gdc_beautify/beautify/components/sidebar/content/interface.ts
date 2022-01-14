@@ -2,5 +2,4 @@
 export interface IProps {
     data: any;
     link: string | null;
-    onSubmit?: () => void;
 }

@@ -29,7 +29,7 @@ export const App: FC = () => {
                     <Button onClick={toggleSidebar} variant="contained">
                         Close
                     </Button>
-                    <Sidebar onSubmit={() => {}} />
+                    <Sidebar />
                 </div>
             )}
         </>
