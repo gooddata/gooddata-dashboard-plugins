@@ -1,27 +1,37 @@
 // (C) 2021 GoodData Corporation
-import React, { FC } from "react";
-import { HashRouter } from "react-router-dom";
-import { BackendProvider, WorkspaceProvider } from "@gooddata/sdk-ui";
+import React, { FC, useState } from "react";
+import classNames from "classnames/bind";
 
-import { Router } from "../../components/router";
-import { Layout } from "../../components/layout";
-import { AuthProvider, useAuth } from "../../contexts";
-import { WORKSPACE_ID } from "../../constants";
+import styles from "./app.scss";
+import { Button } from "@mui/material";
+import { Sidebar } from "../sidebar";
+
+const cx = classNames.bind(styles);
 
 export const App: FC = () => {
-    const { backend } = useAuth();
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+
+    const toggleSidebar = () => {
+        setSidebarOpen((prev) => !prev);
+    };
 
     return (
-        <HashRouter>
-            <AuthProvider>
-                <BackendProvider backend={backend}>
-                    <WorkspaceProvider workspace={WORKSPACE_ID}>
-                        <Layout>
-                            <Router />
-                        </Layout>
-                    </WorkspaceProvider>
-                </BackendProvider>
-            </AuthProvider>
-        </HashRouter>
+        <>
+            <Button
+                className={cx("button")}
+                onClick={toggleSidebar}
+                variant="contained"
+            >
+                Open theming sidebar
+            </Button>
+            {sidebarOpen && (
+                <div className={cx("sidebar")}>
+                    <Button onClick={toggleSidebar} variant="contained">
+                        Close
+                    </Button>
+                    <Sidebar onSubmit={() => {}} />
+                </div>
+            )}
+        </>
     );
 };

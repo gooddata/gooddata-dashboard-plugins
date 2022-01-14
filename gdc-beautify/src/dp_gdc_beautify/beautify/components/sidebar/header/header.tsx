@@ -6,11 +6,11 @@ import classNames from "classnames/bind";
 
 import styles from "./header.scss";
 
-import { Icon } from "../../../components/icon";
-// import BackIcon from "../../../../icons/Back.svg";
-// import GeneralIcon from "../../../../icons/General.svg";
-// import InsightIcon from "../../../../icons/Insight.svg";
-// import LeftIcon from "../../../../icons/Left.svg";
+import { Icon } from "../../icon";
+import BackIcon from "~icons/Back.svg";
+import GeneralIcon from "~icons/General.svg";
+import InsightIcon from "~icons/Insight.svg";
+import LeftIcon from "~icons/Left.svg";
 
 const cx = classNames.bind(styles);
 
@@ -37,20 +37,28 @@ export const Header: FC<IHeader> = ({ updateValue }) => {
 
     return (
         <ToggleButtonGroup className={cx("header")} size="large" {...control}>
-            <ToggleButton className={cx("header-tab")} value="general" key="general">
-                {/* <Icon Icon={GeneralIcon} /> */}
+            <ToggleButton
+                className={cx("header-tab")}
+                value="general"
+                key="general"
+            >
+                <Icon Icon={GeneralIcon} />
             </ToggleButton>
             ,
             <ToggleButton className={cx("header-tab")} value="left" key="left">
-                {/* <Icon Icon={LeftIcon} /> */}
+                <Icon Icon={LeftIcon} />
             </ToggleButton>
             ,
             <ToggleButton className={cx("header-tab")} value="back" key="back">
-                {/* <Icon Icon={BackIcon} /> */}
+                <Icon Icon={BackIcon} />
             </ToggleButton>
             ,
-            <ToggleButton className={cx("header-tab")} value="insight" key="insight">
-                {/* <Icon Icon={InsightIcon} /> */}
+            <ToggleButton
+                className={cx("header-tab")}
+                value="insight"
+                key="insight"
+            >
+                <Icon Icon={InsightIcon} />
             </ToggleButton>
         </ToggleButtonGroup>
     );

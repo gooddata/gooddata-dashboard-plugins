@@ -2,4 +2,5 @@ node_modules
 .DS_Store
 .idea
 gdc-beautify/node_modules
+gdc-beautify/.env.secrets
 .history

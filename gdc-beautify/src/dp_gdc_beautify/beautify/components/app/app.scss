@@ -1,0 +1,13 @@
+.button {
+
+}
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 50rem;
+    z-index: 999;
+    background-color: $C_WHITE;
+    border-right: 0.1rem solid $C_BLACK;
+}

@@ -1,5 +1,5 @@
 // (C) 2021 GoodData Corporation
-import React,{ FC, useMemo, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
 import { useFormik } from "formik";
 import classNames from "classnames/bind";
 import stringify from "json-stable-stringify";
@@ -9,12 +9,11 @@ import { IProps } from "./interface";
 import { GeneralTab } from "./tabs";
 import styles from "./content.scss";
 
-import { Header } from "../../../components/sidebar/header";
+import { Header } from "../header";
 import { genericPostRequest } from "../../../utils/gdc";
 import { Left } from "./tabs/left";
 import { Back } from "./tabs/back";
 import { Insight } from "./tabs/insight";
-import { useBackend } from "@gooddata/sdk-ui";
 
 const cx = classNames.bind(styles);
 
@@ -25,15 +24,15 @@ export const Content: FC<IProps> = ({
     },
     onSubmit: reloadIframe,
 }) => {
-    const backend = useBackend();
-    const { getFieldProps, handleSubmit, getFieldMeta, setFieldValue, values } = useFormik({
-        initialValues: content,
-        onSubmit: (formValues) => {
-            const payload = { theme: { meta, content: formValues } };
-            genericPostRequest(`${link}?mode=edit`, payload);
-            reloadIframe();
-        },
-    });
+    const { getFieldProps, handleSubmit, getFieldMeta, setFieldValue, values } =
+        useFormik({
+            initialValues: content,
+            onSubmit: (formValues) => {
+                const payload = { theme: { meta, content: formValues } };
+                genericPostRequest(`${link}?mode=edit`, payload);
+                reloadIframe();
+            },
+        });
 
     const [menuValue, setMenuValue] = useState("general");
 
@@ -78,21 +77,17 @@ export const Content: FC<IProps> = ({
         }
     }, [menuValue, stringify(values)]);
 
-    const logOut = async () => {
-        await backend.deauthenticate();
-        window.location.reload();
-    };
-
     return (
         <form onSubmit={handleSubmit} noValidate className={cx("content")}>
             <Header updateValue={updateValue} />
             {renderList}
             <div className={cx("submit-button-container")}>
-                <Button className={cx("submit-button")} variant="contained" type="submit">
+                <Button
+                    className={cx("submit-button")}
+                    variant="contained"
+                    type="submit"
+                >
                     Submit
-                </Button>
-                <Button onClick={logOut} className={cx("submit-button")} variant="outlined">
-                    Log out
                 </Button>
             </div>
         </form>

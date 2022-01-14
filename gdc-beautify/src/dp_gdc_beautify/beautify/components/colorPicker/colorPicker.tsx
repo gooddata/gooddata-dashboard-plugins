@@ -34,7 +34,12 @@ const PRESET_COLORS = [
     "#ffffff",
 ];
 
-export const ColorPicker: FC<IProps> = ({ value, onChange, itemClass, styling }) => {
+export const ColorPicker: FC<IProps> = ({
+    value,
+    onChange,
+    itemClass,
+    styling,
+}) => {
     const ref = useRef(null);
     const [opened, setOpened] = useState(false);
 
@@ -54,14 +59,19 @@ export const ColorPicker: FC<IProps> = ({ value, onChange, itemClass, styling })
     const onChangeColor = ({ hex }) => {
         onChange(hex);
         closePicker();
-        const element = document.querySelector("iframe").contentWindow.document.querySelector(itemClass);
-        console.log("🚀 ~ file: colorPicker.tsx ~ line 58 ~ onChangeColor ~ element", element, itemClass, document.querySelector(itemClass))
+        const element = document
+            .querySelector("iframe")
+            .contentWindow.document.querySelector(itemClass);
+        console.log(
+            "🚀 ~ file: colorPicker.tsx ~ line 58 ~ onChangeColor ~ element",
+            element,
+            itemClass,
+            document.querySelector(itemClass)
+        );
         if (element) {
             element.style[styling] = hex;
         }
     };
-
-    console.log(document.querySelector(itemClass))
 
     return (
         <div
