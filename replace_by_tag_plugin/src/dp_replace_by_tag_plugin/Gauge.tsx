@@ -1,8 +1,8 @@
 // (C) 2022 GoodData Corporation
 import React from "react";
-import { ErrorComponent, LoadingComponent } from "@gooddata/sdk-ui";
-import { CustomDashboardInsightComponent } from "@gooddata/sdk-ui-dashboard";
-import { useInsightWidgetDataView } from "./utils/useInsightWidgetDataView";
+import {ErrorComponent, LoadingComponent} from "@gooddata/sdk-ui";
+import {CustomDashboardInsightComponent} from "@gooddata/sdk-ui-dashboard";
+import {useInsightWidgetDataView} from "./utils/useInsightWidgetDataView";
 import {getGaugeValues} from "./utils/gaugeUtils";
 import GaugeChart from "react-gauge-chart";
 
@@ -17,28 +17,28 @@ export const GaugeAdapter: CustomDashboardInsightComponent = (props) => {
     const GaugeError = CustomError ?? ErrorComponent;
     const GaugeLoading = CustomLoading ?? LoadingComponent;
 
-    const { result, error, status } = useInsightWidgetDataView({
+    const {result, error, status} = useInsightWidgetDataView({
         insightWidget: widget,
     });
 
     if (status === "loading" || status === "pending") {
-        return <GaugeLoading />;
+        return <GaugeLoading/>;
     }
 
     if (status === "error") {
-        return <GaugeError message={error?.message ?? "Unknown error"} />;
+        return <GaugeError message={error?.message ?? "Unknown error"}/>;
     }
 
-    const { result: gaugeResult, gaugeError } = getGaugeValues(
+    const {result: gaugeResult, gaugeError} = getGaugeValues(
         result!,
         insight
     );
 
     if (gaugeError || !gaugeResult) {
-        return <GaugeError message={gaugeError?.message || "Unknown error"} />;
+        return <GaugeError message={gaugeError?.message || "Unknown error"}/>;
     }
 
-    return <Gauge max={gaugeResult.max} value={gaugeResult.value} />;
+    return <Gauge max={gaugeResult.max} value={gaugeResult.value}/>;
 };
 
 export const Gauge: React.FC<{
@@ -46,7 +46,7 @@ export const Gauge: React.FC<{
     value: number;
     format?: "%" | "#";
     showLabels?: boolean;
-}> = ({ max, value, format = "#", showLabels = false }) => {
+}> = ({max, value, format = "#", showLabels = false}) => {
     const percent = value / max;
 
     return (
