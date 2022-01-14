@@ -1,9 +1,9 @@
 // (C) 2022 GoodData Corporation
+import React from "react";
 import { ErrorComponent, LoadingComponent } from "@gooddata/sdk-ui";
 import { CustomDashboardInsightComponent } from "@gooddata/sdk-ui-dashboard";
-import React from "react";
 import { useInsightWidgetDataView } from "./utils/useInsightWidgetDataView";
-import { getGaugeValues } from "./utils/gaugeUtils";
+import {getGaugeValues} from "./utils/gaugeUtils";
 import GaugeChart from "react-gauge-chart";
 
 export const GaugeAdapter: CustomDashboardInsightComponent = (props) => {

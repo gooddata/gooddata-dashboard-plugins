@@ -4,25 +4,11 @@ import {
     DashboardPluginV1,
     IDashboardCustomizer,
     IDashboardEventHandling,
-    IDashboardWidgetProps,
-    newDashboardSection,
-    newDashboardItem,
-    newCustomWidget,
 } from "@gooddata/sdk-ui-dashboard";
 
 import entryPoint from "../dp_replace_by_tag_plugin_entry";
-
-import React from "react";
 import { GaugeAdapter } from "./Gauge";
 import { insightTags, insightVisualizationUrl } from "@gooddata/sdk-model";
-
-/*
- * Component to render 'myCustomWidget'. If you create custom widget instance and also pass extra data,
- * then that data will be available in
- */
-function MyCustomWidget(_props: IDashboardWidgetProps): JSX.Element {
-    return <div>Hello from custom widget it changes live</div>;
-}
 
 export class Plugin extends DashboardPluginV1 {
     public readonly author = entryPoint.author;
@@ -31,53 +17,24 @@ export class Plugin extends DashboardPluginV1 {
     public readonly minEngineVersion = entryPoint.minEngineVersion;
     public readonly maxEngineVersion = entryPoint.maxEngineVersion;
 
+    public tags: string[] = [];
+
     public onPluginLoaded(
         _ctx: DashboardContext,
-        _parameters?: string
+        parameters?: string
     ): Promise<void> | void {
-        /*
-         * This will be called when the plugin is loaded in context of some dashboard and before
-         * the register() method.
-         *
-         * If the link between the dashboard and this plugin is parameterized, then all the parameters will
-         * be included in the parameters string.
-         *
-         * The parameters are useful to modify plugin behavior in context of particular dashboard.
-         *
-         * Note: it is safe to delete this stub if your plugin does not need any specific initialization.
-         */
+        
+        this.tags = parameters?.split(" ") || ["gauge"];
     }
 
     public register(
         _ctx: DashboardContext,
         customize: IDashboardCustomizer,
-        handlers: IDashboardEventHandling
+        _handlers: IDashboardEventHandling
     ): void {
-        customize
-            .customWidgets()
-            .addCustomWidget("myCustomWidget", MyCustomWidget);
-        customize.layout().customizeFluidLayout((_layout, customizer) => {
-            customizer.addSection(
-                0,
-                newDashboardSection(
-                    "Section Added By Plugin",
-                    newDashboardItem(
-                        newCustomWidget("myWidget1", "myCustomWidget"),
-                        {
-                            xl: {
-                                // all 12 columns of the grid will be 'allocated' for this this new item
-                                gridWidth: 6,
-                                // minimum height since the custom widget now has just some one-liner text
-                                gridHeight: 6,
-                            },
-                        }
-                    )
-                )
-            );
-        });
         customize.insightWidgets().withCustomProvider((insight) => {
             if (
-                insightTags(insight).includes("gauge") &&
+                insightTags(insight).some(insightTag => this.tags.includes(insightTag)) &&
                 insightVisualizationUrl(insight).includes("bullet")
             ) {
                 return GaugeAdapter;
@@ -85,18 +42,5 @@ export class Plugin extends DashboardPluginV1 {
 
             return undefined;
         });
-        handlers.addEventHandler("GDC.DASH/EVT.INITIALIZED", (evt) => {
-            // eslint-disable-next-line no-console
-            console.log("### Dashboard initialized", evt);
-        });
-    }
-
-    public onPluginUnload(_ctx: DashboardContext): Promise<void> | void {
-        /*
-         * This will be called when user navigates away from the dashboard enhanced by the plugin. At this point,
-         * your code may do additional teardown and cleanup.
-         *
-         * Note: it is safe to delete this stub if your plugin does not need to do anything extra during unload.
-         */
     }
 }
