@@ -3,7 +3,8 @@ import { ErrorComponent, LoadingComponent } from "@gooddata/sdk-ui";
 import { CustomDashboardInsightComponent } from "@gooddata/sdk-ui-dashboard";
 import React from "react";
 import { useInsightWidgetDataView } from "./utils/useInsightWidgetDataView";
-import {getGaugeValues} from "./utils/gaugeUtils";
+import { getGaugeValues } from "./utils/gaugeUtils";
+import GaugeChart from "react-gauge-chart";
 
 export const GaugeAdapter: CustomDashboardInsightComponent = (props) => {
     const {
@@ -28,18 +29,16 @@ export const GaugeAdapter: CustomDashboardInsightComponent = (props) => {
         return <GaugeError message={error?.message ?? "Unknown error"} />;
     }
 
-    const {result: gaugeResult, gaugeError} = getGaugeValues(result!, insight);
+    const { result: gaugeResult, gaugeError } = getGaugeValues(
+        result!,
+        insight
+    );
 
     if (gaugeError || !gaugeResult) {
         return <GaugeError message={gaugeError?.message || "Unknown error"} />;
     }
 
-    return (
-        <Gauge
-            max={gaugeResult.max}
-            value={gaugeResult.value}
-        />
-    );
+    return <Gauge max={gaugeResult.max} value={gaugeResult.value} />;
 };
 
 export const Gauge: React.FC<{
