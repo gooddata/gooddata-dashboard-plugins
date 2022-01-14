@@ -1,13 +1,12 @@
 // (C) 2021 GoodData Corporation
-
-import { WORKSPACE_ID } from "../constants";
-export const getThemeObjects = (): Promise<any> =>
-    fetch(`/gdc/md/${WORKSPACE_ID}/query/themes`, {
+export const getThemeObjects = (workspace: string): Promise<any> => {
+    return fetch(`/gdc/md/${workspace}/query/themes`, {
         method: "GET",
         headers: {
             Accept: "application/json",
         },
     }).then((response) => response.json());
+};
 
 export const genericGetRequest = (url: string): Promise<any> =>
     fetch(url, {
