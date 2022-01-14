@@ -1,0 +1,110 @@
+// (C) 2021 GoodData Corporation
+.preloader-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    &.absolute {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
+    .backdrop {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(4px);
+    }
+
+    .preloader {
+        display: block;
+        position: relative;
+        width: 5rem;
+        height: 5rem;
+
+        &.size-L {
+            width: 10rem;
+            height: 10rem;
+
+            .preloader-part {
+                border-width: 0.5rem;
+            }
+        }
+
+        &.size-M {
+            width: 5rem;
+            height: 5rem;
+
+            .preloader-part {
+                border-width: 0.3rem;
+            }
+        }
+
+        &.size-S {
+            width: 2.5rem;
+            height: 2.5rem;
+
+            .preloader-part {
+                border-width: 0.1rem;
+            }
+        }
+
+        .preloader-part {
+            position: absolute;
+            display: inline-block;
+            box-sizing: border-box;
+            border-radius: 100%;
+            border-style: solid;
+            border-color: transparent;
+
+            &:nth-child(1) {
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                border-top-color: $C_ORANGE;
+                transform: rotate(0deg);
+                animation: spin 1.75s linear infinite;
+            }
+            &:nth-child(2) {
+                width: 80%;
+                height: 80%;
+                top: 10%;
+                left: 10%;
+                border-top-color: $C_GRAY;
+                animation: spin 1.25s linear infinite;
+            }
+            &:nth-child(3) {
+                width: 60%;
+                height: 60%;
+                top: 20%;
+                left: 20%;
+                border-top-color: $C_BLUE_DARK;
+                animation: spin 0.75s linear infinite;
+            }
+        }
+    }
+
+    .text {
+        margin-top: $SPACING_2;
+        z-index: 1;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

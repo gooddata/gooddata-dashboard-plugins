@@ -1,0 +1,10 @@
+// (C) 2021 GoodData Corporation
+.list {
+    &-title > span {
+        font-size: 1.5rem;
+    }
+    &-icon {
+        padding-right: 8px;
+        min-width: 10px !important;
+    }
+}

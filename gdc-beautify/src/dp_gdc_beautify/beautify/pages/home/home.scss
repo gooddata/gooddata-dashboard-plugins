@@ -1,0 +1,21 @@
+// (C) 2021 GoodData Corporation
+.home {
+    position: relative;
+    width: 100%;
+
+    .sidebar,
+    .dashboard {
+        height: 100%;
+        display: inline-flex;
+        justify-content: center;
+        vertical-align: top;
+    }
+
+    .sidebar {
+        width: 320px;
+    }
+    .dashboard {
+        width: calc(100% - 320px);
+        overflow-y: scroll;
+    }
+}

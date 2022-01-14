@@ -1,0 +1,88 @@
+// (C) 2021 GoodData Corporation
+.text {
+    display: block;
+
+    &.size- {
+        &12 {
+            font-size: 1.2rem;
+        }
+        &16 {
+            font-size: 1.6rem;
+        }
+        &18 {
+            font-size: 1.8rem;
+        }
+        &20 {
+            font-size: 2rem;
+        }
+        &24 {
+            font-size: 2.4rem;
+        }
+        &28 {
+            font-size: 2.8rem;
+        }
+        &36 {
+            font-size: 3.6rem;
+        }
+        &48 {
+            font-size: 4.8rem;
+        }
+        &60 {
+            font-size: 6rem;
+        }
+        &84 {
+            font-size: 8.4rem;
+        }
+    }
+
+    &.font- {
+        &extra-light {
+            font-family: $F_EXTRA-LIGHT;
+        }
+        &light {
+            font-family: $F_LIGHT;
+        }
+        &regular {
+            font-family: $F_REGULAR;
+        }
+        &medium {
+            font-family: $F_MEDIUM;
+        }
+        &bold {
+            font-family: $F_BOLD;
+        }
+    }
+
+    &.spacing- {
+        &S {
+            margin-bottom: $SPACING;
+        }
+        &M {
+            margin-bottom: $SPACING_2;
+        }
+        &L {
+            margin-bottom: $SPACING_3;
+        }
+    }
+
+    &.color- {
+        &main {
+            color: $C_MAIN_TEXT;
+        }
+        &secondary {
+            color: $C_SECONDARY_TEXT;
+        }
+    }
+
+    &.uppercase {
+        text-transform: uppercase;
+    }
+
+    &.inline {
+        display: inline;
+    }
+
+    &.noSpacing {
+        margin-bottom: 0;
+    }
+}
