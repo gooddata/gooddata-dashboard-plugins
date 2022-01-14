@@ -14,6 +14,7 @@ import entryPoint from "../dp_replace_by_tag_plugin_entry";
 
 import React from "react";
 import { GaugeAdapter } from "./Gauge";
+import { insightTags, insightVisualizationUrl } from "@gooddata/sdk-model";
 
 /*
  * Component to render 'myCustomWidget'. If you create custom widget instance and also pass extra data,
@@ -74,7 +75,16 @@ export class Plugin extends DashboardPluginV1 {
                 )
             );
         });
-        customize.insightWidgets().withTag("gauge", GaugeAdapter);
+        customize.insightWidgets().withCustomProvider((insight) => {
+            if (
+                insightTags(insight).includes("gauge") &&
+                insightVisualizationUrl(insight).includes("bullet")
+            ) {
+                return GaugeAdapter;
+            }
+
+            return undefined;
+        });
         handlers.addEventHandler("GDC.DASH/EVT.INITIALIZED", (evt) => {
             // eslint-disable-next-line no-console
             console.log("### Dashboard initialized", evt);
