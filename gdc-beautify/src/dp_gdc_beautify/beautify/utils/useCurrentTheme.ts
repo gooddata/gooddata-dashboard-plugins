@@ -2,9 +2,11 @@
 import { useEffect, useState } from "react";
 
 import { LOADING_STATE } from "../constants";
-import { getThemeObjects, genericGetRequest } from "../utils";
+import { getThemeObjects, genericGetRequest } from "./gdc";
+import { useWorkspace } from "@gooddata/sdk-ui";
 
 export const useCurrentTheme = () => {
+    const workspace = useWorkspace();
     const [requestState, setRequestState] = useState(LOADING_STATE);
     const [link, setLink] = useState(null);
 
@@ -13,7 +15,7 @@ export const useCurrentTheme = () => {
     };
 
     useEffect(() => {
-        getThemeObjects()
+        getThemeObjects(workspace)
             .then(({ query: { entries } }) => {
                 const { link } = entries[0];
                 setLink(link);
