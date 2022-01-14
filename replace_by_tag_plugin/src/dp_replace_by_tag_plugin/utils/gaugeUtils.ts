@@ -78,7 +78,7 @@ function getDataForBucket(
 
 interface IUseGaugeResult {
     gaugeError: Error | undefined;
-    result: { value: number; max: number } | undefined;
+    gaugeResult: { value: number; max: number } | undefined;
 }
 
 /**
@@ -95,7 +95,7 @@ export const getGaugeValues = (
     try {
         return {
             gaugeError: undefined,
-            result: {
+            gaugeResult: {
                 value: getDataForBucket(dataViewFacade, insight, "measures"),
                 max: getDataForBucket(
                     dataViewFacade,
@@ -107,7 +107,7 @@ export const getGaugeValues = (
     } catch (err: any) {
         return {
             gaugeError: err,
-            result: undefined,
+            gaugeResult: undefined,
         };
     }
 };

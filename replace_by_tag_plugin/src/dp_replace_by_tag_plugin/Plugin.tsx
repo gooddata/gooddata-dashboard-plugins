@@ -43,7 +43,7 @@ export class Plugin extends DashboardPluginV1 {
         customize.insightWidgets().withCustomProvider((insight) => {
             /**
              * If at least one tag from plugin parameters (or `gauge` tag) is present in the tags of the insight
-             * and the type of the insight is bullet chart, replace this insight with GaugeAdapter component.
+             * and the insight is suitable to be used, replace this insight with GaugeAdapter component.
              */
             if (
                 insightTags(insight).some((insightTag) =>
