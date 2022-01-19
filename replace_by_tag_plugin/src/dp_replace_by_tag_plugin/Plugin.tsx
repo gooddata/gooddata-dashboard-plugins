@@ -12,6 +12,9 @@ import entryPoint from "../dp_replace_by_tag_plugin_entry";
 import {gaugeFactory} from "./Gauge";
 import {isUsableForGauge} from "./utils/gaugeUtils";
 
+/**
+ * The format property accepts these values only. Values other than these are taken for invalid.
+ */
 const VALID_FORMATS = ["#", "%"];
 
 export class Plugin extends DashboardPluginV1 {
@@ -24,10 +27,23 @@ export class Plugin extends DashboardPluginV1 {
     /**
      * Tags define by plugin to be replaced.
      */
-    public tags: string[] = [];
+    public tags: string[] = ["gauge"];
+    /**
+     * Defines gauge chart min/max values label visibility.
+     */
     public showLabels: boolean = false;
+    /**
+     * Defines format in which numbers are shown in the gauge chart.
+     */
     public format: "%" | "#" = "%";
 
+
+    /**
+     * Validates, if the format set up in plugin parameters are valid.
+     *
+     * @param format Format set in the plugin parameters.
+     * @private
+     */
     private isFormatValid(format?: string): boolean {
         if(!format) {
             return false;
@@ -39,6 +55,9 @@ export class Plugin extends DashboardPluginV1 {
         _ctx: DashboardContext,
         parameters?: string
     ): Promise<void> | void {
+        /**
+         * If the parameters are undefined, the plugin will work with default values.
+         */
         if (parameters) {
             try {
                 const parsedParameters = JSON.parse(parameters);
