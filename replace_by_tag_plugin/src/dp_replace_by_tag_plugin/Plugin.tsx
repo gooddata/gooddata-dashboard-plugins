@@ -69,7 +69,7 @@ export class Plugin extends DashboardPluginV1 {
                 this.showLabels = parsedParameters?.showLabels || false;
                 this.format = this.isFormatValid(parsedParameters.format) ? parsedParameters.format : "%";
             } catch (error) {
-                console.error("Could not parse parameters. Check the formatting of the parameters in project settings.");
+                console.error("Could not parse parameters. Check the formatting of the parameters in target dashboard settings.");
             }
         }
     }
