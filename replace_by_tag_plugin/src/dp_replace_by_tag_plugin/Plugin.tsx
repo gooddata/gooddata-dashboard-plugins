@@ -5,12 +5,14 @@ import {
     IDashboardCustomizer,
     IDashboardEventHandling,
 } from "@gooddata/sdk-ui-dashboard";
-import { insightTags } from "@gooddata/sdk-model";
+import {insightTags} from "@gooddata/sdk-model";
 
 import entryPoint from "../dp_replace_by_tag_plugin_entry";
 
-import { GaugeAdapter } from "./Gauge";
-import { isUsableForGauge } from "./utils/gaugeUtils";
+import {gaugeFactory} from "./Gauge";
+import {isUsableForGauge} from "./utils/gaugeUtils";
+
+const VALID_FORMATS = ["#", "%"];
 
 export class Plugin extends DashboardPluginV1 {
     public readonly author = entryPoint.author;
@@ -23,16 +25,34 @@ export class Plugin extends DashboardPluginV1 {
      * Tags define by plugin to be replaced.
      */
     public tags: string[] = [];
+    public showLabels: boolean = false;
+    public format: "%" | "#" = "%";
+
+    private isFormatValid(format?: string): boolean {
+        if(!format) {
+            return false;
+        }
+        return  VALID_FORMATS.includes(format);
+    }
 
     public onPluginLoaded(
         _ctx: DashboardContext,
         parameters?: string
     ): Promise<void> | void {
-        /**
-         * Run the `link-plugin` command with `--with-parameters` flag and enter all the tags you want to replace with
-         * `GaugeChart` separated by space. By default all bullet charts with tag `gauge` will be replaced.
-         */
-        this.tags = parameters?.split(" ") || ["gauge"];
+        if (parameters) {
+            try {
+                const parsedParameters = JSON.parse(parameters);
+                /**
+                 * Run the `link-plugin` command with `--with-parameters` flag and enter all the tags you want to replace with
+                 * `GaugeChart` separated by space. By default all bullet charts with tag `gauge` will be replaced.
+                 */
+                this.tags = parsedParameters?.tags.split(" ") || ["gauge"];
+                this.showLabels = parsedParameters?.showLabels || false;
+                this.format = this.isFormatValid(parsedParameters.format) ? parsedParameters.format : "%";
+            } catch (error) {
+                console.error("Could not parse parameters. Check the formatting of the parameters in project settings.");
+            }
+        }
     }
 
     public register(
@@ -51,7 +71,7 @@ export class Plugin extends DashboardPluginV1 {
                 ) &&
                 isUsableForGauge(insight)
             ) {
-                return GaugeAdapter;
+                return gaugeFactory({showLabels: this.showLabels, format: this.format});
             }
             /**
              * If undefined is returned, nothing happens and original component stays in place.
