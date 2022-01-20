@@ -10,47 +10,57 @@ import { useInsightWidgetDataView } from "./utils/useInsightWidgetDataView";
 import { getGaugeValues } from "./utils/gaugeUtils";
 import GaugeChart from "react-gauge-chart";
 
-export const GaugeAdapter: CustomDashboardInsightComponent = ({
-    ErrorComponent: CustomError,
-    LoadingComponent: CustomLoading,
-    widget,
-    insight,
-}) => {
-    // get the current user's locale to format the numbers properly
-    const locale = useDashboardSelector(selectLocale);
+interface IGaugeParameters {
+    showLabels: boolean;
+    format?: "%" | "#";
+}
 
-    const GaugeError = CustomError ?? ErrorComponent;
-    const GaugeLoading = CustomLoading ?? LoadingComponent;
+export const gaugeFactory = (parameters: IGaugeParameters): CustomDashboardInsightComponent => {
+    return (props) => {
+        const {
+            ErrorComponent: CustomError,
+            LoadingComponent: CustomLoading,
+            widget,
+            insight,
+        } = props;
 
-    // load the data for the insight
-    const { result, error, status } = useInsightWidgetDataView({
-        insightWidget: widget,
-    });
+        // get the current user's locale to format the numbers properly
+        const locale = useDashboardSelector(selectLocale);
 
-    if (status === "loading" || status === "pending") {
-        return <GaugeLoading />;
+        const GaugeError = CustomError ?? ErrorComponent;
+        const GaugeLoading = CustomLoading ?? LoadingComponent;
+
+        // load the data for the insight
+        const { result, error, status } = useInsightWidgetDataView({
+            insightWidget: widget,
+        });
+
+        if (status === "loading" || status === "pending") {
+            return <GaugeLoading />;
+        }
+
+        if (status === "error") {
+            return <GaugeError message={error?.message ?? "Unknown error"} />;
+        }
+
+        // once the data is loaded, convert it to values the Gauge visualization can understand
+        const { gaugeResult, gaugeError } = getGaugeValues(result!, insight);
+
+        if (gaugeError || !gaugeResult) {
+            return <GaugeError message={gaugeError?.message ?? "Unknown error"} />;
+        }
+
+        return (
+            <Gauge
+                max={gaugeResult.max}
+                value={gaugeResult.value}
+                format={parameters.format || "%"}
+                locale={locale}
+                showLabels={parameters.showLabels}
+            />
+        )
     }
-
-    if (status === "error") {
-        return <GaugeError message={error?.message ?? "Unknown error"} />;
-    }
-
-    // once the data is loaded, convert it to values the Gauge visualization can understand
-    const { gaugeResult, gaugeError } = getGaugeValues(result!, insight);
-
-    if (gaugeError || !gaugeResult) {
-        return <GaugeError message={gaugeError?.message ?? "Unknown error"} />;
-    }
-
-    return (
-        <Gauge
-            max={gaugeResult.max}
-            value={gaugeResult.value}
-            format="%"
-            locale={locale}
-        />
-    );
-};
+}
 
 export const Gauge: React.FC<{
     max: number;
@@ -68,6 +78,7 @@ export const Gauge: React.FC<{
                 nrOfLevels={20}
                 percent={percent}
                 textColor="black"
+                colors={["#42c1e7", "#14B2E2", "#108eb4"]}
                 formatTextValue={() =>
                     format === "#"
                         ? new Intl.NumberFormat(locale).format(value)

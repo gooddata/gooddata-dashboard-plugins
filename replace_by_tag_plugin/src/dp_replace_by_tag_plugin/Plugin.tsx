@@ -5,12 +5,17 @@ import {
     IDashboardCustomizer,
     IDashboardEventHandling,
 } from "@gooddata/sdk-ui-dashboard";
-import { insightTags } from "@gooddata/sdk-model";
+import {insightTags} from "@gooddata/sdk-model";
 
 import entryPoint from "../dp_replace_by_tag_plugin_entry";
 
-import { GaugeAdapter } from "./Gauge";
-import { isUsableForGauge } from "./utils/gaugeUtils";
+import {gaugeFactory} from "./Gauge";
+import {isUsableForGauge} from "./utils/gaugeUtils";
+
+/**
+ * The format property accepts these values only. Values other than these are taken for invalid.
+ */
+const VALID_FORMATS = ["#", "%"];
 
 export class Plugin extends DashboardPluginV1 {
     public readonly author = entryPoint.author;
@@ -22,17 +27,51 @@ export class Plugin extends DashboardPluginV1 {
     /**
      * Tags define by plugin to be replaced.
      */
-    public tags: string[] = [];
+    public tags: string[] = ["gauge"];
+    /**
+     * Defines gauge chart min/max values label visibility.
+     */
+    public showLabels: boolean = false;
+    /**
+     * Defines format in which numbers are shown in the gauge chart.
+     */
+    public format: "%" | "#" = "%";
+
+
+    /**
+     * Validates, if the format set up in plugin parameters are valid.
+     *
+     * @param format Format set in the plugin parameters.
+     * @private
+     */
+    private isFormatValid(format?: string): boolean {
+        if(!format) {
+            return false;
+        }
+        return  VALID_FORMATS.includes(format);
+    }
 
     public onPluginLoaded(
         _ctx: DashboardContext,
         parameters?: string
     ): Promise<void> | void {
         /**
-         * Run the `link-plugin` command with `--with-parameters` flag and enter all the tags you want to replace with
-         * `GaugeChart` separated by space. By default all bullet charts with tag `gauge` will be replaced.
+         * If the parameters are undefined, the plugin will work with default values.
          */
-        this.tags = parameters?.split(" ") || ["gauge"];
+        if (parameters) {
+            try {
+                const parsedParameters = JSON.parse(parameters);
+                /**
+                 * Run the `link-plugin` command with `--with-parameters` flag and enter all the tags you want to replace with
+                 * `GaugeChart` separated by space. By default all bullet charts with tag `gauge` will be replaced.
+                 */
+                this.tags = parsedParameters?.tags.split(" ") || ["gauge"];
+                this.showLabels = parsedParameters?.showLabels || false;
+                this.format = this.isFormatValid(parsedParameters.format) ? parsedParameters.format : "%";
+            } catch (error) {
+                console.error("Could not parse parameters. Check the formatting of the parameters in target dashboard settings.");
+            }
+        }
     }
 
     public register(
@@ -51,7 +90,7 @@ export class Plugin extends DashboardPluginV1 {
                 ) &&
                 isUsableForGauge(insight)
             ) {
-                return GaugeAdapter;
+                return gaugeFactory({showLabels: this.showLabels, format: this.format});
             }
             /**
              * If undefined is returned, nothing happens and original component stays in place.
