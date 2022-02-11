@@ -1,12 +1,11 @@
 // (C) 2022 GoodData Corporation
 import React from "react";
-import { ErrorComponent, LoadingComponent } from "@gooddata/sdk-ui";
 import {
     CustomDashboardInsightComponent,
     selectLocale,
     useDashboardSelector,
+    useInsightWidgetDataView,
 } from "@gooddata/sdk-ui-dashboard";
-import { useInsightWidgetDataView } from "./utils/useInsightWidgetDataView";
 import { getGaugeValues } from "./utils/gaugeUtils";
 import GaugeChart from "react-gauge-chart";
 
@@ -18,17 +17,14 @@ interface IGaugeParameters {
 export const gaugeFactory = (parameters: IGaugeParameters): CustomDashboardInsightComponent => {
     return (props) => {
         const {
-            ErrorComponent: CustomError,
-            LoadingComponent: CustomLoading,
+            ErrorComponent: GaugeError,
+            LoadingComponent: GaugeLoading,
             widget,
             insight,
         } = props;
 
         // get the current user's locale to format the numbers properly
         const locale = useDashboardSelector(selectLocale);
-
-        const GaugeError = CustomError ?? ErrorComponent;
-        const GaugeLoading = CustomLoading ?? LoadingComponent;
 
         // load the data for the insight
         const { result, error, status } = useInsightWidgetDataView({
