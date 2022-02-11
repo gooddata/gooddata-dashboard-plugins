@@ -4,10 +4,10 @@ import {
     CustomDashboardInsightComponent,
     selectLocale,
     useDashboardSelector,
+    useInsightWidgetDataView,
 } from "@gooddata/sdk-ui-dashboard";
 import { getGaugeValues } from "./utils/gaugeUtils";
 import GaugeChart from "react-gauge-chart";
-import {useInsightWidgetDataView} from "@gooddata/sdk-ui-dashboard";
 
 interface IGaugeParameters {
     showLabels: boolean;
@@ -25,9 +25,6 @@ export const gaugeFactory = (parameters: IGaugeParameters): CustomDashboardInsig
 
         // get the current user's locale to format the numbers properly
         const locale = useDashboardSelector(selectLocale);
-
-        // const GaugeError = CustomError ?? ErrorComponent;
-        // const GaugeLoading = CustomLoading ?? LoadingComponent;
 
         // load the data for the insight
         const { result, error, status } = useInsightWidgetDataView({
