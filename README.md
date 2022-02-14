@@ -2,7 +2,7 @@
 
 You can find a number of Dashboard Plugin examples in this repository. Each folder contains a separate plugin.
 
-* Gauge chart - a plugin that replce bullet charts by tag with a Gauge chart.
+* Gauge chart - a plugin that replaces bullet charts with a Gauge chart by tag.
 
 # FAQ
 
