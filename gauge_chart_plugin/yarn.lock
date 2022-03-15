@@ -2304,6 +2304,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-gauge-chart@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@types/react-gauge-chart/-/react-gauge-chart-0.3.1.tgz#3e9356d321dd4075e1bc2982591090536e4b28e5"
+  integrity sha512-con5hCPNerlGGAh4VTYwqpgWsITmdcngU+u0+qN77nOB4pXShI9r6dhQ6Ji0hzrHcgM7Xq2g/mNolr7AZ5j+Lg==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-redux@^7.1.20":
   version "7.1.22"
   resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.22.tgz#0eab76a37ef477cc4b53665aeaf29cb60631b72a"

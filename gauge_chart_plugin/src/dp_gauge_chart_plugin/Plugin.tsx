@@ -7,7 +7,7 @@ import {
 } from "@gooddata/sdk-ui-dashboard";
 import {insightTags} from "@gooddata/sdk-model";
 
-import entryPoint from "../dp_replace_by_tag_plugin_entry";
+import entryPoint from "../dp_gauge_chart_plugin_entry";
 
 import {gaugeFactory} from "./Gauge";
 import {isUsableForGauge} from "./utils/gaugeUtils";
