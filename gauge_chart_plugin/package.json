@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD:dashboard-description-plugin/package.json
-    "name": "dashboard-description-plugin",
-=======
     "name": "gauge_chart_plugin",
->>>>>>> abd2493 (Renamed gauge plugin, removed hard coded URLs and IDs from .env, updated the  file to avoid warnings during build):gauge_chart_plugin/package.json
     "version": "1.0.0",
     "description": "",
     "author": "",
