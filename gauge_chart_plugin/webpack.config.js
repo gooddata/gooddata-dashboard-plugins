@@ -46,6 +46,7 @@ module.exports = (_env, argv) => {
                 origin: null,
             },
             onProxyReq(proxyReq) {
+                proxyReq.removeHeader('origin');
                 proxyReq.setHeader("accept-encoding", "identity");
             },
         },
