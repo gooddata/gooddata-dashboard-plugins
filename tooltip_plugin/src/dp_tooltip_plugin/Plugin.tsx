@@ -27,6 +27,12 @@ export class Plugin extends DashboardPluginV1 {
         customize
             .kpiWidgets()
             .withCustomDecorator((kpiProvider) => (insight, widget) => {
+                /**
+                 * This custom decorator tries to find the tooltip data in the provided 
+                 * tooltip data store. If the tooltip information for the KPI is found 
+                 * according to its identifier, it will add the tooltip component to the 
+                 * KPI widget's context menu.
+                 */
                 const identifier = widget.identifier;
 
                 function KpiTooltipCustomDecorator(
@@ -53,6 +59,12 @@ export class Plugin extends DashboardPluginV1 {
             });
 
         customize.insightWidgets().withCustomDecorator((insightProvider) => (insight, widget) => {
+            /**
+                 * This custom decorator tries to find the tooltip data in the provided 
+                 * tooltip data store. If the tooltip information for the Insight is found 
+                 * according to its identifier, it will add the tooltip component to the 
+                 * Insight widget's context menu.
+                 */
             const identifier = widget.identifier;
 
             function InsightTooltipCustomDecorator(props: JSX.IntrinsicAttributes & IDashboardInsightProps & {children?: React.ReactNode}) {
