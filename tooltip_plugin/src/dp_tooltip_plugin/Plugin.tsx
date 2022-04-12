@@ -63,14 +63,14 @@ export class Plugin extends DashboardPluginV1 {
 
         customize.insightWidgets().withCustomDecorator((insightProvider) => (insight, widget) => {
             /**
-                 * This custom decorator tries to find the tooltip data in the provided 
-                 * tooltip data store. If the tooltip information for the Insight is found 
-                 * according to its identifier, it will add the tooltip component to the 
-                 * Insight widget's context menu.
-                 * 
-                 * If no data for the current widget are found, the decorator returns widget 
-                 * unchanged.
-                 */
+             * This custom decorator tries to find the tooltip data in the provided 
+             * tooltip data store. If the tooltip information for the Insight is found 
+             * according to its identifier, it will add the tooltip component to the 
+             * Insight widget's context menu.
+             * 
+             * If no data for the current widget are found, the decorator returns widget 
+             * unchanged.
+             */
             const identifier = widget.identifier;
 
             function InsightTooltipCustomDecorator(props: JSX.IntrinsicAttributes & IDashboardInsightProps & {children?: React.ReactNode}) {
