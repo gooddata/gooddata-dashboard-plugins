@@ -32,6 +32,9 @@ export class Plugin extends DashboardPluginV1 {
                  * tooltip data store. If the tooltip information for the KPI is found 
                  * according to its identifier, it will add the tooltip component to the 
                  * KPI widget's context menu.
+                 * 
+                 * If no data for the current widget are found, the decorator returns widget 
+                 * unchanged.
                  */
                 const identifier = widget.identifier;
 
@@ -64,6 +67,9 @@ export class Plugin extends DashboardPluginV1 {
                  * tooltip data store. If the tooltip information for the Insight is found 
                  * according to its identifier, it will add the tooltip component to the 
                  * Insight widget's context menu.
+                 * 
+                 * If no data for the current widget are found, the decorator returns widget 
+                 * unchanged.
                  */
             const identifier = widget.identifier;
 
