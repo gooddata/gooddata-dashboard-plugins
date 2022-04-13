@@ -1,0 +1,14 @@
+.wrap {
+    padding: 0 1em;
+    column-count: 2;
+}
+
+.paragraph {
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+
+.error {
+    padding: 0 1em;
+    color: red;
+}

@@ -10,7 +10,9 @@ import {
 
 import entryPoint from "../dp_dashboard_description_plugin_entry";
 
-import {KdDescription} from './KdDescription';
+
+
+import {IWidgetExtras, KdDescription} from './component/KdDescription';
 
 export class Plugin extends DashboardPluginV1 {
     public readonly author = entryPoint.author;
@@ -35,10 +37,11 @@ export class Plugin extends DashboardPluginV1 {
                 newDashboardSection(
                     "Dashboard description",
                     newDashboardItem(
-                        newCustomWidget(
+                        
+                        newCustomWidget<IWidgetExtras>(
                             "kdDescription1", 
                             "kdDescription", 
-                            {configUrl: this.configUrl,}
+                            {configUrl: this.configUrl}
                         ),
                         {
                             xl: {

@@ -1,21 +1,32 @@
 import React from 'react';
 import {
+    ExtendedDashboardWidget,
     IDashboardWidgetProps
 } from "@gooddata/sdk-ui-dashboard";
+
+import "./kdDescription.css";
 
 type PluginData = {
     description: string[],
 };
 
+export interface IWidgetExtras {
+    configUrl: string;
+}
+
 type PluginDataLoadingState = null | 'loading' | 'loaded' | 'error';
 
-// @ts-ignore
-export function KdDescription({widget: {configUrl}}: IDashboardWidgetProps): JSX.Element {
+export const KdDescription: React.FC<IDashboardWidgetProps> = (props) =>  {
+    const {
+        configUrl
+    } = props.widget as ExtendedDashboardWidget & IWidgetExtras;
+
     const [data, setData] = React.useState<PluginData | null>(null);
     const [loadingState, setLoadingState] = React.useState<PluginDataLoadingState>(null);
     const [errorMessage, setErrorMessage] = React.useState<string>('');
 
     React.useEffect(() => {
+
         setLoadingState('loading');
         fetch(configUrl)
             .then(res => res.json())
@@ -32,31 +43,16 @@ export function KdDescription({widget: {configUrl}}: IDashboardWidgetProps): JSX
     }, []);
 
     if (loadingState === 'error') {
-        return <div style={styles.error}>{errorMessage}</div>
+        return <div className="error">{errorMessage}</div>
     }
 
     if (loadingState === 'loading') {
-        return <div style={styles.wrap}>Loading...</div>;
+        return <div className="wrap">Loading...</div>;
     }
 
-    return <div style={styles.wrap}>
+    return <div className="wrap">
         {data?.description.map((paragraph, i) => {
-            return <p key={i} style={styles.paragraph}>{paragraph}</p>;
+            return <p key={i} className="paragraph">{paragraph}</p>;
         })}
     </div>;
 }
-
-const styles: {[key: string]: React.CSSProperties} = {
-    wrap: {
-        padding: '0 1em',
-        columnCount: 2,
-    },
-    paragraph: {
-        marginTop: 0,
-        marginBottom: '1em',
-    },
-    error: {
-        padding: '0 1em',
-        color: 'red',
-    },
-};
