@@ -37,7 +37,10 @@ export class Plugin extends DashboardPluginV1 {
                 newDashboardSection(
                     "Dashboard description",
                     newDashboardItem(
-                        
+                        /**
+                         * Creates new custom widget component with extras defined
+                         * in the {@link KdDescription}'s {@link IWidgetExtras}.
+                         */
                         newCustomWidget<IWidgetExtras>(
                             "kdDescription1", 
                             "kdDescription", 
