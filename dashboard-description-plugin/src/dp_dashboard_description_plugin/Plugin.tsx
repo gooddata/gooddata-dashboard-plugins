@@ -10,8 +10,6 @@ import {
 
 import entryPoint from "../dp_dashboard_description_plugin_entry";
 
-
-
 import {IWidgetExtras, KdDescription} from './component/KdDescription';
 
 export class Plugin extends DashboardPluginV1 {

@@ -1,8 +1,3 @@
 {
-    "#MODULE_FEDERATION_NAME": "This has to be unique per plugin, otherwise loading multiple plugins won't work. Also for some reason the folder in src needs to be called this too, otherwise multiple plugins do load but all are overwritten by the first loaded. This should not be an issue though, the bootstrap of the template can perform all the renaming/string replacements.",
-<<<<<<< HEAD:dashboard-description-plugin/src/metadata.json
     "MODULE_FEDERATION_NAME": "dp_dashboard_description_plugin"
-=======
-    "MODULE_FEDERATION_NAME": "dp_gauge_chart_plugin"
->>>>>>> abd2493 (Renamed gauge plugin, removed hard coded URLs and IDs from .env, updated the  file to avoid warnings during build):gauge_chart_plugin/src/metadata.json
 }
