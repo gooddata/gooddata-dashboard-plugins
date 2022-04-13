@@ -1,15 +1,23 @@
-# GoodData.UI Dashboard Plugin - replace by tag plugin
+# Dashboard description plugin
 
-This plugin replaces all [bullet charts](https://sdk.gooddata.com/gooddata-ui/docs/bullet_chart_component.html) with a specific 
-tag with a Gauge chart component provided by the plugin. 
+This plugin adds a textual description on top of the dashboard it's applied to. The description text is loaded from
+a separate JSON file, so you can reuse same plugin build across different dashboards and simply provide a different URL
+to the JSON file when linking the plugin to the dashboard.
 
-The tags can be specified via `--with-parameters` option while linking the plugin to the dashboard. If there is no tag specified
-in the parameters, default tag `gauge` is used.
+## How to use this plugin
 
+1. Download the code for this plugin from our [GitHub repo](https://github.com/gooddata/gooddata-plugin-examples).
+2. Run `yarn` command to install dependencies.
+3. Run `yarn build-plugin` to generate a production build of the plugin.
+4. Upload the resulting build to a public hosting (for example, AWS S3 or any similar storage).
+5. Upload a file with your texts in JSON format to the public hosting as well. Feel free to create multiple files for different dashboards as needed.
+6. Follow [Before you start](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#before-you-start) guide in our docs to prepare your GoodData instance for the plugin.
+7. Run `yarn add-plugin` to add the plugin to your workspace. See detailed instructions on this command below in [Plugin development guide](#plugin-development-guide) section.
+8. Run `yarn link-plugin` to link the plugin with a specific dashboard in your workspace. See detailed instruction on this command in [Plugin development guide](#plugin-development-guide) section. Make sure you provide a URL to the description texts file in the link parameters. 
 
 ## How to work with replace-by-tag plugin
 1. Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
-2. Navigate to `gauge_chart_plugin`
+2. Navigate to `replace_by_tag_plugin`
 3. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#Plugin development guide) section.
 4. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
 5. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build plugin`. If you have this plugin already built, delete the `dist` folder first.
@@ -20,18 +28,13 @@ in the parameters, default tag `gauge` is used.
    2. `showLabels` indicates whether to show the min and max value label. If not specified, labels are not shown.
    3. `format` parameter accepts `#` value to show values in numeral representation or the `%` value to show percentage of the value. If left empty or invalid value is entered, percentage is used.  
 
-## What insights plugin affects and how
-The plugin affects only [bullet charts](https://sdk.gooddata.com/gooddata-ui/docs/bullet_chart_component.html) with the tag specified as a plugin parameter (or default `gauge` tag). Plugin
-checks if the content of affected measures is applicable for the replacement. 
+This plugin was created as an example and a starting point for your development. Here are a few ideas on how to continue from this point on:
 
-These insights are replaced by the `Gauge` component. The max value of the `Gauge chart` is the `target` value of the original `bullet chart`. The needle 
-of the `gauge chart` indicates the `primary measure` of the original `bullet chart`. Minimal value in the `gauge chart component` is always set to `0`.
+1. You might enrich the plugin description with text formatting or even media. You'll have to update [the renderer](./src/dp_dashboard_description_plugin/KdDescription.tsx) to support additional types of content.
+2. If your description is not too long, you can update the plugin to store a complete description text in the link parameter. This way you would not have to bother with extra files. The text will be stored on GoodData server and will only be available after login.
+3. You can enrich JSON file or link parameters to also include a position where the new section should be inserted. For example, instead of always rendering the description on top of your dashboard, you can insert it at the end or after a specific section.
 
-Domain admins won't see the plugin as result of a security feature. 
-See more in the [configuration on the GoodData platform](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#configuration-on-the-gooddata-platform).
-
-
-# Quick Introduction into Dashboard Plugins
+## Quick Introduction into Dashboard Plugins
 
 Dashboard Plugins (plugins) allow developers to create extensions that alter behavior and look and feel of the
 vanilla GoodData KPI Dashboards (dashboards).
@@ -60,7 +63,7 @@ _Note: GoodData currently does not provide hosting for your plugin artifacts._
 
 ## Plugin development guide
 
-Before you start, ensure that your `.env` and `.env.secrets` files are set up correctly.
+Building a new plugin is easy. Before you start, ensure that your `.env` and `.env.secrets` files are set up correctly.
 
 1.  Start the development server: `npm start`
 
@@ -69,10 +72,10 @@ Before you start, ensure that your `.env` and `.env.secrets` files are set up co
 
     Note: you can use `PORT` env variable to specify different port number.
 
-2.  Develop your plugin code in `src/dp_gauge_chart_plugin`
+2.  Develop your plugin code in `src/dp_replace_by_tag_plugin`
 
-    The `src/dp_gauge_chart_plugin/Plugin.tsx` is the main plugin file where you have to register all
-    your custom content. However, you can create as many new files as you want under the `src/dp_gauge_chart_plugin`
+    The `src/dp_replace_by_tag_plugin/Plugin.tsx` is the main plugin file where you have to register all
+    your custom content. However, you can create as many new files as you want under the `src/dp_replace_by_tag_plugin`
     directory. Just make sure to never place your custom code outside of this directory.
 
     Note: we recommend to write your plugin in TypeScript and to use a modern IDE. This way you can conveniently
@@ -105,7 +108,7 @@ Before you start, ensure that your `.env` and `.env.secrets` files are set up co
     the tool among the devDependencies together with convenience script to add plugin to either workspace specified
     in your `.env` file (default) or another workspace that you specify on the command line.
 
-    Run the `npm run add-plugin -- "https://your.hosting/pluginDirOfYourChoice/dp_gauge_chart_plugin.js"` to
+    Run the `npm run add-plugin -- "https://your.hosting/pluginDirOfYourChoice/dp_dp_replace_by_tag_plugin.js"` to
     create a new dashboard plugin object in the workspace specified in the `.env` file. The created dashboard object
     point to the URL of the built plugin.
 
@@ -120,7 +123,7 @@ Before you start, ensure that your `.env` and `.env.secrets` files are set up co
     Now that you have created a plugin object in your workspace, you can link it with one or more dashboards. The
     `link-plugin` script in package.json is a shortcut to link plugin with dashboard specified in your `.env` file.
 
-    If your plugin supports parameterization (see [src/dp_gauge_chart_plugin](./src/dp_gauge_chart_plugin/Plugin.tsx)) and
+    If your plugin supports parameterization (see [src/dp_replace_by_tag_plugin](./src/dp_replace_by_tag_plugin/Plugin.tsx)) and
     you want to specify parameters for the link between dashboard the plugin, you can run `npm run link-plugin -- <plugin-object-id> --with-parameters`
     and the tool will open an editor for you to enter the parameters.
 
@@ -154,15 +157,20 @@ All this data will be available in the publicly hosted plugin artifacts and can 
 Do not rename or otherwise refactor any of the directories that were created during this project initialization.
 The structure and naming are essential for the build and the runtime loading of your plugin to work properly.
 
-This project is set up so that all your custom code must be self-contained in the [src/dp_gauge_chart_plugin](./src/dp_gauge_chart_plugin) directory.
+This project is setup so that all your custom code must be self-contained in the [src/dp_replace_by_tag_plugin](./src/dp_replace_by_tag_plugin) directory.
 
-The [src/dp_gauge_chart_plugin_engine](./src/dp_gauge_chart_plugin_engine) and [src/dp_gauge_chart_plugin_entry](./src/dp_gauge_chart_plugin_entry) directories contain essential plugin boilerplate.
+The [src/dp_replace_by_tag_plugin\_engine](./src/dp_replace_by_tag_plugin_engine) and [src/dp_replace_by_tag_plugin\_entry](./src/dp_replace_by_tag_plugin_entry) directories contain essential plugin boilerplate.
 You must not modify these directories or their contents.
 
 The [src/harness] directory contains code for plugin development harness; it is used only during plugin development and the
 code in this directory will not be part of the plugin build. You can start the harness using `npm start`.
 You should have no need to modify the code in the harness. We anticipate that at times you may need to tweak Analytical Backend setup
 that is contained in the [src/harness/backend.ts](src/harness/backend.ts) - this is a safe change.
+
+### How can I setup compatibility of the plugin?
+
+You can modify minEngineVersion and maxEngineVersion properties in `src/dp_dashboard_description_plugin\_entry/index`.
+By default, we guarantee that plugin will be compatible only with the exact version of the dashboard engine used during its build (`"bundled"` option). But if you are sure, that plugin is compatible also with the other engine versions, you can set concrete range of the versions (e.g. `"minEngineVersion": "8.8.0", "maxEngineVersion": "8.9.0"`). Note that combining multiple plugins created before version `8.8.0` may not work.
 
 ### How do plugin dependencies work?
 
