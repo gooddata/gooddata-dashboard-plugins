@@ -1,4 +1,4 @@
-# GoodData.UI Dashboard Plugin - replace by tag plugin
+# GoodData.UI Dashboard Plugin - gauge chart plugin
 
 This plugin replaces all [bullet charts](https://sdk.gooddata.com/gooddata-ui/docs/bullet_chart_component.html) with a specific 
 tag with a Gauge chart component provided by the plugin. 

@@ -19,15 +19,20 @@ const DEFAULT_BACKEND_URL = "https://live-examples-proxy.herokuapp.com";
 // add all the gooddata packages that absolutely need to be shared and singletons because of contexts
 // allow sharing @gooddata/sdk-ui-dashboard here so that multiple plugins can share it among themselves
 // this makes redux related contexts work for example
-const gooddataSharePackagesEntries = [...Object.keys(deps), ...Object.keys(peerDeps)]
-    .filter((pkg) => pkg.startsWith("@gooddata"))
-    .reduce((acc, curr) => {
-        acc[curr] = {
-            singleton: true,
-            requiredVersion: deps[curr],
-        };
-        return acc;
-    }, {});
+function generateGooddataSharePackagesEntries(options = { allowPrereleaseVersions: false }) {
+    const { allowPrereleaseVersions } = options;
+    // add all the gooddata packages that absolutely need to be shared and singletons because of contexts
+    // allow sharing @gooddata/sdk-ui-dashboard here so that multiple plugins can share it among themselves
+    // this makes redux related contexts work for example
+    return [...Object.entries(deps), ...Object.entries(peerDeps)]
+        .filter(([pkgName]) => pkgName.startsWith("@gooddata"))
+        .reduce((acc, [pkgName, version]) => {
+            acc[pkgName] = {
+                requiredVersion: allowPrereleaseVersions ? false : version,
+            };
+            return acc;
+        }, {});
+}
 
 module.exports = (_env, argv) => {
     const isProduction = argv.mode === "production";
@@ -36,17 +41,19 @@ module.exports = (_env, argv) => {
     const protocol = new URL(effectiveBackendUrl).protocol;
 
     const proxy = {
-        "/gdc": {
+        "/api": {
             changeOrigin: true,
             cookieDomainRewrite: "127.0.0.1",
             secure: false,
             target: effectiveBackendUrl,
             headers: {
-                host: effectiveBackendUrl,
-                origin: null,
+                host: effectiveBackendUrl.replace(/^https?:\/\//, ""),
+                // This is essential for Tiger backends. To ensure 401 flies when not authenticated and using proxy
+                "X-Requested-With": "XMLHttpRequest",
             },
             onProxyReq(proxyReq) {
-                proxyReq.removeHeader('origin');
+                // changeOrigin: true does not work well for POST requests, so remove origin like this to be safe
+                proxyReq.removeHeader("origin");
                 proxyReq.setHeader("accept-encoding", "identity");
             },
         },
@@ -214,7 +221,7 @@ module.exports = (_env, argv) => {
                             requiredVersion: deps["react-dom"],
                         },
                         // add all the packages that absolutely need to be shared and singletons because of contexts
-                        ...gooddataSharePackagesEntries,
+                        ...generateGooddataSharePackagesEntries({ allowPrereleaseVersions: false }),
                     },
                 }),
             ],
