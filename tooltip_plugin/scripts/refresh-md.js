@@ -9,7 +9,7 @@ dotenv.config({ path: path.resolve(__dirname, "../.env.secrets") });
 
 const workspace = process.env.WORKSPACE;
 const hostname = process.env.BACKEND_URL;
-const backend = "bear";
+const backend = "tiger";
 
 const output = "./src/md/full.ts";
 

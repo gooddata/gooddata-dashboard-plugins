@@ -71,7 +71,7 @@ export class Plugin extends DashboardPluginV1 {
              * If no data for the current widget are found, the decorator returns widget 
              * unchanged.
              */
-            const identifier = widget.identifier;
+            const identifier = insight.insight.identifier;
 
             function InsightTooltipCustomDecorator(props: JSX.IntrinsicAttributes & IDashboardInsightProps & {children?: React.ReactNode}) {
                 const Insight = insightProvider(insight, widget);
