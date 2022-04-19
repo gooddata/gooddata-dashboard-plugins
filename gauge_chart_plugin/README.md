@@ -1,4 +1,4 @@
-# GoodData.UI Dashboard Plugin - replace by tag plugin
+# GoodData.UI Dashboard Plugin - gauge chart plugin
 
 This plugin replaces all [bullet charts](https://sdk.gooddata.com/gooddata-ui/docs/bullet_chart_component.html) with a specific 
 tag with a Gauge chart component provided by the plugin. 
@@ -9,7 +9,7 @@ in the parameters, default tag `gauge` is used.
 
 ## How to work with replace-by-tag plugin
 1. Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
-2. Navigate to `replace_by_tag_plugin`
+2. Navigate to `gauge_chart_plugin`
 3. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#Plugin development guide) section.
 4. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
 5. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build plugin`. If you have this plugin already built, delete the `dist` folder first.
@@ -69,10 +69,10 @@ Before you start, ensure that your `.env` and `.env.secrets` files are set up co
 
     Note: you can use `PORT` env variable to specify different port number.
 
-2.  Develop your plugin code in `src/dp_replace_by_tag_plugin`
+2.  Develop your plugin code in `src/dp_gauge_chart_plugin`
 
-    The `src/dp_replace_by_tag_plugin/Plugin.tsx` is the main plugin file where you have to register all
-    your custom content. However, you can create as many new files as you want under the `src/dp_replace_by_tag_plugin`
+    The `src/dp_gauge_chart_plugin/Plugin.tsx` is the main plugin file where you have to register all
+    your custom content. However, you can create as many new files as you want under the `src/dp_gauge_chart_plugin`
     directory. Just make sure to never place your custom code outside of this directory.
 
     Note: we recommend to write your plugin in TypeScript and to use a modern IDE. This way you can conveniently
@@ -105,7 +105,7 @@ Before you start, ensure that your `.env` and `.env.secrets` files are set up co
     the tool among the devDependencies together with convenience script to add plugin to either workspace specified
     in your `.env` file (default) or another workspace that you specify on the command line.
 
-    Run the `npm run add-plugin -- "https://your.hosting/pluginDirOfYourChoice/dp_dp_replace_by_tag_plugin.js"` to
+    Run the `npm run add-plugin -- "https://your.hosting/pluginDirOfYourChoice/dp_gauge_chart_plugin.js"` to
     create a new dashboard plugin object in the workspace specified in the `.env` file. The created dashboard object
     point to the URL of the built plugin.
 
@@ -120,7 +120,7 @@ Before you start, ensure that your `.env` and `.env.secrets` files are set up co
     Now that you have created a plugin object in your workspace, you can link it with one or more dashboards. The
     `link-plugin` script in package.json is a shortcut to link plugin with dashboard specified in your `.env` file.
 
-    If your plugin supports parameterization (see [src/dp_replace_by_tag_plugin](./src/dp_replace_by_tag_plugin/Plugin.tsx)) and
+    If your plugin supports parameterization (see [src/dp_gauge_chart_plugin](./src/dp_gauge_chart_plugin/Plugin.tsx)) and
     you want to specify parameters for the link between dashboard the plugin, you can run `npm run link-plugin -- <plugin-object-id> --with-parameters`
     and the tool will open an editor for you to enter the parameters.
 
@@ -154,9 +154,9 @@ All this data will be available in the publicly hosted plugin artifacts and can 
 Do not rename or otherwise refactor any of the directories that were created during this project initialization.
 The structure and naming are essential for the build and the runtime loading of your plugin to work properly.
 
-This project is setup so that all your custom code must be self-contained in the [src/dp_replace_by_tag_plugin](./src/dp_replace_by_tag_plugin) directory.
+This project is set up so that all your custom code must be self-contained in the [src/dp_gauge_chart_plugin](./src/dp_gauge_chart_plugin) directory.
 
-The [src/dp_replace_by_tag_plugin\_engine](./src/dp_replace_by_tag_plugin_engine) and [src/dp_replace_by_tag_plugin\_entry](./src/dp_replace_by_tag_plugin_entry) directories contain essential plugin boilerplate.
+The [src/dp_gauge_chart_plugin_engine](./src/dp_gauge_chart_plugin_engine) and [src/dp_gauge_chart_plugin_entry](./src/dp_gauge_chart_plugin_entry) directories contain essential plugin boilerplate.
 You must not modify these directories or their contents.
 
 The [src/harness] directory contains code for plugin development harness; it is used only during plugin development and the

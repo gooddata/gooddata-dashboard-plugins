@@ -2,16 +2,17 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
-const { ModuleFederationPlugin } = require("webpack").container;
-const { DefinePlugin, EnvironmentPlugin, ProvidePlugin } = require("webpack");
+const {ModuleFederationPlugin} = require("webpack").container;
+const {DefinePlugin, EnvironmentPlugin, ProvidePlugin} = require("webpack");
 const path = require("path");
-const { URL } = require("url");
+const {URL} = require("url");
 const deps = require("./package.json").dependencies;
 const peerDeps = require("./package.json").peerDependencies;
 const Dotenv = require("dotenv-webpack");
+const CopyPlugin = require("copy-webpack-plugin");
 require("dotenv").config();
 
-const { MODULE_FEDERATION_NAME } = require("./src/metadata.json");
+const {MODULE_FEDERATION_NAME} = require("./src/metadata.json");
 
 const PORT = 3001;
 const DEFAULT_BACKEND_URL = "https://live-examples-proxy.herokuapp.com";
@@ -36,7 +37,7 @@ module.exports = (_env, argv) => {
     const protocol = new URL(effectiveBackendUrl).protocol;
 
     const proxy = {
-        "/gdc": {
+        "/api": {
             changeOrigin: true,
             cookieDomainRewrite: "127.0.0.1",
             secure: false,
@@ -46,6 +47,7 @@ module.exports = (_env, argv) => {
                 origin: null,
             },
             onProxyReq(proxyReq) {
+                proxyReq.removeHeader('origin');
                 proxyReq.setHeader("accept-encoding", "identity");
             },
         },
@@ -135,6 +137,14 @@ module.exports = (_env, argv) => {
                 TEST_PSEUDOMAP: "",
                 NODE_DEBUG: "",
             }),
+            new CopyPlugin({
+                patterns: [
+                    {
+                        from: path.resolve(__dirname, 'src', MODULE_FEDERATION_NAME, 'texts.json'),
+                        to: path.join(__dirname, 'dist'),
+                    }
+                ],
+            }),
         ],
     };
 
@@ -176,7 +186,7 @@ module.exports = (_env, argv) => {
             ...commonConfig,
             entry: `./src/${MODULE_FEDERATION_NAME}/index`,
             name: "dashboardPlugin",
-            output: { ...commonConfig.output, path: path.join(__dirname, "dist", "dashboardPlugin") },
+            output: {...commonConfig.output, path: path.join(__dirname, "dist", "dashboardPlugin")},
             plugins: [
                 ...commonConfig.plugins,
                 new ModuleFederationPlugin({

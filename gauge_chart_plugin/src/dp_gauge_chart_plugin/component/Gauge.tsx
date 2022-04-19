@@ -6,7 +6,7 @@ import {
     useDashboardSelector,
     useInsightWidgetDataView,
 } from "@gooddata/sdk-ui-dashboard";
-import { getGaugeValues } from "./utils/gaugeUtils";
+import { getGaugeValues } from "../utils/gaugeUtils";
 import GaugeChart from "react-gauge-chart";
 
 interface IGaugeParameters {

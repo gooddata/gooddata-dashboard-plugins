@@ -2,7 +2,7 @@
 import React from "react";
 import { idRef } from "@gooddata/sdk-model";
 import { DashboardStub, IEmbeddedPlugin } from "@gooddata/sdk-ui-loaders";
-import PluginFactory from "../dp_replace_by_tag_plugin";
+import PluginFactory from "../dp_dashboard_description_plugin";
 import { DEFAULT_DASHBOARD_ID } from "./constants";
 import { DashboardConfig } from "@gooddata/sdk-ui-dashboard";
 
