@@ -64,10 +64,10 @@ export class Plugin extends DashboardPluginV1 {
             try {
                 const parsedParameters = JSON.parse(parameters);
                 /**
-                 * Run the `link-plugin` command with `--with-parameters` flag and enter all the tags you want to replace with
+                 * Run the `link-plugin` command with `--with-parameters` flag and enter all the title prefixes you want to replace with
                  * `GaugeChart` separated by space. By default all bullet charts with tag `gauge` will be replaced.
                  */
-                this.prefixes = parsedParameters?.tags.split(" ") || ["gauge"];
+                this.prefixes = parsedParameters?.prefixes.split(" ") || ["gauge"];
                 this.showLabels = parsedParameters?.showLabels || false;
                 this.format = this.isFormatValid(parsedParameters.format) ? parsedParameters.format : "%";
             } catch (error) {
