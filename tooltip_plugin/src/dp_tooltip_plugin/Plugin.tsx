@@ -12,6 +12,7 @@ import entryPoint from "../dp_tooltip_plugin_entry";
 import React from "react";
 import { Tooltip } from "./component/Tooltip";
 import { TOOLTIP_DATA } from "./fixtures/fixtures";
+import { insightId } from "@gooddata/sdk-model";
 
 export class Plugin extends DashboardPluginV1 {
     public readonly author = entryPoint.author;
@@ -71,8 +72,8 @@ export class Plugin extends DashboardPluginV1 {
              * If no data for the current widget are found, the decorator returns widget 
              * unchanged.
              */
-            const identifier = insight.insight.identifier;
-
+            const identifier = insightId(insight);
+            
             function InsightTooltipCustomDecorator(props: JSX.IntrinsicAttributes & IDashboardInsightProps & {children?: React.ReactNode}) {
                 const Insight = insightProvider(insight, widget);
                 const tooltipText = TOOLTIP_DATA[identifier];
