@@ -5,6 +5,8 @@ encourage you to learn more about plugins in [our documentation](https://sdk.goo
 
 In case you don't feel like reading the documentation at this point, go at least through the following quick introduction.
 
+![Tooltip plugin](assets/tooltip_plugin.png)
+
 ## Quick Introduction into Dashboard Plugins
 
 Dashboard Plugins (plugins) allow developers to create extensions that alter behavior and look and feel of the

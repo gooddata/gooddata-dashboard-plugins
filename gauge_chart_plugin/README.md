@@ -6,6 +6,7 @@ tag with a Gauge chart component provided by the plugin.
 The tags can be specified via `--with-parameters` option while linking the plugin to the dashboard. If there is no tag specified
 in the parameters, default tag `gauge` is used.
 
+![Gauge chart plugin](assets/Gauge_chart_plugin.png)
 
 ## How to work with replace-by-tag plugin
 1. Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
