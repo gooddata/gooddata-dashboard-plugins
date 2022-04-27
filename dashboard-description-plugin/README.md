@@ -4,6 +4,8 @@ This plugin adds a textual description on top of the dashboard it's applied to. 
 a separate JSON file, so you can reuse same plugin build across different dashboards and simply provide a different URL
 to the JSON file when linking the plugin to the dashboard.
 
+![Dashboard description plugin](assets/Dashboard_description_plugin.png)
+
 ## How to use this plugin
 
 1. Download the code for this plugin from our [GitHub repo](https://github.com/gooddata/gooddata-plugin-examples).

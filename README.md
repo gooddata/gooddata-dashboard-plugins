@@ -16,3 +16,9 @@ plugin you've chosen adhere to your company's security requirements.
 ## I have a nice plugin for this gallery. Can I share it here?
 
 Sure, any contributions are welcome. Just fork the repo and make a pull request.
+
+## Adding screenshots to README.md file
+
+While creating a `README.md` file for the new example plugin, add a screenshot of the plugin result into the description of
+the plugin. The screenshot should contain the whole dashboard or its major part so it is clear that the image is taken from 
+our application. If you are not sure, check existing plugins `README.md` files and images in `assets` folder of each plugin.
