@@ -1,6 +1,6 @@
 /**
- * The data for tooltips can be acquired any way you think off,
- * e.g. external storage, file etc..
+ * The data for tooltips can be acquired any way you think of,
+ * e.g. external storage, file etc.
  * 
  * These static constants are just examples for the plugin examples gallery usage. 
  */
