@@ -18,10 +18,10 @@ This plugin was created as an example and a starting point for your development.
 2. Navigate to `dashboard-description-plugin`
 3. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#Plugin development guide) section.
 4. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
-5. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build plugin`. If you have this plugin already built, delete the `dist` folder first.
+5. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build-plugin`. If you have this plugin already built, delete the `dist` folder first.
 6. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
-7. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin id noted in the console output.
-8. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin plugin-id <plugin-id> --with-parameters` command. This will open the text editor where you paste this string `"<url-to-file-with-description>"`.
+7. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin object id noted in the console output.
+8. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id> --with-parameters` command. This will open the text editor where you paste this string `"<url-to-file-with-description>"`.
    1. The plugin expects an array of strings, where every array entry is considered as a paragraph. You can modify the description in the `texts.json` file or provide a URL of such file in the parameters.
 
 ## Quick Introduction into Dashboard Plugins

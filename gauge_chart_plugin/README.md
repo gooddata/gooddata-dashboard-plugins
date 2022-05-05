@@ -11,10 +11,10 @@ naming convention with a Gauge chart component provided by the plugin.
 3. Navigate to `gauge_chart_plugin`
 4. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#Plugin development guide) section.
 5. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
-6. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build plugin`. If you have this plugin already built, delete the `dist` folder first.
+6. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build-plugin`. If you have this plugin already built, delete the `dist` folder first.
 7. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
-8. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin id noted in the console output.
-9. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin plugin-id <plugin-id> --with-parameters` command. This will open the text editor where you paste this string `"{\"prefixes\":\"gauge\",\"showLabels\":false, \"format\":\"%\"}"`. Modify plugin parameters with desired values.
+8. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin object id noted in the console output.
+9. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id> --with-parameters` command. This will open the text editor where you paste this string `"{\"prefixes\":\"gauge\",\"showLabels\":false, \"format\":\"%\"}"`. Modify plugin parameters with desired values.
    1. Enter all naming prefixes you want the plugin to apply to, separated with space. If not specified, default prefix `gauge` is used.
    2. `showLabels` indicates whether to show the min and max value label. If not specified, labels are not shown.
    3. `format` parameter accepts `#` value to show values in numeral representation or the `%` value to show percentage of the value. If left empty or invalid value is entered, percentage is used.
