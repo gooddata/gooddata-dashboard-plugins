@@ -1,29 +1,29 @@
 # GoodData.UI Dashboard Plugin - gauge chart plugin
 
 This plugin replaces all [bullet charts](https://sdk.gooddata.com/gooddata-ui/docs/bullet_chart_component.html) with a specific 
-tag with a Gauge chart component provided by the plugin. 
-
-The tags can be specified via `--with-parameters` option while linking the plugin to the dashboard. If there is no tag specified
-in the parameters, default tag `gauge` is used.
+naming convention with a Gauge chart component provided by the plugin.
 
 ![Gauge chart plugin](assets/Gauge_chart_plugin.png)
 
 ## How to work with replace-by-tag plugin
-1. Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
-2. Navigate to `gauge_chart_plugin`
-3. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#Plugin development guide) section.
-4. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
-5. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build plugin`. If you have this plugin already built, delete the `dist` folder first.
-6. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
-7. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin id noted in the console output.
-8. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin plugin-id <plugin-id> --with-parameters` command. This will open the text editor where you paste this string `"{\"tags\":\"gauge\",\"showLabels\":false, \"format\":\"%\"}"`. Modify plugin parameters with desired values.
-   1. Enter all tags you want the plugin to replace separated with space. If not specified, default tag `gauge` is used.
+
+1.Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
+3. Navigate to `gauge_chart_plugin`
+4. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#Plugin development guide) section.
+5. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
+6. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build-plugin`. If you have this plugin already built, delete the `dist` folder first.
+7. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
+8. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin object id noted in the console output.
+9. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id> --with-parameters` command. This will open the text editor where you paste this string `"{\"prefixes\":\"gauge\",\"showLabels\":false, \"format\":\"%\"}"`. Modify plugin parameters with desired values.
+   1. Enter all naming prefixes you want the plugin to apply to, separated with space. If not specified, default prefix `gauge` is used.
    2. `showLabels` indicates whether to show the min and max value label. If not specified, labels are not shown.
-   3. `format` parameter accepts `#` value to show values in numeral representation or the `%` value to show percentage of the value. If left empty or invalid value is entered, percentage is used.  
+   3. `format` parameter accepts `#` value to show values in numeral representation or the `%` value to show percentage of the value. If left empty or invalid value is entered, percentage is used.
 
 ## What insights plugin affects and how
-The plugin affects only [bullet charts](https://sdk.gooddata.com/gooddata-ui/docs/bullet_chart_component.html) with the tag specified as a plugin parameter (or default `gauge` tag). Plugin
-checks if the content of affected measures is applicable for the replacement. 
+
+The plugin affects only [bullet charts](https://sdk.gooddata.com/gooddata-ui/docs/bullet_chart_component.html) with the insight name starting with the prefix "gauge" (or one of your custom prefixes defined in linking parameters).
+
+The bullet chart has to include exactly one primary metric and one target metric. Comparative metric and "view by" attribute must remain empty. 
 
 These insights are replaced by the `Gauge` component. The max value of the `Gauge chart` is the `target` value of the original `bullet chart`. The needle 
 of the `gauge chart` indicates the `primary measure` of the original `bullet chart`. Minimal value in the `gauge chart component` is always set to `0`.
@@ -31,6 +31,11 @@ of the `gauge chart` indicates the `primary measure` of the original `bullet cha
 Domain admins won't see the plugin as result of a security feature. 
 See more in the [configuration on the GoodData platform](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#configuration-on-the-gooddata-platform).
 
+## What's next?
+
+This plugin was created as a starting point for your development. Here are a few ideas on how to enhance the code further:
+1. Instead of the naming convention, use tags to specify which insights should be replaced. Naming convention was chosen as an easy way to integrate the plugin, but it might not be the best option for the production usage.
+2. Consider using comparative measure as a minimal value for the gauge chart. 
 
 # Quick Introduction into Dashboard Plugins
 

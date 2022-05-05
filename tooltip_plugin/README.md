@@ -1,11 +1,21 @@
-# GoodData.UI Dashboard Plugin project
+# GoodData.UI Dashboard Plugin - tooltip plugin
 
-This is a one stop project to help you develop, test and build your own dashboard plugin. Before you start, we
-encourage you to learn more about plugins in [our documentation](https://sdk.gooddata.com/gooddata-ui/docs/about_gooddataui.html).
+This is a simple plugin that adds a tooltip to KPI and Insight widgets on your dashboard.
 
-In case you don't feel like reading the documentation at this point, go at least through the following quick introduction.
+The tooltip texts are defined in the [fixtures](./src/dp_tooltip_plugin/fixtures/fixtures.ts) file.
 
 ![Tooltip plugin](assets/tooltip_plugin.png)
+
+## How to work with replace-by-tag plugin
+
+1.Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
+3. Navigate to `tooltip_plugin`
+4. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#Plugin development guide) section.
+5. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
+6. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build-plugin`. If you have this plugin already built, delete the `dist` folder first.
+7. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
+8. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin object id noted in the console output.
+9. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id>` command.
 
 ## Quick Introduction into Dashboard Plugins
 
