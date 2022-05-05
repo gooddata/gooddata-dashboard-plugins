@@ -6,18 +6,14 @@ to the JSON file when linking the plugin to the dashboard.
 
 ![Dashboard description plugin](assets/Dashboard_description_plugin.png)
 
-## How to use this plugin
+This plugin was created as an example and a starting point for your development. Here are a few ideas on how to continue from this point on:
 
-1. Download the code for this plugin from our [GitHub repo](https://github.com/gooddata/gooddata-plugin-examples).
-2. Run `yarn` command to install dependencies.
-3. Run `yarn build-plugin` to generate a production build of the plugin.
-4. Upload the resulting build to a public hosting (for example, AWS S3 or any similar storage).
-5. Upload a file with your texts in JSON format to the public hosting as well. Feel free to create multiple files for different dashboards as needed.
-6. Follow [Before you start](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#before-you-start) guide in our docs to prepare your GoodData instance for the plugin.
-7. Run `yarn add-plugin` to add the plugin to your workspace. See detailed instructions on this command below in [Plugin development guide](#plugin-development-guide) section.
-8. Run `yarn link-plugin` to link the plugin with a specific dashboard in your workspace. See detailed instruction on this command in [Plugin development guide](#plugin-development-guide) section. Make sure you provide a URL to the description texts file in the link parameters. 
+1. You might enrich the plugin description with text formatting or even media. You'll have to update [the renderer](./src/dp_dashboard_description_plugin/KdDescription.tsx) to support additional types of content.
+2. If your description is not too long, you can update the plugin to store a complete description text in the link parameter. This way you would not have to bother with extra files. The text will be stored on GoodData server and will only be available after login.
+3. You can enrich JSON file or link parameters to also include a position where the new section should be inserted. For example, instead of always rendering the description on top of your dashboard, you can insert it at the end or after a specific section.
 
 ## How to work with dashboard-description plugin
+
 1. Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
 2. Navigate to `dashboard-description-plugin`
 3. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#Plugin development guide) section.
@@ -26,13 +22,7 @@ to the JSON file when linking the plugin to the dashboard.
 6. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
 7. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin id noted in the console output.
 8. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin plugin-id <plugin-id> --with-parameters` command. This will open the text editor where you paste this string `"<url-to-file-with-description>"`.
-   1. The plugin expects an array of strings, where every array entry is considered as a paragraph. You can modify the description in the `texts.json` file or provide an URL of such file in the parameters. 
-
-This plugin was created as an example and a starting point for your development. Here are a few ideas on how to continue from this point on:
-
-1. You might enrich the plugin description with text formatting or even media. You'll have to update [the renderer](./src/dp_dashboard_description_plugin/KdDescription.tsx) to support additional types of content.
-2. If your description is not too long, you can update the plugin to store a complete description text in the link parameter. This way you would not have to bother with extra files. The text will be stored on GoodData server and will only be available after login.
-3. You can enrich JSON file or link parameters to also include a position where the new section should be inserted. For example, instead of always rendering the description on top of your dashboard, you can insert it at the end or after a specific section.
+   1. The plugin expects an array of strings, where every array entry is considered as a paragraph. You can modify the description in the `texts.json` file or provide a URL of such file in the parameters.
 
 ## Quick Introduction into Dashboard Plugins
 
