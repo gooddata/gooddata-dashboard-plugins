@@ -1,6 +1,6 @@
 // (C) 2022 GoodData Corporation
 import React from "react";
-import Tippy from '@tippyjs/react';
+import Tippy from "@tippyjs/react";
 
 import "./tooltip.css";
 
@@ -18,14 +18,14 @@ interface ITooltipProps {
     tooltipText: string;
 }
 
-export const Tooltip: React.FC<ITooltipProps> = ({widgetIdentifier, tooltipText}) => {
+export const Tooltip: React.FC<ITooltipProps> = ({ widgetIdentifier, tooltipText }) => {
     return (
         <div key={widgetIdentifier} className="tippy-container">
             <Tippy content={tooltipText}>
                 <div className="tooltip-icon gd-icon-circle-question__container">
-                    <span className="gd-icon-circle-question" />    
-                </div>    
+                    <span className="gd-icon-circle-question" />
+                </div>
             </Tippy>
         </div>
-    )
-}
+    );
+};
