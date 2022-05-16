@@ -1,18 +1,18 @@
 // (C) 2021 GoodData Corporation
+import React from "react";
 import {
+    CustomDashboardInsightComponent,
+    CustomDashboardKpiComponent,
     DashboardContext,
     DashboardPluginV1,
     IDashboardCustomizer,
-    IDashboardInsightProps,
-    IDashboardKpiProps,
 } from "@gooddata/sdk-ui-dashboard";
+import { insightId } from "@gooddata/sdk-model";
 
 import entryPoint from "../dp_tooltip_plugin_entry";
 
-import React from "react";
 import { Tooltip } from "./component/Tooltip";
 import { TOOLTIP_DATA } from "./fixtures/fixtures";
-import { insightId } from "@gooddata/sdk-model";
 
 export class Plugin extends DashboardPluginV1 {
     public readonly author = entryPoint.author;
@@ -34,9 +34,7 @@ export class Plugin extends DashboardPluginV1 {
              */
             const identifier = widget.identifier;
 
-            function KpiTooltipCustomDecorator(
-                props: JSX.IntrinsicAttributes & IDashboardKpiProps & { children?: React.ReactNode },
-            ) {
+            const KpiTooltipCustomDecorator: CustomDashboardKpiComponent = (props) => {
                 const Kpi = kpiProvider(insight, widget);
                 const tooltipText = TOOLTIP_DATA[identifier];
 
@@ -49,7 +47,7 @@ export class Plugin extends DashboardPluginV1 {
                     );
                 }
                 return <Kpi {...props} />;
-            }
+            };
             return KpiTooltipCustomDecorator;
         });
 
@@ -65,9 +63,7 @@ export class Plugin extends DashboardPluginV1 {
              */
             const identifier = insightId(insight);
 
-            function InsightTooltipCustomDecorator(
-                props: JSX.IntrinsicAttributes & IDashboardInsightProps & { children?: React.ReactNode },
-            ) {
+            const InsightTooltipCustomDecorator: CustomDashboardInsightComponent = (props) => {
                 const Insight = insightProvider(insight, widget);
                 const tooltipText = TOOLTIP_DATA[identifier];
                 if (tooltipText) {
@@ -79,7 +75,7 @@ export class Plugin extends DashboardPluginV1 {
                     );
                 }
                 return <Insight {...props} />;
-            }
+            };
 
             return InsightTooltipCustomDecorator;
         });

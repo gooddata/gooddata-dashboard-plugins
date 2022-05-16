@@ -1,6 +1,6 @@
 // (C) 2022 GoodData Corporation
-import React from "react";
-import { ExtendedDashboardWidget, IDashboardWidgetProps } from "@gooddata/sdk-ui-dashboard";
+import React, { useEffect, useState } from "react";
+import { ExtendedDashboardWidget, CustomDashboardWidgetComponent } from "@gooddata/sdk-ui-dashboard";
 
 import "./kdDescription.css";
 
@@ -14,14 +14,14 @@ export interface IWidgetExtras {
 
 type PluginDataLoadingState = null | "loading" | "loaded" | "error";
 
-export const KdDescription: React.FC<IDashboardWidgetProps> = (props) => {
+export const KdDescription: CustomDashboardWidgetComponent = (props) => {
     const { configUrl } = props.widget as ExtendedDashboardWidget & IWidgetExtras;
 
-    const [data, setData] = React.useState<PluginData | null>(null);
-    const [loadingState, setLoadingState] = React.useState<PluginDataLoadingState>(null);
-    const [errorMessage, setErrorMessage] = React.useState<string>("");
+    const [data, setData] = useState<PluginData | null>(null);
+    const [loadingState, setLoadingState] = useState<PluginDataLoadingState>(null);
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
-    React.useEffect(() => {
+    useEffect(() => {
         setLoadingState("loading");
         fetch(configUrl)
             .then((res) => res.json())
