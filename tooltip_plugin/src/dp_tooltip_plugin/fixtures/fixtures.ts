@@ -1,3 +1,4 @@
+// (C) 2022 GoodData Corporation
 /**
  * The data for tooltips can be acquired any way you think of,
  * e.g. external storage, file etc.
