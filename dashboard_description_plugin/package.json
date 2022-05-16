@@ -30,7 +30,10 @@
         "start": "webpack-cli serve --config-name harness",
         "test": "jest --watch --passWithNoTests",
         "test-once": "jest --maxWorkers=${JEST_MAX_WORKERS:-'45%'} --passWithNoTests",
-        "eslint": "eslint $npm_package_config_eslint"
+        "eslint": "eslint $npm_package_config_eslint",
+        "prettier-check": "prettier --check '{src,test}/**/*.{ts,tsx,json,scss,md,yaml,html}'",
+        "prettier-write": "prettier --write '{src,test}/**/*.{ts,tsx,json,scss,md,yaml,html}'",
+        "refresh-md": "node ./scripts/refresh-md.js"
     },
     "dependencies": {
         "@gooddata/sdk-ui-dashboard": "^8.9.0",

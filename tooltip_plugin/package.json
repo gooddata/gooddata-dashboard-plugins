@@ -29,6 +29,8 @@
         "unlink-plugin": "gdc-plugins dashboard-plugin unlink",
         "start": "webpack-cli serve --config-name harness",
         "eslint": "eslint $npm_package_config_eslint",
+        "prettier-check": "prettier --check '{src,test}/**/*.{ts,tsx,json,scss,md,yaml,html}'",
+        "prettier-write": "prettier --write '{src,test}/**/*.{ts,tsx,json,scss,md,yaml,html}'",
         "refresh-md": "node ./scripts/refresh-md.js"
     },
     "dependencies": {
