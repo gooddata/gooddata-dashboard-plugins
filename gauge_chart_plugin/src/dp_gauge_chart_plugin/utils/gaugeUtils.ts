@@ -17,10 +17,7 @@ function dataValueAsFloat(value: DataValue): number {
     return typeof value === "string" ? parseFloat(value) : value;
 }
 
-function firstMeasureInBucket(
-    insight: IInsight,
-    bucketId: string
-): IMeasure | undefined {
+function firstMeasureInBucket(insight: IInsight, bucketId: string): IMeasure | undefined {
     const bucket = insightBucket(insight, bucketId);
     if (!bucket) {
         return undefined;
@@ -39,10 +36,7 @@ export function isUsableForGauge(insight: IInsight): boolean {
     const isBulletChart = insightVisualizationUrl(insight).includes("bullet");
 
     const primaryMeasure = firstMeasureInBucket(insight, "measures");
-    const secondaryMeasure = firstMeasureInBucket(
-        insight,
-        "secondary_measures"
-    );
+    const secondaryMeasure = firstMeasureInBucket(insight, "secondary_measures");
 
     return isBulletChart && !!primaryMeasure && !!secondaryMeasure;
 }
@@ -55,23 +49,13 @@ export function isUsableForGauge(insight: IInsight): boolean {
  * @param bucketId - the bucket of the insight to look fo the data for
  * @returns numeric result of the given bucket
  */
-function getDataForBucket(
-    dataViewFacade: DataViewFacade,
-    insight: IInsight,
-    bucketId: string
-): number {
+function getDataForBucket(dataViewFacade: DataViewFacade, insight: IInsight, bucketId: string): number {
     const measure = firstMeasureInBucket(insight, bucketId);
     if (!measure) {
-        throw new Error(
-            `The bucket does not contain any measures: ${bucketId}`
-        );
+        throw new Error(`The bucket does not contain any measures: ${bucketId}`);
     }
 
-    const dataPoint = dataViewFacade
-        .data()
-        .series()
-        .firstForMeasure(measure)
-        .dataPoints()[0];
+    const dataPoint = dataViewFacade.data().series().firstForMeasure(measure).dataPoints()[0];
 
     return dataValueAsFloat(dataPoint.rawValue);
 }
@@ -88,20 +72,13 @@ interface IUseGaugeResult {
  * @param insight - the insight that was used as the basis of this visualization
  * @returns the data for the gauge or an error
  */
-export const getGaugeValues = (
-    dataViewFacade: DataViewFacade,
-    insight: IInsight
-): IUseGaugeResult => {
+export const getGaugeValues = (dataViewFacade: DataViewFacade, insight: IInsight): IUseGaugeResult => {
     try {
         return {
             gaugeError: undefined,
             gaugeResult: {
                 value: getDataForBucket(dataViewFacade, insight, "measures"),
-                max: getDataForBucket(
-                    dataViewFacade,
-                    insight,
-                    "secondary_measures"
-                ),
+                max: getDataForBucket(dataViewFacade, insight, "secondary_measures"),
             },
         };
     } catch (err: any) {

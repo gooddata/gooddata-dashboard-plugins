@@ -16,12 +16,7 @@ interface IGaugeParameters {
 
 export const gaugeFactory = (parameters: IGaugeParameters): CustomDashboardInsightComponent => {
     return (props) => {
-        const {
-            ErrorComponent: GaugeError,
-            LoadingComponent: GaugeLoading,
-            widget,
-            insight,
-        } = props;
+        const { ErrorComponent: GaugeError, LoadingComponent: GaugeLoading, widget, insight } = props;
 
         // get the current user's locale to format the numbers properly
         const locale = useDashboardSelector(selectLocale);
@@ -54,9 +49,9 @@ export const gaugeFactory = (parameters: IGaugeParameters): CustomDashboardInsig
                 locale={locale}
                 showLabels={parameters.showLabels}
             />
-        )
-    }
-}
+        );
+    };
+};
 
 export const Gauge: React.FC<{
     max: number;

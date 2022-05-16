@@ -2,33 +2,35 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
-const {ModuleFederationPlugin} = require("webpack").container;
-const {DefinePlugin, EnvironmentPlugin, ProvidePlugin} = require("webpack");
+const { ModuleFederationPlugin } = require("webpack").container;
+const { DefinePlugin, EnvironmentPlugin, ProvidePlugin } = require("webpack");
 const path = require("path");
-const {URL} = require("url");
+const { URL } = require("url");
 const deps = require("./package.json").dependencies;
 const peerDeps = require("./package.json").peerDependencies;
 const Dotenv = require("dotenv-webpack");
 const CopyPlugin = require("copy-webpack-plugin");
 require("dotenv").config();
 
-const {MODULE_FEDERATION_NAME} = require("./src/metadata.json");
+const { MODULE_FEDERATION_NAME } = require("./src/metadata.json");
 
 const PORT = 3001;
 const DEFAULT_BACKEND_URL = "https://live-examples-proxy.herokuapp.com";
 
-// add all the gooddata packages that absolutely need to be shared and singletons because of contexts
-// allow sharing @gooddata/sdk-ui-dashboard here so that multiple plugins can share it among themselves
-// this makes redux related contexts work for example
-const gooddataSharePackagesEntries = [...Object.keys(deps), ...Object.keys(peerDeps)]
-    .filter((pkg) => pkg.startsWith("@gooddata"))
-    .reduce((acc, curr) => {
-        acc[curr] = {
-            singleton: true,
-            requiredVersion: deps[curr],
-        };
-        return acc;
-    }, {});
+function generateGooddataSharePackagesEntries(options = { allowPrereleaseVersions: false }) {
+    const { allowPrereleaseVersions } = options;
+    // add all the gooddata packages that absolutely need to be shared and singletons because of contexts
+    // allow sharing @gooddata/sdk-ui-dashboard here so that multiple plugins can share it among themselves
+    // this makes redux related contexts work for example
+    return [...Object.entries(deps), ...Object.entries(peerDeps)]
+        .filter(([pkgName]) => pkgName.startsWith("@gooddata"))
+        .reduce((acc, [pkgName, version]) => {
+            acc[pkgName] = {
+                requiredVersion: allowPrereleaseVersions ? false : version,
+            };
+            return acc;
+        }, {});
+}
 
 module.exports = (_env, argv) => {
     const isProduction = argv.mode === "production";
@@ -47,7 +49,7 @@ module.exports = (_env, argv) => {
                 origin: null,
             },
             onProxyReq(proxyReq) {
-                proxyReq.removeHeader('origin');
+                proxyReq.removeHeader("origin");
                 proxyReq.setHeader("accept-encoding", "identity");
             },
         },
@@ -140,9 +142,9 @@ module.exports = (_env, argv) => {
             new CopyPlugin({
                 patterns: [
                     {
-                        from: path.resolve(__dirname, 'src', MODULE_FEDERATION_NAME, 'texts.json'),
-                        to: path.join(__dirname, 'dist'),
-                    }
+                        from: path.resolve(__dirname, "src", MODULE_FEDERATION_NAME, "texts.json"),
+                        to: path.join(__dirname, "dist"),
+                    },
                 ],
             }),
         ],
@@ -186,7 +188,7 @@ module.exports = (_env, argv) => {
             ...commonConfig,
             entry: `./src/${MODULE_FEDERATION_NAME}/index`,
             name: "dashboardPlugin",
-            output: {...commonConfig.output, path: path.join(__dirname, "dist", "dashboardPlugin")},
+            output: { ...commonConfig.output, path: path.join(__dirname, "dist", "dashboardPlugin") },
             plugins: [
                 ...commonConfig.plugins,
                 new ModuleFederationPlugin({
@@ -223,7 +225,9 @@ module.exports = (_env, argv) => {
                             requiredVersion: deps["react-dom"],
                         },
                         // add all the packages that absolutely need to be shared and singletons because of contexts
-                        ...gooddataSharePackagesEntries,
+                        // change the allowPrereleaseVersions to true if you want to work with alpha or beta versions
+                        // beware that alpha and beta versions may break and may contain bugs, use at your own risk
+                        ...generateGooddataSharePackagesEntries({ allowPrereleaseVersions: false }),
                     },
                 }),
             ],
