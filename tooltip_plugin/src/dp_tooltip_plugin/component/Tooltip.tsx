@@ -1,3 +1,4 @@
+// (C) 2022 GoodData Corporation
 import React from "react";
 import Tippy from '@tippyjs/react';
 

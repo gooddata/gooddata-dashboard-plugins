@@ -1,4 +1,4 @@
-// (C) 2021 GoodData Corporation
+// (C) 2021-2022 GoodData Corporation
 import { IDashboardPluginContract_V1 } from "@gooddata/sdk-ui-dashboard";
 import { Plugin } from "./Plugin";
 
