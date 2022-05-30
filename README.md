@@ -14,3 +14,5 @@ This gallery is primarily meant to be used as a starting point for you to develo
 plugins are capable of in general. You should be able to use these plugins in production, but before doing so,
 make sure to read the plugin's README.md file. You might want to run it by your security team to ensure the
 plugin you've chosen adhere to your company's security requirements.
+
+Also see our [LICENSE](./LICENSE) file.
