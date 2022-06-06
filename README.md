@@ -15,4 +15,4 @@ plugins are capable of in general. You should be able to use these plugins in pr
 make sure to read the plugin's README.md file. You might want to run it by your security team to ensure the
 plugin you've chosen adhere to your company's security requirements.
 
-Also see our [LICENSE](./LICENSE) file.
+Please see the [LICENSE](./LICENSE) for the license of the code in this repository and [NOTICE](./NOTICE) for the licenses and attributions of the dependencies. 
