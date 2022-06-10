@@ -1,59 +1,55 @@
 // (C) 2022 GoodData Corporation
-import React, { useEffect, useState } from "react";
-import { ExtendedDashboardWidget, CustomDashboardWidgetComponent } from "@gooddata/sdk-ui-dashboard";
+import React from "react";
+import {
+    ICustomWidget,
+    CustomDashboardWidgetComponent,
+} from "@gooddata/sdk-ui-dashboard";
+import invariant from "ts-invariant";
 
 import "./kdDescription.css";
-
-type PluginData = {
-    description: string[];
-};
+import ReactMarkdown from "react-markdown";
+import {InlineMeasure} from './InlineMeasure';
+import {isObjRef, ObjRef} from "@gooddata/sdk-model";
 
 export interface IWidgetExtras {
-    configUrl: string;
+    description: string;
+    metrics: {[name: string]: ObjRef};
 }
 
-type PluginDataLoadingState = null | "loading" | "loaded" | "error";
-
 export const KdDescription: CustomDashboardWidgetComponent = (props) => {
-    const { configUrl } = props.widget as ExtendedDashboardWidget & IWidgetExtras;
-
-    const [data, setData] = useState<PluginData | null>(null);
-    const [loadingState, setLoadingState] = useState<PluginDataLoadingState>(null);
-    const [errorMessage, setErrorMessage] = useState<string>("");
-
-    useEffect(() => {
-        setLoadingState("loading");
-        fetch(configUrl)
-            .then((res) => res.json())
-            .then((data) => {
-                setLoadingState("loaded");
-                setData(data);
-            })
-            .catch((error) => {
-                setLoadingState("error");
-                setErrorMessage(error.message);
-            });
-
-        return () => {};
-    }, []);
-
-    if (loadingState === "error") {
-        return <div className="error">{errorMessage}</div>;
-    }
-
-    if (loadingState === "loading") {
-        return <div className="wrap">Loading...</div>;
-    }
+    const widget = props.widget as ICustomWidget & IWidgetExtras;
+    const {description, metrics} = widget;
 
     return (
         <div className="wrap">
-            {data?.description.map((paragraph, i) => {
-                return (
-                    <p key={i} className="paragraph">
-                        {paragraph}
-                    </p>
-                );
-            })}
+            <ReactMarkdown
+                children={description ?? ""}
+                components={{
+                    // Override default rendering of the code nodes - we are using it for injecting live metrics into text.
+                    // Look for the text with format like `metric:<metric name>`
+                    code({node, inline, ...props}) {
+                        if (!inline || node.children.length !== 1 || node.children[0].type !== "text" || !node.children[0].value.startsWith("metric:")) {
+                            return <code {...props} />;
+                        }
+
+                        let metricRef;
+                        try {
+                            metricRef = metrics[node.children[0].value.replace(/^metric:/, "")];
+
+                            invariant(isObjRef(metricRef), `Invalid format of the live metric in text: ${node.children[0].value}`);
+                        } catch (e) {
+                            console.error(e);
+
+                            return <code {...props} />;
+                        }
+
+                        return <InlineMeasure
+                            metricRef={metricRef}
+                            widget={widget}
+                        />;
+                    },
+                }}
+            />
         </div>
     );
 };

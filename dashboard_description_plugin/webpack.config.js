@@ -165,7 +165,7 @@ module.exports = (_env, argv) => {
             plugins: [
                 ...commonConfig.plugins,
                 new ProvidePlugin({
-                    process: "process/browser",
+                    process: "process/browser.js",
                 }),
                 new DefinePlugin({
                     PORT: JSON.stringify(PORT),

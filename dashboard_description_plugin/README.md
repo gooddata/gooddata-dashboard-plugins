@@ -6,9 +6,14 @@ to the JSON file when linking the plugin to the dashboard.
 
 ![Dashboard description plugin](assets/Dashboard_description_plugin.png)
 
+You can use Markdown to format the description text and even inject live metrics into the text. The metrics will
+respect the global dashboard filters, i.e. update whenever a filter state is changed. To inject a metric, simply use
+inline code with a specific syntax: `metric:<name of the metric>` and define corresponding metric object reference in
+a "metrics" section of the JSON configuration. See example of such configuration in [texts.json](./src/dp_dashboard_description_plugin/texts.json) file.
+
 This plugin was created as an example and a starting point for your development. Here are a few ideas on how to continue from this point on:
 
-1. You might enrich the plugin description with text formatting or even media. You'll have to update [the renderer](./src/dp_dashboard_description_plugin/KdDescription.tsx) to support additional types of content.
+1. The plugin already supports standard Markdown formatting, but you can enrich it even further. You'll have to update [the renderer](./src/dp_dashboard_description_plugin/KdDescription.tsx) to support additional types of content.
 2. If your description is not too long, you can update the plugin to store a complete description text in the link parameter. This way you would not have to bother with extra files. The text will be stored on GoodData server and will only be available after login.
 3. You can enrich JSON file or link parameters to also include a position where the new section should be inserted. For example, instead of always rendering the description on top of your dashboard, you can insert it at the end or after a specific section.
 
@@ -21,8 +26,20 @@ This plugin was created as an example and a starting point for your development.
 5. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build-plugin`. If you have this plugin already built, delete the `dist` folder first.
 6. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
 7. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin object id noted in the console output.
-8. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id> --with-parameters` command. This will open the text editor where you paste this string `"<url-to-file-with-description>"`.
-   1. The plugin expects an array of strings, where every array entry is considered as a paragraph. You can modify the description in the `texts.json` file or provide a URL of such file in the parameters.
+8. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id> --with-parameters` command. This will open the text editor where you paste a link to the JSON file. See example below
+
+Example of the linked JSON configuration file (note, you'll need to strip comments to make it a valid JSON):
+
+```json5
+{
+    "description": "**Markdown-formatted** text with optional live metrics, like this: `metric:my_metric`",
+    // On Bear platform we are using "uri" as Object Reference. On Tiger, it's "identifier".
+    "metrics": {"my_metric":  {"uri": "/gdc/md/qw8s898l8cssqd1tnkw6zv03zznx9ql1/obj/544"}},
+    "dateDataSet": {"uri": "/gdc/md/qw8s898l8cssqd1tnkw6zv03zznx9ql1/obj/431"}
+}
+```
+
+The `dateDataSet` is needed so that live metrics would respect date filters of your dashboard.
 
 ## Quick Introduction into Dashboard Plugins
 
