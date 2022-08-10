@@ -6,7 +6,7 @@ The tooltip texts are defined in the [fixtures](./src/dp_tooltip_plugin/fixtures
 
 ![Tooltip plugin](assets/tooltip_plugin.png)
 
-## How to work with replace-by-tag plugin
+## How to work with tooltip plugin
 
 1.Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
 3. Navigate to `tooltip_plugin`
