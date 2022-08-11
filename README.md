@@ -5,6 +5,7 @@ You can find a number of Dashboard Plugin examples in this repository. Each fold
 * [Gauge chart](./gauge_chart_plugin) - replace a bullet chart with a Gauge chart by tag.
 * [Dashboard description](./dashboard_description_plugin) - add a reach text description to the dashboard.
 * [Tooltip](./tooltip_plugin) - add a tooltip to the insight.
+* [Insight groups](./insight_groups_plugin) - can group more insights.
 
 # FAQ
 

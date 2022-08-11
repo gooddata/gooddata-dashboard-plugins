@@ -5,7 +5,7 @@ naming convention with a Gauge chart component provided by the plugin.
 
 ![Gauge chart plugin](assets/Gauge_chart_plugin.png)
 
-## How to work with replace-by-tag plugin
+## How to work with gauge chart plugin
 
 1.Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
 3. Navigate to `gauge_chart_plugin`

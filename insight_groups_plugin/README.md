@@ -1,21 +1,44 @@
-# GoodData.UI Dashboard Plugin - tooltip plugin
+# GoodData.UI Dashboard Plugin - insight groups plugin
 
-This is a simple plugin that adds a tooltip to KPI and Insight widgets on your dashboard.
+The plugin is grouping multiple widgets into one group. The current selected widget can be selected with the new dropdown bubble in the widget header.
 
-The tooltip texts are defined in the [fixtures](./src/dp_tooltip_plugin/fixtures/fixtures.ts) file.
+![Insight groups plugin](assets/insight_groups_plugin.png)
 
-![Tooltip plugin](assets/tooltip_plugin.png)
-
-## How to work with tooltip plugin
+## How to work with insight groups plugin
 
 1.Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
-3. Navigate to `tooltip_plugin`
+3. Navigate to `insight_groups_plugin`
 4. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#Plugin development guide) section.
 5. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
 6. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build-plugin`. If you have this plugin already built, delete the `dist` folder first.
 7. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
 8. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin object id noted in the console output.
 9. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id>` command.
+
+### Configuration
+
+When the plugin is liked to a dashboard, the "parameters" property should include plugin configuration JSON in the following format (note, you'll need to strip comments to make it a valid JSON):
+
+```json5
+{
+    //root key is group name, can be random, is not visible anywhere
+    "groupName1": [
+        //list of all insights identifiers in group
+        "insightIdentifier1",
+        "insightIdentifier2"
+    ],
+    "groupName2": [
+        "insightIdentifier3",
+        "insightIdentifier4",
+        "insightIdentifier5"
+    ]
+}
+```
+
+### Implementation details
+The current plugin API does not allow hiding of widgets and layout modifications in real time, which would be needed for clean implementation.
+
+To be able to hide layout widgets, the low level browser API is used. See [`setParentColumnVisibility` in insight_groups_plugin/src/dp_insight_groups/GroupedWidgetHeader/nativeDom.ts](src/dp_insight_groups/GroupedWidgetHeader/nativeDom.ts) for more detail.
 
 ## Quick Introduction into Dashboard Plugins
 
@@ -63,10 +86,10 @@ Building a new plugin is easy. Before you start, ensure that your `.env` and `.e
 
     Note: you can use `PORT` env variable to specify different port number.
 
-2.  Develop your plugin code in `src/dp_tooltip_plugin`
+2.  Develop your plugin code in `src/dp_insight_groups`
 
-    The `src/dp_tooltip_plugin/Plugin.tsx` is the main plugin file where you have to register all
-    your custom content. However, you can create as many new files as you want under the `src/dp_tooltip_plugin`
+    The `src/dp_insight_groups/Plugin.tsx` is the main plugin file where you have to register all
+    your custom content. However, you can create as many new files as you want under the `src/dp_insight_groups`
     directory. Just make sure to never place your custom code outside of this directory.
 
     Note: we recommend to write your plugin in TypeScript and to use a modern IDE. This way you can conveniently
@@ -99,7 +122,7 @@ Building a new plugin is easy. Before you start, ensure that your `.env` and `.e
     the tool among the devDependencies together with convenience script to add plugin to either workspace specified
     in your `.env` file (default) or another workspace that you specify on the command line.
 
-    Run the `npm run add-plugin -- "https://your.hosting/pluginDirOfYourChoice/dp_tooltip_plugin.js"` to
+    Run the `npm run add-plugin -- "https://your.hosting/pluginDirOfYourChoice/dp_insight_groups.js"` to
     create a new dashboard plugin object in the workspace specified in the `.env` file. The created dashboard object
     point to the URL of the built plugin.
 
@@ -114,7 +137,7 @@ Building a new plugin is easy. Before you start, ensure that your `.env` and `.e
     Now that you have created a plugin object in your workspace, you can link it with one or more dashboards. The
     `link-plugin` script in package.json is a shortcut to link plugin with dashboard specified in your `.env` file.
 
-    If your plugin supports parameterization (see [src/dp_tooltip_plugin](./src/dp_tooltip_plugin/Plugin.tsx)) and
+    If your plugin supports parameterization (see [src/dp_insight_groups](./src/dp_insight_groups/Plugin.tsx)) and
     you want to specify parameters for the link between dashboard the plugin, you can run `npm run link-plugin -- <plugin-object-id> --with-parameters`
     and the tool will open an editor for you to enter the parameters.
 

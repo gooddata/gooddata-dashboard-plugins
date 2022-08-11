@@ -1,0 +1,9 @@
+.plugin-insight-groups-header-list {
+    line-height: 14px;
+}
+.plugin-insight-groups-header-list svg {
+    vertical-align: middle;
+}
+.plugin-insight-groups-header-list-item.clickable {
+    cursor: pointer;
+}
