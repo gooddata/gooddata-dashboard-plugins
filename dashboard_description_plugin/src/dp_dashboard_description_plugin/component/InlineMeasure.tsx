@@ -1,11 +1,16 @@
 // (C) 2022 GoodData Corporation
 import React from "react";
-import {ICustomWidget, useCustomWidgetExecutionDataView} from "@gooddata/sdk-ui-dashboard";
-import {ObjRef, newMeasure} from "@gooddata/sdk-model";
+import { ICustomWidget, useCustomWidgetExecutionDataView } from "@gooddata/sdk-ui-dashboard";
+import { newMeasure, ObjRef } from "@gooddata/sdk-model";
+import { colors2Object, numberFormat } from "@gooddata/numberjs";
+import { isNoDataSdkError } from "@gooddata/sdk-ui";
 
-export const InlineMeasure: React.FC<{ metricRef: ObjRef, widget: ICustomWidget }> = ({metricRef, widget}) => {
+export const InlineMeasure: React.FC<{ metricRef: ObjRef; widget: ICustomWidget }> = ({
+    metricRef,
+    widget,
+}) => {
     const measure = newMeasure(metricRef);
-    const {error, result, status} = useCustomWidgetExecutionDataView({
+    const { error, result, status } = useCustomWidgetExecutionDataView({
         widget,
         execution: {
             seriesBy: [measure],
@@ -17,10 +22,20 @@ export const InlineMeasure: React.FC<{ metricRef: ObjRef, widget: ICustomWidget 
     }
 
     if (status === "error") {
-        return <span className="error" title={error?.message}>??</span>;
+        return (
+            <span className="error" title={error?.message}>
+                {isNoDataSdkError(error) ? "–" : "??"}
+            </span>
+        );
     }
 
-    const formattedValue = result?.data().series().firstForMeasure(measure).dataPoints()[0].formattedValue();
+    const valueDataPoint = result?.data().series().firstForMeasure(measure).dataPoints()[0];
 
-    return <span>{formattedValue}</span>;
+    const format =
+        result?.meta().measureDescriptor(measure.measure.localIdentifier)?.measureHeaderItem.format ?? "";
+    const { color } = colors2Object(numberFormat(valueDataPoint?.rawValue ?? "", format));
+
+    const formattedValue = valueDataPoint?.formattedValue();
+
+    return <span style={{ color }}>{formattedValue}</span>;
 };

@@ -1,7 +1,43 @@
 {
-  "description": "*Your total sales change by the period is* **`metric:total_sales_change`**\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. __Mauris vitae venenatis nunc__. Aliquam erat volutpat. Pellentesque ac venenatis neque, a finibus metus. Sed lectus dolor, scelerisque at varius vitae, tincidunt vitae nibh. Proin ullamcorper rutrum nibh id rhoncus. Fusce pharetra est sapien, vel volutpat purus varius nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tristique sollicitudin laoreet. Cras ut semper quam. Vestibulum vel tortor sed ex pellentesque faucibus.\n\nPraesent luctus est sed nulla vehicula, in viverra est vehicula. Suspendisse potenti. Maecenas hendrerit, metus non dictum congue, eros ipsum pharetra elit, et feugiat dui augue non odio. Integer in convallis metus. Nulla id sodales ipsum. Aenean leo sapien, tincidunt non ornare eget, ornare at nibh. Sed consequat, ipsum quis congue egestas, eros dui condimentum turpis, id aliquam arcu nisi a urna. Nulla ac arcu in nunc dapibus maximus. Aliquam a arcu condimentum ex aliquet fringilla vitae quis neque. Praesent vulputate, odio quis scelerisque commodo, magna ipsum commodo ligula, eu feugiat nulla libero a ante. Curabitur non magna sit amet tellus scelerisque venenatis. Phasellus justo neque, volutpat suscipit maximus in, pulvinar nec purus.",
-  "metrics": {
-    "total_sales_change": {"uri":"/gdc/md/qw8s898l8cssqd1tnkw6zv03zznx9ql1/obj/587"}
-  },
-  "dateDataSet": {"uri": "/gdc/md/qw8s898l8cssqd1tnkw6zv03zznx9ql1/obj/431"}
+    "liveMetrics": {
+        "sectionIndex": 0,
+        "sectionTitle": "Description sample: Live metrics sample",
+        "description": "*Total Sales are* **`metric:total_sales`**, while the *Average Sale Amount* is: **`metric:average_sale_amount`**. The live metrics can be referrenced both using its uri or identifier. The metric will also be formatted/colored when it has a format defined.",
+        "metrics": {
+            "total_sales": {
+                "uri": "/gdc/md/snat5dlenyr7zyg7id179ijx8uw4xeuw/obj/483"
+            },
+            "average_sale_amount": {
+                "identifier": "acx78ipFtvEG"
+            }
+        },
+        "dateDataSet": {
+            "identifier": "date.dataset.dt"
+        }
+    },
+    "imageAndLink": {
+        "sectionIndex": 1,
+        "wrap": false,
+        "sectionTitle": "Description sample: Image & Link example",
+        "description": "![GD Logo](https://www.gooddata.com/img/generic/logo-gd-b.svg)\n\nTry out this Markdown link to [GoodData](https://www.gooddata.com \"Go to GoodData website\").\n\n---\n\n**How to achieve it with markdown?**\n\n```\n![GD Logo](https://www.gooddata.com/img/generic/logo-gd-b.svg)\n\nTry out this Markdown link to [GoodData](https://www.gooddata.com \"Go to GoodData website\").\n```\n\nFind out more at [MarkdownGuide.org](https://www.markdownguide.org/basic-syntax/)"
+    },
+    "businessIpsum": {
+        "sectionIndex": 3,
+        "wrap": false,
+        "sectionTitle": "Description sample: Full width description without wrapping",
+        "description": "Disruptive holy grail assets non-disclosure agreement customer return on investment infrastructure venture long tail supply chain prototype. Product management stock first mover advantage graphical user interface long tail infrastructure vesting period research & development iteration. Focus prototype churn rate market non-disclosure agreement. Innovator A/B testing research & development infrastructure partner network beta graphical user interface. Release partner network long tail research & development partnership strategy bootstrapping burn rate. Network effects holy grail virality user experience focus A/B testing startup. Series A financing assets investor funding low hanging fruit first mover advantage pivot burn rate partnership monetization business-to-consumer freemium. First mover advantage venture infographic termsheet. Supply chain seed money iPhone pitch social media scrum project interaction design graphical user interface virality prototype strategy research & development. Hackathon user experience infrastructure first mover advantage market pivot marketing release return on investment ecosystem startup venture."
+    },
+    "noTitle": {
+        "sectionIndex": 4,
+        "wrap": false,
+        "description": "#### Description sample: This description has no section title.* Why? Because it can."
+    },
+    "loremIpsum": {
+        "sectionIndex": 7,
+        "description": "*Lorem ipsum dolor sit amet, consectetur adipiscing elit.* __Mauris vitae venenatis nunc__. Aliquam erat volutpat. Pellentesque ac venenatis neque, a finibus metus. Sed lectus dolor, scelerisque at varius vitae, tincidunt vitae nibh. Proin ullamcorper rutrum nibh id rhoncus. Fusce pharetra est sapien, vel volutpat purus varius nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tristique sollicitudin laoreet. Cras ut semper quam. Vestibulum vel tortor sed ex pellentesque faucibus.\n\nPraesent luctus est sed nulla vehicula, in viverra est vehicula. Suspendisse potenti. Maecenas hendrerit, metus non dictum congue, eros ipsum pharetra elit, et feugiat dui augue non odio. Integer in convallis metus. Nulla id sodales ipsum. Aenean leo sapien, tincidunt non ornare eget, ornare at nibh. Sed consequat, ipsum quis congue egestas, eros dui condimentum turpis, id aliquam arcu nisi a urna. Nulla ac arcu in nunc dapibus maximus. Aliquam a arcu condimentum ex aliquet fringilla vitae quis neque. Praesent vulputate, odio quis scelerisque commodo, magna ipsum commodo ligula, eu feugiat nulla libero a ante. Curabitur non magna sit amet tellus scelerisque venenatis. Phasellus justo neque, volutpat suscipit maximus in, pulvinar nec purus.",
+        "sectionTitle": "Description sample: A long description with half width",
+        "grid": {
+            "width": 6
+        }
+    }
 }

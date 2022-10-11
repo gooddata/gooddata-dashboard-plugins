@@ -16,6 +16,7 @@ const { MODULE_FEDERATION_NAME } = require("./src/metadata.json");
 
 const PORT = 3001;
 const DEFAULT_BACKEND_URL = "https://live-examples-proxy.herokuapp.com";
+const proxyPath = process.env.BACKEND_TYPE === "bear" ? "/gdc" : "/api"; // use tiger api path by default
 
 function generateGooddataSharePackagesEntries(options = { allowPrereleaseVersions: false }) {
     const { allowPrereleaseVersions } = options;
@@ -39,7 +40,7 @@ module.exports = (_env, argv) => {
     const protocol = new URL(effectiveBackendUrl).protocol;
 
     const proxy = {
-        "/api": {
+        [proxyPath]: {
             changeOrigin: true,
             cookieDomainRewrite: "127.0.0.1",
             secure: false,
