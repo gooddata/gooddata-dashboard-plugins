@@ -3,16 +3,33 @@ import {
     DashboardContext,
     DashboardPluginV1,
     IDashboardCustomizer,
-    newDashboardSection,
-    newDashboardItem,
     newCustomWidget,
+    newDashboardItem,
+    newDashboardSection,
 } from "@gooddata/sdk-ui-dashboard";
-import {ObjRef} from '@gooddata/sdk-model';
+import JSON5 from "json5";
 
 import entryPoint from "../dp_dashboard_description_plugin_entry";
 
-import { IWidgetExtras, KdDescription } from "./component/KdDescription";
-import invariant from 'ts-invariant';
+import { KdDescription } from "./component/KdDescription";
+import invariant from "ts-invariant";
+import {
+    DescriptionPluginParameters,
+    DescriptionWidgetExtras,
+    IDashboardDescriptions,
+    TextsWithPositions,
+} from "./component/interface";
+import { DESCRIPTION_WIDGET_TYPE, descriptionDefaults } from "./component/config";
+
+/**
+ * Parameters for local testing used in:
+ * @link{PluginLoader}
+ */
+
+export const localParams = `{
+         url: "./texts.json",
+         texts: {  liveMetrics: 0, imageAndLink: 2, loremIpsum: 3 },
+     }`;
 
 export class Plugin extends DashboardPluginV1 {
     public readonly author = entryPoint.author;
@@ -20,49 +37,91 @@ export class Plugin extends DashboardPluginV1 {
     public readonly version = entryPoint.version;
     public readonly minEngineVersion = entryPoint.minEngineVersion;
     public readonly maxEngineVersion = entryPoint.maxEngineVersion;
-    private description: string = "";
-    private dateDataSet?: ObjRef;
-    private metrics: {[name: string]: ObjRef} = {};
 
-    async onPluginLoaded(_context: any, params: string) {
-        const request = await fetch(params ?? './texts.json');
-        const json = await request.json();
+    private descriptions: IDashboardDescriptions = {};
+    private allDescriptionIds: string[] = [];
+    private visibleDescriptionIds: string[] = [];
+    private customTextPositions: TextsWithPositions | undefined;
 
-        invariant(json.description, 'Description text is a mandatory configuration field.');
+    async onPluginLoaded(_context: DashboardContext, parameters: string) {
+        let parametersParsed: DescriptionPluginParameters;
 
-        this.dateDataSet = json.dateDataSet;
-        this.description = json.description;
-        this.metrics = json.metrics ?? {};
+        try {
+            parametersParsed = JSON5.parse(parameters);
+
+            invariant(
+                typeof parametersParsed === "object",
+                `"Invalid type of plugin parameter: ${typeof parametersParsed}`,
+            );
+
+            invariant(!!parametersParsed.url, "URL of JSON file with texts must be defined.");
+        } catch (e) {
+            console.error("### Parsing parameters failed", e.message);
+            console.error("### Parameters", parameters);
+
+            return;
+        }
+
+        const request = await fetch(parametersParsed.url, { cache: "no-cache" });
+        this.descriptions = await request.json();
+        this.allDescriptionIds = Object.keys(this.descriptions);
+
+        this.customTextPositions = parametersParsed.texts;
+
+        this.visibleDescriptionIds = parametersParsed.texts
+            ? // filter valid IDs from params, or take all descriptions if no IDs in params
+              Object.keys(parametersParsed.texts).filter((textId) => this.allDescriptionIds.includes(textId))
+            : this.allDescriptionIds;
+
+        // validate all description items have description text
+        this.allDescriptionIds.forEach((descId) => {
+            invariant(
+                this.descriptions[descId].description,
+                `Description text is a mandatory, but missing for item "${descId}"`,
+            );
+        });
     }
 
     public register(_ctx: DashboardContext, customize: IDashboardCustomizer): void {
-        customize.customWidgets().addCustomWidget("kdDescription", KdDescription);
-        customize.layout().customizeFluidLayout((_layout, customizer) => {
-            customizer.addSection(
-                0,
-                newDashboardSection(
-                    "Dashboard description",
-                    newDashboardItem(
-                        /**
-                         * Creates new custom widget component with extras defined
-                         * in the {@link KdDescription}'s {@link IWidgetExtras}.
-                         */
-                        newCustomWidget<IWidgetExtras>("kdDescription1", "kdDescription", {
-                            description: this.description,
-                            metrics: this.metrics,
-                            dateDataSet: this.dateDataSet,
-                        }),
-                        {
-                            xl: {
-                                // all 12 columns of the grid will be 'allocated' for this this new item
-                                gridWidth: 12,
-                                // minimum height since the custom widget now has just some one-liner text
-                                gridHeight: 1,
+        customize.customWidgets().addCustomWidget(DESCRIPTION_WIDGET_TYPE, KdDescription);
+
+        this.visibleDescriptionIds.forEach((descId) => {
+            const {
+                sectionIndex,
+                sectionTitle,
+                description,
+                metrics,
+                dateDataSet,
+                grid = {},
+                wrap = descriptionDefaults.wrap,
+            } = this.descriptions[descId];
+
+            // check if custom index provided in params, then look in text definition or use the default index of 0.
+            const descriptionSectionIndex =
+                this.customTextPositions?.[descId] ?? sectionIndex ?? descriptionDefaults.sectionIndex;
+
+            customize.layout().customizeFluidLayout((_layout, customizer) => {
+                customizer.addSection(
+                    descriptionSectionIndex,
+                    newDashboardSection(
+                        sectionTitle,
+                        newDashboardItem(
+                            newCustomWidget<DescriptionWidgetExtras>(descId, DESCRIPTION_WIDGET_TYPE, {
+                                description,
+                                metrics,
+                                dateDataSet,
+                                wrap,
+                            }),
+                            {
+                                xl: {
+                                    gridWidth: grid.width ?? descriptionDefaults.grid.width!,
+                                    gridHeight: grid.height ?? descriptionDefaults.grid.height,
+                                },
                             },
-                        },
+                        ),
                     ),
-                ),
-            );
+                );
+            });
         });
     }
 }

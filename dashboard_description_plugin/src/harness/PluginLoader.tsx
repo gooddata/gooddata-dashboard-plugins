@@ -5,8 +5,9 @@ import { DashboardStub, IEmbeddedPlugin } from "@gooddata/sdk-ui-loaders";
 import PluginFactory from "../dp_dashboard_description_plugin";
 import { DEFAULT_DASHBOARD_ID } from "./constants";
 import { DashboardConfig } from "@gooddata/sdk-ui-dashboard";
+import { localParams } from "../dp_dashboard_description_plugin/Plugin";
 
-const Plugins: IEmbeddedPlugin[] = [{ factory: PluginFactory }];
+const Plugins: IEmbeddedPlugin[] = [{ factory: PluginFactory, parameters: localParams }];
 const Config: DashboardConfig = {
     mapboxToken: process.env.MAPBOX_TOKEN,
 };

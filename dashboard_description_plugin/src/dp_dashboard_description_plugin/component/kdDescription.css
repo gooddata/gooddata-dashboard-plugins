@@ -1,15 +1,19 @@
 /* (C) 2022 GoodData Corporation */
-.wrap {
-    padding: 0 1em;
-    column-count: 2;
+.description-wrapper {
+    padding: 3px 5px;
 }
 
-.wrap > p {
+.description-wrapper > p {
     margin-top: 0;
     margin-bottom: 1em;
+}
+
+.wrap {
+    column-count: 2;
 }
 
 .error {
     padding: 0 1em;
     color: red;
+    cursor: help;
 }
