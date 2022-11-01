@@ -4,7 +4,7 @@
     "description": "",
     "author": "",
     "private": true,
-    "license": "MIT",
+    "license": "SEE LICENSE IN ../LICENSE",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
     "sideEffects": [
