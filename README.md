@@ -6,7 +6,7 @@ You can find a number of Dashboard Plugin examples in this repository. Each fold
 * [Dashboard description](./dashboard_description_plugin) - add a reach text description to the dashboard.
 * [Tooltip](./tooltip_plugin) - add a tooltip to the insight.
 * [Insight groups](./insight_groups_plugin) - can group more insights.
-* [Single select attribute filter](./single_select_plugin) - render specified attribute filters as a single select attribute filters
+* [Single select attribute filter](./single_select_plugin) - render specified attribute filters as a single select attribute filters.
 
 # FAQ
 
