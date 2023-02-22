@@ -8,13 +8,14 @@ This plugin renders attribute filters with the configured display forms as a sin
 
 1. Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
 3. Navigate to `single_select_plugin`
-4. Specify display form identifiers that should be rendered as a single select attribute filter in the [`src/dp_single_select_plugin/config.ts`](src/dp_single_select_plugin/config.ts) file.
-5. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#Plugin development guide) section.
-6. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
-7. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build-plugin`. If you have this plugin already built, delete the `dist` folder first.
-8. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
-9. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin object id noted in the console output.
-10. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id> --with-parameters` command.
+4. Setup your dashboard and place there one or more Attribute filter/filters you want to override by single select filter, define display form ids of this filters in next step  
+5. Specify display form identifiers that should be rendered as a single select attribute filter in the [`src/dp_single_select_plugin/config.ts`](src/dp_single_select_plugin/config.ts) file.
+6. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#Plugin development guide) section.
+7. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
+8. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build-plugin`. If you have this plugin already built, delete the `dist` folder first.
+9. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
+10. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin object id noted in the console output.
+11. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id> --with-parameters` command.
 
 ## What single select plugin affects and how
 
