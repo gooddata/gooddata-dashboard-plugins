@@ -7,7 +7,8 @@ You can find a number of Dashboard Plugin examples in this repository. Each fold
 * [Tooltip](./tooltip_plugin) - add a tooltip to the insight.
 * [Insight groups](./insight_groups_plugin) - can group more insights.
 * [Single select attribute filter](./single_select_plugin) - render specified attribute filters as a single select attribute filters.
-* [Radial bar chart](./radial_bar_chart_plugin) - replace column charts with radial bar charts.
+* [Radial bar chart](./radial_bar_chart_plugin) - replace column charts with [Recharts](https://recharts.org/) radial bar charts.
+* [Sankey dependency wheel](./sankey_dependency_wheel_plugin) - replace tables with one metric and two attributes with [Highcharts](https://www.highcharts.com/) sankey dependency wheels.
 
 # FAQ
 
