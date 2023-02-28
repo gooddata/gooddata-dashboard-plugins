@@ -1,0 +1,4 @@
+.env.secrets
+.s3cfg
+dist
+node_modules

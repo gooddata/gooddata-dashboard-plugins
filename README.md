@@ -7,6 +7,7 @@ You can find a number of Dashboard Plugin examples in this repository. Each fold
 * [Tooltip](./tooltip_plugin) - add a tooltip to the insight.
 * [Insight groups](./insight_groups_plugin) - can group more insights.
 * [Single select attribute filter](./single_select_plugin) - render specified attribute filters as a single select attribute filters.
+* [Radial bar chart](./radial_bar_chart_plugin) - replace column charts with radial bar charts.
 
 # FAQ
 
@@ -17,4 +18,4 @@ plugins are capable of in general. You should be able to use these plugins in pr
 make sure to read the plugin's README.md file. You might want to run it by your security team to ensure the
 plugin you've chosen adhere to your company's security requirements.
 
-Please see the [LICENSE](./LICENSE) for the license of the code in this repository and [NOTICE](./NOTICE) for the licenses and attributions of the dependencies. 
+Please see the [LICENSE](./LICENSE) for the license of the code in this repository and [NOTICE](./NOTICE) for the licenses and attributions of the dependencies.
