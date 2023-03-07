@@ -6,18 +6,21 @@ The plugin is grouping multiple widgets into one group. The current selected wid
 
 ## How to work with insight groups plugin
 
-1.Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
-3. Navigate to `insight_groups_plugin`
-4. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#Plugin development guide) section.
-5. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
-6. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build-plugin`. If you have this plugin already built, delete the `dist` folder first.
-7. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
-8. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin object id noted in the console output.
-9. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id>` command.
+1. Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples).
+1. Navigate to `insight_groups_plugin`.
+1. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#plugin-development-guide) section.
+1. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
+1. Install the dependencies (`npm install` or `yarn install`)
+1. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build-plugin`. If you have this plugin already built, delete the `dist` folder first.
+1. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
+1. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin object id noted in the console output.
+1. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id>` command.
+
+> Optional: There's an extra `sync-plugin` command in the `src/package.json` that uploads the plugin to an S3 bucket. It requires [s3cmd](https://s3tools.org/s3cmd) CLI and `src/.s3cmd` with bucket credentials config to work.
 
 ### Configuration
 
-When the plugin is liked to a dashboard, the "parameters" property should include plugin configuration JSON in the following format (note, you'll need to strip comments to make it a valid JSON):
+See `src/harness/PluginLoader.tsx` to configure the plugin during the development process. The plugin configuration is defined via stringified JSON (`JSON.stringify()`) in the following format (note, you'll need to strip comments to make it a valid JSON):
 
 ```json5
 {
@@ -34,6 +37,12 @@ When the plugin is liked to a dashboard, the "parameters" property should includ
     ]
 }
 ```
+
+When the plugin is linked to a dashboard (`analyticalDashboard` metadata object) on the GoodData Platform, the `analyticalDashboard.plugins[].parameters` property should include the plugin configuration.
+
+When the plugin is linked to a dashboard (`analyticalDashboard` metadata object) on the GoodData Cloud or GoodData.CN, the `analyticalDashboard.data.attributes.content.plugins[].plugin.parameters` property should include the plugin configuration.
+
+See "plugin parameterization" and `npm run link-plugin -- <plugin-object-id> --with-parameters` below for more information.
 
 ### Implementation details
 The current plugin API does not allow hiding of widgets and layout modifications in real time, which would be needed for clean implementation.
