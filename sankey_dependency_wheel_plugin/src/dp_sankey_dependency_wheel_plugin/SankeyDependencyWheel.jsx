@@ -1,5 +1,9 @@
-import React from "react";
-import { useInsightWidgetDataView } from "@gooddata/sdk-ui-dashboard";
+import React, { useMemo } from "react";
+import {
+    useInsightWidgetDataView,
+    useDashboardSelector,
+    selectColorPalette
+} from "@gooddata/sdk-ui-dashboard";
 import Highcharts from "highcharts";
 import HighchartSankey from "highcharts/modules/sankey";
 import HighchartsWheel from "highcharts/modules/dependency-wheel";
@@ -10,14 +14,16 @@ HighchartsWheel(Highcharts);
 
 import { WIDGET_TITLE_SUFFIX } from "./Plugin";
 
-const indigoColors = ['#14B2E2', '#06C08E', '#E54D42', '#F18600', '#AB56A3', '#F4D522', '#93A1AD', '#6BBFD8', '#B589B1', '#EE8780', '#F1AB54', '#85D1BC'];
-
 const SankeyDependencyWheel = (props) => {
     const {
         LoadingComponent,
         ErrorComponent,
         widget,
     } = props;
+
+    const colorPalette = useDashboardSelector(selectColorPalette);
+    const colors = useMemo(() => colorPalette.map(color =>
+        `rgb(${color.fill.r}, ${color.fill.g}, ${color.fill.b})`), [colorPalette]);
 
     widget.title = widget.title.replace(WIDGET_TITLE_SUFFIX, '').trim();
 
@@ -55,7 +61,7 @@ const SankeyDependencyWheel = (props) => {
                         },
                         title: null,
                         series: [{ data }],
-                        colors: indigoColors
+                        colors
                     }}
                 />
             </div>
