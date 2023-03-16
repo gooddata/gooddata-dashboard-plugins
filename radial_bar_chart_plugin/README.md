@@ -8,6 +8,7 @@ This plugin replaces column charts with a widget title suffix `$WIDGET_TITLE_SUF
 1. Navigate to `radial_bar_chart_plugin`
 1. Provide backend, workspace and dashboard in `.env`
 1. Rename `.env.secrets.template` to `.env.secrets` and provide your preferred way of authentication
+1. Install the dependencies (`npm install` or `yarn install`)
 1. See instructions below how to build, deploy, and use this plugin
 
 > Optional: There's an extra `sync-plugin` command in the `src/package.json` that uploads the plugin to an S3 bucket. It requires [s3cmd](https://s3tools.org/s3cmd) CLI and `src/.s3cmd` with bucket credentials config to work.

@@ -1,10 +1,17 @@
-import React from "react";
-import { RadialBarChart as RBC, RadialBar, Legend, ResponsiveContainer } from "recharts";
-import { useInsightWidgetDataView } from "@gooddata/sdk-ui-dashboard";
+import React, { useMemo } from "react";
+import {
+    RadialBarChart as RBC,
+    RadialBar,
+    Legend,
+    ResponsiveContainer
+} from "recharts";
+import {
+    useInsightWidgetDataView,
+    useDashboardSelector,
+    selectColorPalette
+} from "@gooddata/sdk-ui-dashboard";
 
 import { WIDGET_TITLE_SUFFIX } from "./Plugin";
-
-const indigoColors = ['#14B2E2', '#06C08E', '#E54D42', '#F18600', '#AB56A3', '#F4D522', '#93A1AD', '#6BBFD8', '#B589B1', '#EE8780', '#F1AB54', '#85D1BC'];
 
 const style = {
     top: '50%',
@@ -19,6 +26,10 @@ const RadialBarChart = (props) => {
         ErrorComponent,
         widget,
     } = props;
+
+    const colorPalette = useDashboardSelector(selectColorPalette);
+    const colors = useMemo(() => colorPalette.map(color =>
+        `rgb(${color.fill.r}, ${color.fill.g}, ${color.fill.b})`), [colorPalette]);
 
     widget.title = widget.title.replace(WIDGET_TITLE_SUFFIX, '').trim();
 
@@ -42,7 +53,7 @@ const RadialBarChart = (props) => {
             .map((slice, i) => ({
                 name: slice.sliceTitles()[0],
                 value: parseFloat(slice.rawData()[0]),
-                fill: indigoColors[i % indigoColors.length]
+                fill: colors[i % colors.length]
             }));
 
         return (
