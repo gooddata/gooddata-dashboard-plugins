@@ -7,7 +7,6 @@
 }
 
 .plugin-insight-groups-header-title-content {
-    color: var(--gd-dashboards-content-widget-title-color);
     z-index: 1;
     display: flex;
     justify-content: center;
@@ -16,41 +15,36 @@
     background: white;
     font-size: 17px;
 }
-.plugin-insight-groups-header-title.opened .plugin-insight-groups-header-title-content {
-    color: var(--gd-palette-primary-base);
-}
 .plugin-insight-groups-header-title-content .plugin-insight-groups-header-title-content-name {
     cursor: pointer;
 }
 
 .plugin-insight-groups-group-icon {
     vertical-align: middle;
-    stroke: var(--gd-modal-outsideBackgroundColor);
 }
 .plugin-insight-groups-header-title:hover .plugin-insight-groups-group-icon {
+    /* Does not work on Tiger/Panther */
+    /* Alternative solution could be https://stackabuse.com/how-to-style-hover-in-react/ */
+    /* CSS styling of Dashboard Plugins may be improved in GoodData.UI v9+ */
     stroke: var(--gd-dashboards-content-widget-title-color);
-}
-.plugin-insight-groups-header-title.opened .plugin-insight-groups-group-icon {
-    stroke: var(--gd-palette-primary-base);
 }
 
 .plugin-insight-groups-chevron-icon {
     vertical-align: middle;
-    fill: var(--gd-modal-outsideBackgroundColor);
 }
 .plugin-insight-groups-header-title:hover .plugin-insight-groups-chevron-icon {
+    /* Does not work on Tiger/Panther */
+    /* Alternative solution could be https://stackabuse.com/how-to-style-hover-in-react/ */
+    /* CSS styling of Dashboard Plugins may be improved in GoodData.UI v9+ */
     fill: var(--gd-dashboards-content-widget-title-color);
 }
 .plugin-insight-groups-header-title.opened .plugin-insight-groups-chevron-icon {
-    fill: var(--gd-palette-primary-base);
     transform: rotate(180deg);
 }
 
 .plugin-insight-groups-circle-icon {
-    fill: var(--gd-modal-borderColor);
     height: 6px;
 }
 .plugin-insight-groups-circle-icon.selected {
-    fill: var(--gd-palette-primary-base);
     height: 8px;
 }

@@ -10,12 +10,14 @@ export interface ICustomHeaderDotsListProps {
     selectedIdentifier: string;
     groupInsightsIdentifiers: string[];
     onGroupInsightSelected: (identifier: string) => void;
+    colors: string[];
 }
 
 export const GroupedWidgetDotsList: React.VFC<ICustomHeaderDotsListProps> = ({
     groupInsightsIdentifiers,
     selectedIdentifier,
     onGroupInsightSelected,
+    colors,
 }) => {
     return (
         <div className="plugin-insight-groups-header-list">
@@ -32,6 +34,7 @@ export const GroupedWidgetDotsList: React.VFC<ICustomHeaderDotsListProps> = ({
                             selected: identifier === selectedIdentifier,
                         })}
                         key={identifier}
+                        color={identifier === selectedIdentifier ? colors[0] : colors[1]}
                     />
                 </span>
             ))}
