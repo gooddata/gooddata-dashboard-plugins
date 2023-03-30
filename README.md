@@ -9,6 +9,7 @@ You can find a number of Dashboard Plugin examples in this repository. Each fold
 * [Single select attribute filter](./single_select_plugin) - render specified attribute filters as a single select attribute filters.
 * [Radial bar chart](./radial_bar_chart_plugin) - replace column charts with [Recharts](https://recharts.org/) radial bar charts.
 * [Sankey dependency wheel](./sankey_dependency_wheel_plugin) - replace tables with one metric and two attributes with [Highcharts](https://www.highcharts.com/) sankey dependency wheels.
+* [Polar area chart](./polar_area_chart_plugin) - replace donut charts with [Chart.js](https://www.chartjs.org/) polar area charts.
 
 # FAQ
 
