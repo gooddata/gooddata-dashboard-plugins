@@ -69,17 +69,6 @@ const PolarAreaChart = (props) => {
                                     size: 12
                                 }
                             }
-                        },
-                        scales: {
-                            r: {
-                                pointLabels: {
-                                    display: true,
-                                    centerPointLabels: true,
-                                    font: {
-                                        size: 12
-                                    }
-                                }
-                            }
                         }
                     }}
                 />

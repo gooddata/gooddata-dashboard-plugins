@@ -1,6 +1,6 @@
 # GoodData.UI Dashboard Plugin - Polar Area Chart
 
-This plugin replaces donut charts with a widget title suffix `$WIDGET_TITLE_SUFFIX` (defined in `Plugin.jsx`) for a custom [Chart.js](https://www.chartjs.org/) [polar area chart](https://www.chartjs.org/docs/latest/samples/other-charts/polar-area-center-labels.html).
+This plugin replaces donut (or pie) charts with a widget title suffix `$WIDGET_TITLE_SUFFIX` (defined in `Plugin.jsx`) for a custom [Chart.js](https://www.chartjs.org/) [polar area chart](https://www.chartjs.org/docs/latest/samples/other-charts/polar-area-center-labels.html).
 
 ## How to make it work
 
