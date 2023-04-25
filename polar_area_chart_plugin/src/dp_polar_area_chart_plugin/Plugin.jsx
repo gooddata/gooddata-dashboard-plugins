@@ -31,9 +31,9 @@ export class Plugin extends DashboardPluginV1 {
 
     register(_ctx, customize, handlers) {
         customize.insightWidgets().withCustomProvider((insight, widget) => {
-            if (
-                insightVisualizationUrl(insight) === "local:donut" &&
-                widgetTitle(widget).match(RE)
+            if ((insightVisualizationUrl(insight) === "local:pie" ||
+                insightVisualizationUrl(insight) === "local:donut")
+                && widgetTitle(widget).match(RE)
             ) {
               return PolarAreaChart;
             }
