@@ -9,7 +9,7 @@ import { DashboardConfig } from "@gooddata/sdk-ui-dashboard";
 const Plugins: IEmbeddedPlugin[] = [
     {
         factory: PluginFactory,
-        //NOTE: Can added custom configuration here to tests grouping
+        // NOTE: Add custom configuration here to test insight grouping
         parameters: JSON.stringify({}),
     },
 ];

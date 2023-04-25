@@ -1,2 +1,5 @@
 .env.secrets
 dist
+.s3cfg
+node_modules
+.env.local

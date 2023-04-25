@@ -1,6 +1,7 @@
 // (C) 2022 GoodData Corporation
 import React, { useState, useRef } from "react";
 import classNames from "classnames";
+import { useTheme } from "@gooddata/sdk-ui-theme-provider";
 
 import GroupIcon from "./icons/GroupIcon";
 import ChevronIcon from "./icons/ChevronIcon";
@@ -30,6 +31,11 @@ export const GroupedWidgetHeader: React.VFC<ICustomHeaderProps> = ({
     const id = useId();
     const ref = useRef<HTMLDivElement | null>(null);
     const [bubbleOpen, setBubbleOpen] = useState(false);
+    const theme = useTheme();
+    const gdPalettePrimaryBase = theme?.palette?.primary?.base || '#14b2e2';
+    const gdModalOutsideBackgroundColor = theme?.modal?.outsideBackgroundColor || '#e5e5e5';
+    const gdModalBorderColor = theme?.modal?.borderColor || '#464e56';
+    const gdDashboardsContentWidgetTitleColor = theme?.dashboards?.content?.widget?.title?.color || '464e56';
 
     setParentColumnVisibility(ref, !hideColumn);
 
@@ -44,15 +50,23 @@ export const GroupedWidgetHeader: React.VFC<ICustomHeaderProps> = ({
                         id={id}
                         className="plugin-insight-groups-header-title-content-name"
                         onClick={() => setBubbleOpen(!bubbleOpen)}
+                        style={{ color: bubbleOpen ? gdPalettePrimaryBase : gdDashboardsContentWidgetTitleColor }}
                     >
-                        <GroupIcon className="plugin-insight-groups-group-icon" />
+                        <GroupIcon
+                            className="plugin-insight-groups-group-icon"
+                            color={bubbleOpen ? gdPalettePrimaryBase : gdModalOutsideBackgroundColor}
+                        />
                         {widgetTitles[selectedIdentifier]}
-                        <ChevronIcon className="plugin-insight-groups-chevron-icon" />
+                        <ChevronIcon
+                            className="plugin-insight-groups-chevron-icon"
+                            color={bubbleOpen ? gdPalettePrimaryBase : gdModalOutsideBackgroundColor}
+                        />
                     </span>
                     <GroupedWidgetDotsList
                         selectedIdentifier={selectedIdentifier}
                         groupInsightsIdentifiers={groupInsightsIdentifiers}
                         onGroupInsightSelected={onGroupInsightSelected}
+                        colors={[gdPalettePrimaryBase || '', gdModalBorderColor || '']}
                     />
                 </div>
             </div>
