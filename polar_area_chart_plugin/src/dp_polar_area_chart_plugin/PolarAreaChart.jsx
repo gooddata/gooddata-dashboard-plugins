@@ -9,6 +9,21 @@ import { PolarArea } from "react-chartjs-2";
 
 import { WIDGET_TITLE_SUFFIX } from "./Plugin";
 
+// const MONTH_NAMES = {
+//     '01': 'Jan',
+//     '02': 'Feb',
+//     '03': 'Mar',
+//     '04': 'Apr',
+//     '05': 'May',
+//     '06': 'Jun',
+//     '07': 'Jul',
+//     '08': 'Aug',
+//     '09': 'Sep',
+//     '10': 'Oct',
+//     '11': 'Nov',
+//     '12': 'Dec'
+// };
+
 const PolarAreaChart = (props) => {
     const {
         LoadingComponent,
@@ -43,6 +58,9 @@ const PolarAreaChart = (props) => {
                 fill: colorPalette[i % colorPalette.length]
             }));
 
+        // Couldn't figure out how to get month names so I hardcoded them 🤷‍♂️
+        // https://gooddata.slack.com/archives/C6PDGGNRH/p1682387905940879
+        // const labels = results.reduce((acc, r) => acc.concat(MONTH_NAMES[r.name]), []);
         const labels = results.reduce((acc, r) => acc.concat(r.name), []);
         const values = results.reduce((acc, r) => acc.concat(r.value), []);
         const colors = results.reduce((acc, r) => acc.concat(r.fill), []);
@@ -67,6 +85,13 @@ const PolarAreaChart = (props) => {
                                 position: 'right',
                                 font: {
                                     size: 12
+                                }
+                            }
+                        },
+                        scales: {
+                            r: {
+                                ticks: {
+                                    display: false
                                 }
                             }
                         }
