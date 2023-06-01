@@ -1,9 +1,9 @@
 {
   "name": "gauge_chart_plugin",
   "version": "1.0.0",
-  "description": "",
-  "author": "",
-  "private": true,
+  "description": "Simple plugin that replace Bullet chart for Gauge chart",
+  "author": "GoodData Corporation",
+  "private": false,
   "license": "SEE LICENSE IN ../LICENSE",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

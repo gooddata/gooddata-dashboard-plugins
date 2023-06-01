@@ -1,9 +1,9 @@
 {
     "name": "single-select-plugin",
     "version": "1.0.0",
-    "description": "",
-    "author": "",
-    "private": true,
+    "description": "Plugin that enables adding Single Select to filter bar",
+    "author": "GoodData Corporation",
+    "private": false,
     "license": "SEE LICENSE IN ../LICENSE",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",

@@ -1,10 +1,10 @@
 {
     "name": "radial_bar_chart_plugin",
     "version": "1.1.0",
-    "description": "",
-    "author": "",
-    "private": true,
-    "license": "MIT",
+    "description": "Plugin that render Radial Bar chart instead of Column chart",
+    "author": "GoodData Corporation",
+    "private": false,
+    "license": "SEE LICENSE IN ../LICENSE",
     "main": "dist/index.js",
     "sideEffects": [
         "*.css",

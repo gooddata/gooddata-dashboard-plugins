@@ -1,9 +1,9 @@
 {
   "name": "tooltip_plugin",
   "version": "1.0.0",
-  "description": "",
-  "author": "",
-  "private": true,
+  "description": "Plugin that allows adding tooltips to insights, widgets and metrics",
+  "author": "GoodData Corporation",
+  "private": false,
   "license": "SEE LICENSE IN ../LICENSE",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
