@@ -2,7 +2,7 @@
     "name": "polar_area_chart_plugin",
     "version": "1.1.0",
     "description": "Simple Plugin that renders Polar Area Chart instead of Pie/Donut charts",
-    "author": "GoodData Corporation",
+    "author": "Opensourced by GoodData - feel free to change",
     "private": false,
     "license": "SEE LICENSE IN ../LICENSE",
     "main": "dist/index.js",
