@@ -2,7 +2,7 @@
     "name": "single-select-plugin",
     "version": "1.0.0",
     "description": "Plugin that enables adding Single Select to filter bar",
-    "author": "Opensourced by GoodData - feel free to change",
+    "author": "Open-sourced by GoodData - feel free to change",
     "private": false,
     "license": "SEE LICENSE IN ../LICENSE",
     "main": "dist/index.js",

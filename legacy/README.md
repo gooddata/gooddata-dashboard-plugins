@@ -1,3 +1,3 @@
 ## Legacy Plugins
 
-In this folder you can find plugins that are not longer useful as they are because the same functionality made it into the GoodData Platform product, but can be still used as starting point for similar plugins.
+In this folder, you can find plugins that may no longer be actively used due to their functionality being incorporated into the GoodData product. However, they can still serve as valuable starting points for creating similar plugins.

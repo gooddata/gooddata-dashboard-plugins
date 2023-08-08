@@ -360,3 +360,8 @@ The plugin artifacts created during the plugin build are not compatible with Int
 GoodData applications do support Safari, however currently it's not possible to run this boilerplate locally
 with GoodData.CN backend running on https protocol, due to the fact how Safari is handling authentication in
 backend redirects.
+
+## License
+
+The Plugin can be utilized under the BSD-3 Clause License. For more details, please refer to the main LICENSE file available at ('../LICENSE')[LICENSE].
+
