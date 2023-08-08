@@ -2,7 +2,7 @@
 
 This plugin replaces donut (or pie) charts with a widget title suffix `$WIDGET_TITLE_SUFFIX` (defined in `Plugin.jsx`) for a custom [Chart.js](https://www.chartjs.org/) [polar area chart](https://www.chartjs.org/docs/latest/samples/other-charts/polar-area-center-labels.html).
 
-## How to make it work
+## How to work with Polar Area Chart Plugin
 
 1. Clone this repository
 1. Navigate to `polar_area_chart_plugin`

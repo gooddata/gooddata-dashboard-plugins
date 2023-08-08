@@ -2,7 +2,7 @@
 
 This plugin replaces column charts with a widget title suffix `$WIDGET_TITLE_SUFFIX` (defined in `Plugin.jsx`) for a custom [Recharts](https://recharts.org/) [radial bar chart](https://recharts.org/en-US/examples/SimpleRadialBarChart).
 
-## How to make it work
+## How to work with Radial Bar Chart Plugin
 
 1. Clone this repository
 1. Navigate to `radial_bar_chart_plugin`

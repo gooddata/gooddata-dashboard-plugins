@@ -2,7 +2,7 @@
 
 This plugin replaces pivot tables with a widget title suffix `$WIDGET_TITLE_SUFFIX` (defined in `Plugin.jsx`) for a custom [Highcharts](https://www.highcharts.com/) [sankey dependency wheel](https://www.highcharts.com/docs/chart-and-series-types/dependency-wheel).
 
-## How to make it work
+## How to work with Sankey Dependency Wheel Plugin
 
 1. Clone this repository
 1. Navigate to `sankey_dependency_wheel_plugin`
