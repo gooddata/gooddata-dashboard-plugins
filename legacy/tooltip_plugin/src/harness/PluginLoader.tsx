@@ -1,4 +1,4 @@
-// (C) 2019-2021 GoodData Corporation
+// (C) 2019-2023 GoodData Corporation
 import React from "react";
 import { idRef } from "@gooddata/sdk-model";
 import { DashboardStub, IEmbeddedPlugin } from "@gooddata/sdk-ui-loaders";

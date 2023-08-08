@@ -1,3 +1,5 @@
+// (C) 2023 GoodData Corporation
+
 /* eslint-disable */
 /* THIS FILE WAS AUTO-GENERATED USING CATALOG EXPORTER; YOU SHOULD NOT EDIT THIS FILE; GENERATE TIME: 2023-02-22T22:39:24.931Z; */
 // @ts-ignore ignore unused imports here if they happen (e.g. when there is no measure in the workspace)

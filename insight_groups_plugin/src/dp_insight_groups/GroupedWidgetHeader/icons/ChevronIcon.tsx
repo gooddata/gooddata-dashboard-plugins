@@ -1,4 +1,4 @@
-// (C) 2022 GoodData Corporation
+// (C) 2022-2023 GoodData Corporation
 import React from "react";
 
 const ChevronIcon: React.VFC<{ className: string, color?: string }> = ({ className, color }) => (

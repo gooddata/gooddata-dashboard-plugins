@@ -1,4 +1,4 @@
-// (C) 2022 GoodData Corporation
+// (C) 2022-2023 GoodData Corporation
 import React from "react";
 import { CustomDashboardWidgetComponent, ICustomWidget } from "@gooddata/sdk-ui-dashboard";
 import invariant from "ts-invariant";

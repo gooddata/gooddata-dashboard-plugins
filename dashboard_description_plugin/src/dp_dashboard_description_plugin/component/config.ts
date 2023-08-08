@@ -1,3 +1,5 @@
+// (C) 2023 GoodData Corporation
+
 import { IDashboardDescription } from "./interface";
 
 export const DESCRIPTION_WIDGET_TYPE = "kdDescription";

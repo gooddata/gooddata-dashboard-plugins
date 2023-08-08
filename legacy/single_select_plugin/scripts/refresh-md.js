@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// (C) 2022 GoodData Corporation
+// (C) 2022-2023 GoodData Corporation
 
 const dotenv = require("dotenv");
 const path = require("path");

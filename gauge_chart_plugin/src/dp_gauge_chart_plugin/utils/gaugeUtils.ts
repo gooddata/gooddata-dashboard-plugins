@@ -1,4 +1,4 @@
-// (C) 2022 GoodData Corporation
+// (C) 2022-2023 GoodData Corporation
 import { DataValue } from "@gooddata/sdk-backend-spi";
 import { DataViewFacade } from "@gooddata/sdk-ui";
 import {

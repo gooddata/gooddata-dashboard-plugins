@@ -1,4 +1,4 @@
-// (C) 2007-2022 GoodData Corporation
+// (C) 2007-2023 GoodData Corporation
 import React, { useCallback } from "react";
 import cx from "classnames";
 import { IAttributeFilterElementsSelectItemProps, useAttributeFilterContext } from "@gooddata/sdk-ui-filters";

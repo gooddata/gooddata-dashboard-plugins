@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// (C) 2022 GoodData Corporation
+// (C) 2022-2023 GoodData Corporation
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const dotenv = require("dotenv");

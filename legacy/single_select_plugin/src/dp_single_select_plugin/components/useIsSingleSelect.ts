@@ -1,4 +1,4 @@
-// (C) 2021-2022 GoodData Corporation
+// (C) 2021-2023 GoodData Corporation
 import { useDashboardSelector, selectAttributeFilterDisplayForms } from "@gooddata/sdk-ui-dashboard";
 import { areObjRefsEqual, IDashboardAttributeFilter } from "@gooddata/sdk-model";
 import { SINGLE_SELECT_DISPLAY_FORM_IDENTIFIERS } from "../config";

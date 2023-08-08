@@ -10,6 +10,10 @@ const { execSync } = require("child_process");
  * It runs the script on every 25 files (batchSize) separately to avoid crashes due to too long command-line arguments.
  */
 
+// Add here plugin folder that has been contributed by Community
+const ignoredFolderCondition =
+    stat.isDirectory() && file !== "node_modules" && file !== "dist";
+
 const allowedExtensions = [".ts", ".js", ".tsx", ".jsx", ".scss"];
 const batchSize = 25;
 
@@ -22,11 +26,7 @@ function getFiles(dir) {
 
         if (stat.isFile() && allowedExtensions.includes(path.extname(file))) {
             files.push(filePath);
-        } else if (
-            stat.isDirectory() &&
-            file !== "node_modules" &&
-            file !== "dist"
-        ) {
+        } else if (ignoredFolderCondition) {
             files.push(...getFiles(filePath));
         }
     });

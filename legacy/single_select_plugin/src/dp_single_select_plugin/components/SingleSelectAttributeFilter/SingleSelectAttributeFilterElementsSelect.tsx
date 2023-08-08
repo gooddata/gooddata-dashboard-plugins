@@ -1,4 +1,4 @@
-// (C) 2007-2022 GoodData Corporation
+// (C) 2007-2023 GoodData Corporation
 import React, { useMemo } from "react";
 import { AttributeFilterElementsSelect, IAttributeFilterElementsSelectProps } from "@gooddata/sdk-ui-filters";
 import { ALL_ITEM } from "./constants";
