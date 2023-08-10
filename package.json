@@ -1,6 +1,6 @@
 {
   "name": "gooddata-dashboard-plugins",
-  "description": "Open-sourced Dashboard Plugins for many different use cases",
+  "description": "Open-sourced Dashboard Plugins for enhancing dashboards usability",
   "version": "1.0.0",
   "author": "GoodData Corporation",
   "scripts": {
