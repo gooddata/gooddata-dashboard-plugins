@@ -1,3 +1,5 @@
+// (C) 2023 GoodData Corporation
+
 import React, { useMemo } from "react";
 import {
     useInsightWidgetDataView,

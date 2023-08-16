@@ -1,0 +1,12 @@
+{
+  "name": "gooddata-dashboard-plugins",
+  "description": "Open-sourced Dashboard Plugins for enhancing dashboards usability",
+  "version": "1.0.0",
+  "author": "GoodData Corporation",
+  "scripts": {
+    "add-gdc-copyright": "node fixGdcCopyrightOnPath.js"
+  },
+  "devDependencies": {
+    "@gooddata/frontend-npm-scripts": "^1.3.0"
+  }
+}

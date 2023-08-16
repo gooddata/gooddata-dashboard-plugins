@@ -1,4 +1,4 @@
-// (C) 2022 GoodData Corporation
+// (C) 2022-2023 GoodData Corporation
 import React, { useState, useRef } from "react";
 import classNames from "classnames";
 import { useTheme } from "@gooddata/sdk-ui-theme-provider";

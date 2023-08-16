@@ -2,7 +2,7 @@
 
 This plugin replaces column charts with a widget title suffix `$WIDGET_TITLE_SUFFIX` (defined in `Plugin.jsx`) for a custom [Recharts](https://recharts.org/) [radial bar chart](https://recharts.org/en-US/examples/SimpleRadialBarChart).
 
-## How to make it work
+## How to work with Radial Bar Chart Plugin
 
 1. Clone this repository
 1. Navigate to `radial_bar_chart_plugin`
@@ -195,3 +195,7 @@ The plugin artifacts created during the plugin build are not compatible with Int
 ### How about Safari?
 
 GoodData applications do support Safari, however currently it's not possible to run this boilerplate locally with GoodData.CN backend running on https protocol, due to the fact how Safari is handling authentication in backend redirects.
+
+## License
+
+The Plugin can be utilized under the BSD-3 Clause License. For more details, please refer to the main LICENSE file available at ('../LICENSE')[LICENSE].

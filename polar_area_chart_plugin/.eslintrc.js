@@ -1,4 +1,4 @@
-// (C) 2020 GoodData Corporation
+// (C) 2020-2023 GoodData Corporation
 module.exports = {
     parser: "@typescript-eslint/parser",
     plugins: ["react-hooks", "prettier"],

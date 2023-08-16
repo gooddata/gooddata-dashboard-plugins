@@ -1,4 +1,4 @@
-// (C) 2021-2022 GoodData Corporation
+// (C) 2021-2023 GoodData Corporation
 
 import metadataJson from "../metadata.json";
 import packageJson from "../../package.json";

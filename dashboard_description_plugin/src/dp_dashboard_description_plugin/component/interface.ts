@@ -1,3 +1,5 @@
+// (C) 2023 GoodData Corporation
+
 import { ObjRef } from "@gooddata/sdk-model";
 import { ICustomWidget } from "@gooddata/sdk-ui-dashboard";
 

@@ -1,9 +1,9 @@
 {
   "name": "insight_groups",
   "version": "1.1.0",
-  "description": "",
-  "author": "",
-  "private": true,
+  "description": "Plugin that allow group multiple insights no dashboard toggle them via radio buttons",
+  "author": "Open-sourced by GoodData - feel free to change",
+  "private": false,
   "license": "SEE LICENSE IN ../LICENSE",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
