@@ -4,3 +4,6 @@ declare let __webpack_share_scopes__: any;
 
 // config constants
 declare const PORT: number;
+
+// css modules
+declare module "*.module.css";

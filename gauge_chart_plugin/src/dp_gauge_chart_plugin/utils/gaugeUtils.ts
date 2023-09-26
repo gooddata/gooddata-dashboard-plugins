@@ -1,5 +1,5 @@
 // (C) 2022-2023 GoodData Corporation
-import { DataValue } from "@gooddata/sdk-backend-spi";
+import { DataValue } from "@gooddata/sdk-model";
 import { DataViewFacade } from "@gooddata/sdk-ui";
 import {
     bucketMeasure,
