@@ -2,12 +2,12 @@
 import React from "react";
 import { BackendProvider, WorkspaceProvider } from "@gooddata/sdk-ui";
 
-import { backend, hasCredentialsSetup } from "./backend";
-import { App } from "./App";
-import { DEFAULT_WORKSPACE } from "./constants";
+import { backend, hasCredentialsSetup, needsAuthentication } from "./backend.js";
+import { App } from "./App.js";
+import { DEFAULT_WORKSPACE } from "./constants.js";
 
 export const Root: React.FC = () => {
-    if (!hasCredentialsSetup()) {
+    if (!hasCredentialsSetup() && needsAuthentication()) {
         return (
             <div>
                 The environment is not setup with credentials to use for authentication to Analytical Backend.
@@ -19,7 +19,7 @@ export const Root: React.FC = () => {
 
     return (
         <BackendProvider backend={backend}>
-            <WorkspaceProvider workspace={process.env.WORKSPACE ?? DEFAULT_WORKSPACE}>
+            <WorkspaceProvider workspace={process.env.WORKSPACE || DEFAULT_WORKSPACE}>
                 <App />
             </WorkspaceProvider>
         </BackendProvider>

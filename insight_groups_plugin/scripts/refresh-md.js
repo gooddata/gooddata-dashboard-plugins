@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 // (C) 2022-2023 GoodData Corporation
-/* eslint-disable @typescript-eslint/no-var-requires */
 
-const dotenv = require("dotenv");
-const path = require("path");
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 dotenv.config({ path: path.resolve(__dirname, "../.env.secrets") });
 
@@ -20,8 +23,8 @@ process.argv.push(
     hostname,
     "--workspace-id",
     workspace,
-    "--output",
+    "--catalog-output",
     output,
 );
 
-require("@gooddata/catalog-export");
+await import("@gooddata/catalog-export");

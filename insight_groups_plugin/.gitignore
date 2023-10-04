@@ -1,5 +1,6 @@
 .env.secrets
-dist
-.s3cfg
+esm
 node_modules
-.env.local
+.idea
+.vscode
+.DS_Store

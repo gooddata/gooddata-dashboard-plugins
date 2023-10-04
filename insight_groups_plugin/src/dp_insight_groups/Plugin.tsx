@@ -1,34 +1,18 @@
 // (C) 2022-2023 GoodData Corporation
-import React from "react";
 import {
     DashboardContext,
     DashboardPluginV1,
     IDashboardCustomizer,
-    IDashboardEventHandling,
     IDashboardInsightProps,
-    CustomDashboardInsightComponent,
 } from "@gooddata/sdk-ui-dashboard";
-import { IInsight, IWidget } from "@gooddata/sdk-model";
+import JSON5 from "json5";
 
-import entryPoint from "../dp_insight_groups_entry";
+import entryPoint from "../dp_insight_groups_entry/index.js";
 
-import { UngroupedWidget } from "./GroupedWidgets/UngroupedWidget";
-import { GroupedWidget } from "./GroupedWidgets/GroupedWidget";
-
-interface IInsightGroupsState {
-    hidingHooks: {
-        [insightIdentifier: string]: (state: boolean) => void;
-    };
-    groupsConfig: {
-        [groupKey: string]: string[];
-    };
-    groupsSelection: {
-        [groupKey: string]: string;
-    };
-    widgetTitles: {
-        [insightIdentifier: string]: string;
-    };
-}
+import React, { useState } from "react";
+import { GroupedWidgetHeader } from "./components/GroupedWidgetHeader/GroupedWidgetHeader.js";
+import { validateParameters } from "./utils.js";
+import { IGroupsHidingHooks, IGroupsConfig, IGroupsSelection, IWidgetTitles } from "./interface.js";
 
 export class Plugin extends DashboardPluginV1 {
     public readonly author = entryPoint.author;
@@ -37,69 +21,75 @@ export class Plugin extends DashboardPluginV1 {
     public readonly minEngineVersion = entryPoint.minEngineVersion;
     public readonly maxEngineVersion = entryPoint.maxEngineVersion;
 
-    private state: IInsightGroupsState = {
-        hidingHooks: {},
-        groupsConfig: {},
-        groupsSelection: {},
-        widgetTitles: {},
-    };
+    private hidingHooks: IGroupsHidingHooks = {};
+    private groupsConfig: IGroupsConfig = {};
+    private groupsSelection: IGroupsSelection = {};
+    private widgetTitles: IWidgetTitles = {};
 
-    public onPluginLoaded(_ctx: DashboardContext, parameters?: string): Promise<void> | void {
-        if (!parameters || parameters.length === 0) {
+    public onPluginLoaded(_ctx: DashboardContext, _parameters?: string): Promise<void> | void {
+        if (!_parameters || _parameters.length === 0) {
             return;
         }
 
         try {
-            const parametersParsed = JSON.parse(parameters);
+            const parametersParsed = JSON5.parse(_parameters);
 
-            if (typeof parametersParsed !== "object") {
-                console.error("Invalid type of plugin parameter:", typeof parametersParsed);
-                return;
-            }
+            validateParameters(parametersParsed);
 
-            if (Object.keys(parametersParsed).some((key) => !Array.isArray(parametersParsed[key]))) {
-                console.error("Invalid type of group configuration:", parametersParsed);
-                return;
-            }
-
-            this.state.groupsConfig = parametersParsed;
-            this.state.groupsSelection = Object.keys(parametersParsed).reduce((acc, key) => {
-                acc[key] = parametersParsed[key][0];
+            this.groupsConfig = parametersParsed;
+            this.groupsSelection = Object.keys(this.groupsConfig).reduce<IGroupsSelection>((acc, key) => {
+                acc[key] = this.groupsConfig[key][0];
                 return acc;
             }, {});
         } catch (e) {
             // test it
-            console.error("Parsing parameters failed", e.message);
-            console.error("Parameters", parameters);
+            console.error("### Parsing parameters failed", e.message);
+            console.error("### Parameters", _parameters);
         }
     }
 
-    public selectGroupInsight(groupKey: string, selectedIdentifier: string) {
-        const { groupsSelection, groupsConfig, hidingHooks } = this.state;
-
-        groupsSelection[groupKey] = selectedIdentifier;
-        groupsConfig[groupKey].forEach((identifier) => {
-            hidingHooks[identifier](identifier !== selectedIdentifier);
-        });
-    }
-
-    public register(
-        _ctx: DashboardContext,
-        customize: IDashboardCustomizer,
-        _handlers: IDashboardEventHandling,
-    ): void {
+    public register(_ctx: DashboardContext, customize: IDashboardCustomizer): void {
         customize.insightWidgets().withCustomDecorator((next) => {
             return (insight, widget) => {
                 const Decorated = next(insight, widget);
-
                 // collecting widget titles
-                this.setTitle(insight, widget);
-                // find group in which the insight is
-                const groupKey = this.getGroup(insight);
+                this.widgetTitles[insight.insight.identifier] = widget.title;
 
-                return insightGroupFactory(this.state, Decorated, insight, groupKey, (identifier) =>
-                    this.selectGroupInsight(groupKey!, identifier),
-                );
+                // find group in which the insight is
+                let groupKey: string | undefined;
+                for (const key in this.groupsConfig) {
+                    if (this.groupsConfig[key].indexOf(insight.insight.identifier) !== -1) {
+                        groupKey = key;
+                    }
+                }
+
+                return (props: JSX.IntrinsicAttributes & IDashboardInsightProps) => {
+                    // do not process the widget if it's not part of any group
+                    if (groupKey === undefined) {
+                        return <Decorated {...props} />;
+                    } else {
+                        const [hidden, setHidden] = useState(
+                            insight.insight.identifier !== this.groupsSelection[groupKey],
+                        );
+                        this.hidingHooks[insight.insight.identifier] = setHidden;
+
+                        return (
+                            <>
+                                <GroupedWidgetHeader
+                                    hideColumn={hidden}
+                                    selectedIdentifier={insight.insight.identifier}
+                                    groupInsightsIdentifiers={this.groupsConfig[groupKey]}
+                                    widgetTitles={this.widgetTitles}
+                                    onGroupInsightSelected={(identifier) =>
+                                        this.selectGroupInsight(groupKey ?? "", identifier)
+                                    }
+                                    widget={widget}
+                                />
+                                <Decorated {...props} />
+                            </>
+                        );
+                    }
+                };
             };
         });
     }
@@ -113,51 +103,10 @@ export class Plugin extends DashboardPluginV1 {
          */
     }
 
-    private getGroup(insight: IInsight): string | null {
-        const { groupsConfig } = this.state;
-
-        for (const key in groupsConfig) {
-            if (groupsConfig[key].indexOf(insight.insight.identifier) !== -1) {
-                return key;
-            }
-        }
-        return null;
-    }
-
-    private setTitle(insight: IInsight, widget: IWidget) {
-        const { widgetTitles } = this.state;
-        widgetTitles[insight.insight.identifier] = widget.title;
+    selectGroupInsight(groupKey: string, selectedIdentifier: string) {
+        this.groupsSelection[groupKey] = selectedIdentifier;
+        this.groupsConfig[groupKey].forEach((identifier) => {
+            this.hidingHooks[identifier](identifier !== selectedIdentifier);
+        });
     }
 }
-
-const insightGroupFactory = (
-    state: IInsightGroupsState,
-    Component: React.ComponentType<IDashboardInsightProps>,
-    insight: IInsight,
-    groupKey: string | null,
-    onGroupInsightSelected: (identifier: string) => void,
-): CustomDashboardInsightComponent => {
-    const InsightGroups: CustomDashboardInsightComponent = (props) => {
-        const { groupsSelection, groupsConfig, widgetTitles, hidingHooks } = state;
-
-        // do not process the widget if it's not part of any group
-        if (groupKey === null) {
-            return <UngroupedWidget Component={Component} {...props} />;
-        }
-
-        // widget is part of group
-        return (
-            <GroupedWidget
-                Component={Component}
-                hidden={insight.insight.identifier !== groupsSelection[groupKey]}
-                groupInsightsIdentifiers={groupsConfig[groupKey]}
-                widgetTitles={widgetTitles}
-                hidingHooks={hidingHooks}
-                {...props}
-                onGroupInsightSelected={onGroupInsightSelected}
-            />
-        );
-    };
-
-    return InsightGroups;
-};
