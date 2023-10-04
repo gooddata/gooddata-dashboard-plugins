@@ -5,7 +5,5 @@ declare let __webpack_share_scopes__: any;
 // config constants
 declare const PORT: number;
 
-declare module "*.svg" {
-    const content: any;
-    export default content;
-}
+// css modules
+declare module "*.module.css";

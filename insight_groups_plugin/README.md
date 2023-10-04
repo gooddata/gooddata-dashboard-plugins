@@ -43,11 +43,14 @@ When the plugin is linked to a dashboard (`analyticalDashboard` metadata object)
 When the plugin is linked to a dashboard (`analyticalDashboard` metadata object) on the GoodData Cloud or GoodData.CN, the `analyticalDashboard.data.attributes.content.plugins[].plugin.parameters` property should include the plugin configuration.
 
 See "plugin parameterization" and `npm run link-plugin -- <plugin-object-id> --with-parameters` below for more information.
-
 ### Implementation details
-The current plugin API does not allow hiding of widgets and layout modifications in real time, which would be needed for clean implementation.
+The current plugin API does not allow hiding of widgets and layout modifications
+in real time, which would be needed for clean implementation.
 
-To be able to hide layout widgets, the low level browser API is used. See [`setParentColumnVisibility` in insight_groups_plugin/src/dp_insight_groups/GroupedWidgetHeader/nativeDom.ts](src/dp_insight_groups/GroupedWidgetHeader/nativeDom.ts) for more detail.
+To be able to hide layout widgets, the low level browser API is used. See `setColumnVisibilityByChildId` for more detail.
+
+Also, the current state of the code does not allow to use the `useTheme` hook, so the existing css variables derived from theme values are used.
+Look for the use of`var(--gd- ...` to find the places of CSS variables usage.
 
 ## Quick Introduction into Dashboard Plugins
 
@@ -106,13 +109,13 @@ Building a new plugin is easy. Before you start, ensure that your `.env` and `.e
 
 3.  Build the plugin: `npm run build-plugin`
 
-    This will build plugin artifacts under `dist/dashboardPlugin`.
+    This will build plugin artifacts under `esm/dashboardPlugin`.
 
 4.  Upload plugin artifacts to your hosting
 
-    It is paramount that you upload all files from the `dist/dashboardPlugin`.
+    It is paramount that you upload all files from the `esm/dashboardPlugin`.
 
-    _IMPORTANT_: your hosting must support https and your GoodData domain must include the hosting location in the list
+    _IMPORTANT_: your hosting must support https, allow CORS to your GoodData domain and your GoodData domain must include the hosting location in the list
     of allowed hosts from where GoodData will load plugins. You should create a [support ticket](https://support.gooddata.com/hc/en-us/requests/new?ticket_form_id=582387) to explicitly allow the hosting
     location before we will load any plugins from it. You may host multiple plugins in separate directories within
     the allowed hosting location.
@@ -155,6 +158,14 @@ Building a new plugin is easy. Before you start, ensure that your `.env` and `.e
 
     _TIP_: you can use the `unlink` command to remove the link between dashboard and the plugin.
 
+7.  Update plugin parameters on a dashboard: `npm run update-plugin-params -- <plugin-object-id>`
+
+    This command is useful if you want to change or add the parameters in the already linked plugin. The tool will open an editor for you to enter the new parameters.
+
+8.  Remove plugin parameters on a dashboard: `npm run remove-plugin-params -- <plugin-object-id>`
+
+    This command is useful if you want to remove the parameters in the already linked plugin.
+
 ## Authentication & secrets
 
 Your plugin does not have to concern itself with the authentication against GoodData backend. When the plugin runs
@@ -180,9 +191,9 @@ All this data will be available in the publicly hosted plugin artifacts and can 
 Do not rename or otherwise refactor any of the directories that were created during this project initialization.
 The structure and naming are essential for the build and the runtime loading of your plugin to work properly.
 
-This project is setup so that all your custom code must be self-contained in the [src/dp_tooltip_plugin](./src/dp_tooltip_plugin) directory.
+This project is setup so that all your custom code must be self-contained in the [src/dp_insight_groups](./src/dp_insight_groups) directory.
 
-The [src/dp_tooltip_plugin\_engine](./src/dp_tooltip_plugin_engine) and [src/dp_tooltip_plugin\_entry](./src/dp_tooltip_plugin_entry) directories contain essential plugin boilerplate.
+The [src/dp_insight_groups_engine](./src/dp_insight_groups_engine) and [src/dp_insight_groups_entry](./src/dp_insight_groups_entry) directories contain essential plugin boilerplate.
 You should not modify these directories or their contents unless you are 100% sure what you are doing.
 
 The [src/harness] directory contains code for plugin development harness; it is used only during plugin development and the
@@ -192,7 +203,7 @@ that is contained in the [src/harness/backend.ts](src/harness/backend.ts) - this
 
 ### How can I setup compatibility of the plugin?
 
-You can modify minEngineVersion and maxEngineVersion properties in `src/dp_tooltip_plugin\_entry/index`.
+You can modify minEngineVersion and maxEngineVersion properties in `src/dp_insight_groups\_entry/index`.
 By default, we guarantee that plugin will be compatible only with the exact version of the dashboard engine used during its build (`"bundled"` option). But if you are sure, that plugin is compatible also with the other engine versions, you can set concrete range of the versions (e.g. `"minEngineVersion": "8.8.0", "maxEngineVersion": "8.9.0"`). Note that combining multiple plugins created before version `8.8.0` may not work.
 
 ### How do plugin dependencies work?
