@@ -7,10 +7,10 @@ import {
 } from "@gooddata/sdk-ui-dashboard";
 import { insightTitle } from "@gooddata/sdk-model";
 
-import entryPoint from "../dp_gauge_chart_plugin_entry";
+import entryPoint from "../dp_gauge_chart_plugin_entry/index.js";
 
-import { gaugeFactory } from "./component/Gauge";
-import { isUsableForGauge } from "./utils/gaugeUtils";
+import { gaugeFactory } from "./components/Gauge.js";
+import { isUsableForGauge } from "./utils/gaugeUtils.js";
 
 /**
  * The format property accepts these values only. Values other than these are taken for invalid.
@@ -50,13 +50,13 @@ export class Plugin extends DashboardPluginV1 {
         return VALID_FORMATS.includes(format);
     }
 
-    public onPluginLoaded(_ctx: DashboardContext, parameters?: string): Promise<void> | void {
+    public onPluginLoaded(_ctx: DashboardContext, _parameters?: string): Promise<void> | void {
         /**
          * If the parameters are undefined, the plugin will work with default values.
          */
-        if (parameters) {
+        if (_parameters) {
             try {
-                const parsedParameters = JSON.parse(parameters);
+                const parsedParameters = JSON.parse(_parameters);
                 /**
                  * Run the `link-plugin` command with `--with-parameters` flag and enter all the title prefixes you want to replace with
                  * `GaugeChart` separated by space. By default all bullet charts with tag `gauge` will be replaced.

@@ -15,29 +15,29 @@ naming convention with a Gauge chart component provided by the plugin.
 7. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
 8. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin object id noted in the console output.
 9. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id> --with-parameters` command. This will open the text editor where you paste this string `"{\"prefixes\":\"gauge\",\"showLabels\":false, \"format\":\"%\"}"`. Modify plugin parameters with desired values.
-   1. Enter all naming prefixes you want the plugin to apply to, separated with space. If not specified, default prefix `gauge` is used.
-   2. `showLabels` indicates whether to show the min and max value label. If not specified, labels are not shown.
-   3. `format` parameter accepts `#` value to show values in numeral representation or the `%` value to show percentage of the value. If left empty or invalid value is entered, percentage is used.
+    1. Enter all naming prefixes you want the plugin to apply to, separated with space. If not specified, default prefix `gauge` is used.
+    2. `showLabels` indicates whether to show the min and max value label. If not specified, labels are not shown.
+    3. `format` parameter accepts `#` value to show values in numeral representation or the `%` value to show percentage of the value. If left empty or invalid value is entered, percentage is used.
 
 ## What insights plugin affects and how
 
 The plugin affects only [bullet charts](https://sdk.gooddata.com/gooddata-ui/docs/bullet_chart_component.html) with the insight name starting with the prefix "gauge" (or one of your custom prefixes defined in linking parameters).
 
-The bullet chart has to include exactly one primary metric and one target metric. Comparative metric and "view by" attribute must remain empty. 
+The bullet chart has to include exactly one primary metric and one target metric. Comparative metric and "view by" attribute must remain empty.
 
-These insights are replaced by the `Gauge` component. The max value of the `Gauge chart` is the `target` value of the original `bullet chart`. The needle 
+These insights are replaced by the `Gauge` component. The max value of the `Gauge chart` is the `target` value of the original `bullet chart`. The needle
 of the `gauge chart` indicates the `primary measure` of the original `bullet chart`. Minimal value in the `gauge chart component` is always set to `0`.
 
-Domain admins won't see the plugin as result of a security feature. 
+Domain admins won't see the plugin as result of a security feature.
 See more in the [configuration on the GoodData platform](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#configuration-on-the-gooddata-platform).
 
 ## What's next?
 
 This plugin was created as a starting point for your development. Here are a few ideas on how to enhance the code further:
 1. Instead of the naming convention, use tags to specify which insights should be replaced. Naming convention was chosen as an easy way to integrate the plugin, but it might not be the best option for the production usage.
-2. Consider using comparative measure as a minimal value for the gauge chart. 
+2. Consider using comparative measure as a minimal value for the gauge chart.
 
-# Quick Introduction into Dashboard Plugins
+## Quick Introduction into Dashboard Plugins
 
 Dashboard Plugins (plugins) allow developers to create extensions that alter behavior and look and feel of the
 vanilla GoodData KPI Dashboards (dashboards).
@@ -66,7 +66,15 @@ _Note: GoodData currently does not provide hosting for your plugin artifacts._
 
 ## Plugin development guide
 
-Before you start, ensure that your `.env` and `.env.secrets` files are set up correctly.
+Building a new plugin is easy. Before you start, ensure that your `.env` and `.env.secrets` files are set up correctly.
+
+0.  (Optional) Export catalog: `npm run refresh-md`
+
+    To make referencing various metadata objects easier in your plugin, you can use the [Export catalog](https://sdk.gooddata.com/gooddata-ui/docs/export_catalog.html) feature to get a easy-to-use list of the various MD objects in your workspace (insights, dashboards, attributes, etc.).
+    For convenience, this was integrated to your plugin, just run `npm run refresh-md`.
+    This will connect to the workspace specified in the `.env` file using the credentials from `.env.secrets`
+    and populate the file `src/md/full.ts` with information about the metadata objects available in the specified workspace.
+    See the [Export catalog](https://sdk.gooddata.com/gooddata-ui/docs/export_catalog.html) documentation page for more information.
 
 1.  Start the development server: `npm start`
 
@@ -86,13 +94,13 @@ Before you start, ensure that your `.env` and `.env.secrets` files are set up co
 
 3.  Build the plugin: `npm run build-plugin`
 
-    This will build plugin artifacts under `dist/dashboardPlugin`.
+    This will build plugin artifacts under `esm/dashboardPlugin`.
 
 4.  Upload plugin artifacts to your hosting
 
-    It is paramount that you upload all files from the `dist/dashboardPlugin`.
+    It is paramount that you upload all files from the `esm/dashboardPlugin`.
 
-    _IMPORTANT_: your hosting must support https and your GoodData domain must include the hosting location in the list
+    _IMPORTANT_: your hosting must support https, allow CORS to your GoodData domain and your GoodData domain must include the hosting location in the list
     of allowed hosts from where GoodData will load plugins. You should create a [support ticket](https://support.gooddata.com/hc/en-us/requests/new?ticket_form_id=582387) to explicitly allow the hosting
     location before we will load any plugins from it. You may host multiple plugins in separate directories within
     the allowed hosting location.
@@ -135,6 +143,14 @@ Before you start, ensure that your `.env` and `.env.secrets` files are set up co
 
     _TIP_: you can use the `unlink` command to remove the link between dashboard and the plugin.
 
+7.  Update plugin parameters on a dashboard: `npm run update-plugin-params -- <plugin-object-id>`
+
+    This command is useful if you want to change or add the parameters in the already linked plugin. The tool will open an editor for you to enter the new parameters.
+
+8.  Remove plugin parameters on a dashboard: `npm run remove-plugin-params -- <plugin-object-id>`
+
+    This command is useful if you want to remove the parameters in the already linked plugin.
+
 ## Authentication & secrets
 
 Your plugin does not have to concern itself with the authentication against GoodData backend. When the plugin runs
@@ -160,15 +176,20 @@ All this data will be available in the publicly hosted plugin artifacts and can 
 Do not rename or otherwise refactor any of the directories that were created during this project initialization.
 The structure and naming are essential for the build and the runtime loading of your plugin to work properly.
 
-This project is set up so that all your custom code must be self-contained in the [src/dp_gauge_chart_plugin](./src/dp_gauge_chart_plugin) directory.
+This project is setup so that all your custom code must be self-contained in the [src/dp_gauge_chart_plugin](./src/dp_gauge_chart_plugin) directory.
 
-The [src/dp_gauge_chart_plugin_engine](./src/dp_gauge_chart_plugin_engine) and [src/dp_gauge_chart_plugin_entry](./src/dp_gauge_chart_plugin_entry) directories contain essential plugin boilerplate.
-You must not modify these directories or their contents.
+The [src/dp_gauge_chart_plugin\_engine](./src/dp_gauge_chart_plugin_engine) and [src/dp_gauge_chart_plugin\_entry](./src/dp_gauge_chart_plugin_entry) directories contain essential plugin boilerplate.
+You should not modify these directories or their contents unless you are 100% sure what you are doing.
 
 The [src/harness] directory contains code for plugin development harness; it is used only during plugin development and the
 code in this directory will not be part of the plugin build. You can start the harness using `npm start`.
 You should have no need to modify the code in the harness. We anticipate that at times you may need to tweak Analytical Backend setup
 that is contained in the [src/harness/backend.ts](src/harness/backend.ts) - this is a safe change.
+
+### How can I setup compatibility of the plugin?
+
+You can modify minEngineVersion and maxEngineVersion properties in `src/dp_gauge_chart_plugin\_entry/index`.
+By default, we guarantee that plugin will be compatible only with the exact version of the dashboard engine used during its build (`"bundled"` option). But if you are sure, that plugin is compatible also with the other engine versions, you can set concrete range of the versions (e.g. `"minEngineVersion": "8.8.0", "maxEngineVersion": "8.9.0"`). Note that combining multiple plugins created before version `8.8.0` may not work.
 
 ### How do plugin dependencies work?
 
@@ -191,7 +212,3 @@ The plugin artifacts created during the plugin build are not compatible with Int
 ### How about Safari?
 
 GoodData applications do support Safari, however currently it's not possible to run this boilerplate locally with GoodData.CN backend running on https protocol, due to the fact how Safari is handling authentication in backend redirects.
-
-## License
-
-The Plugin can be utilized under the BSD-3 Clause License. For more details, please refer to the main LICENSE file available at ('../LICENSE')[LICENSE].
