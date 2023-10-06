@@ -1,4 +1,4 @@
 .env.secrets
 .s3cfg
-dist
+esm
 node_modules
