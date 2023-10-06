@@ -2,7 +2,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
-const { DefinePlugin, EnvironmentPlugin, ProvidePlugin } = require("webpack");
+const { DefinePlugin, EnvironmentPlugin } = require("webpack");
 const path = require("path");
 const { URL } = require("url");
 const deps = require("./package.json").dependencies;
@@ -57,15 +57,24 @@ module.exports = (_env, argv) => {
 
     const commonConfig = {
         mode: isProduction ? "production" : "development",
-        // support IE11 only in production, in dev it is not necessary and it also would prevent hot reload
-        target: isProduction ? ["web", "es5"] : "web",
+        target: "web",
         devtool: isProduction ? false : "eval-cheap-module-source-map",
+        experiments: {
+            outputModule: true,
+        },
         output: {
-            publicPath: "auto",
+            path: path.resolve("./esm"),
+            filename: "[name].mjs",
+            library: {
+                type: "module",
+            },
         },
         resolve: {
-            // Allow to omit extensions when requiring these files
-            extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
+            // Alias for ESM imports with .js suffix because
+            // `import { abc } from "../abc.js"` may be in fact importing from `abc.tsx` file
+            extensionAlias: {
+                    ".js": [".ts", ".tsx", ".js", ".jsx"],
+            },
 
             alias: {
                 // fixes tilde imports in CSS from sdk-ui-* packages
@@ -76,11 +85,10 @@ module.exports = (_env, argv) => {
             // Prefer ESM versions of packages to enable tree shaking
             mainFields: ["module", "browser", "main"],
 
-            // polyfill "process" and "util" for lru-cache, webpack 5 no longer does that automatically
-            // remove this after IE11 support is dropped and lru-cache can be finally upgraded
             fallback: {
-                process: require.resolve("process/browser"),
-                util: require.resolve("util/"),
+                // semver package depends on node `util`,
+                // but node API is no longer supported with webpack >= 5
+                util: false,
             },
         },
         module: {
@@ -145,12 +153,13 @@ module.exports = (_env, argv) => {
     return [
         {
             ...commonConfig,
-            entry: "./src/index",
+            entry: "./src/index.js",
+            experiments: { ...commonConfig.experiments,topLevelAwait: true},
             name: "harness",
             ignoreWarnings: [/Failed to parse source map/], // some of the dependencies have invalid source maps, we do not care that much
             devServer: {
                 static: {
-                    directory: path.join(__dirname, "dist"),
+                    directory: path.join(__dirname, "esm"),
                 },
                 port: PORT,
                 host: "127.0.0.1",
@@ -159,9 +168,6 @@ module.exports = (_env, argv) => {
             },
             plugins: [
                 ...commonConfig.plugins,
-                new ProvidePlugin({
-                    process: "process/browser",
-                }),
                 new DefinePlugin({
                     PORT: JSON.stringify(PORT),
                 }),
@@ -176,32 +182,34 @@ module.exports = (_env, argv) => {
                 }),
                 new HtmlWebpackPlugin({
                     template: "./src/harness/public/index.html",
+                    scriptLoading: "module"
                 }),
             ],
         },
         {
             ...commonConfig,
-            entry: `./src/${MODULE_FEDERATION_NAME}/index`,
+            entry: `./src/${MODULE_FEDERATION_NAME}/index.js`,
             name: "dashboardPlugin",
-            output: { ...commonConfig.output, path: path.join(__dirname, "dist", "dashboardPlugin") },
+            output: { ...commonConfig.output, path: path.join(__dirname, "esm", "dashboardPlugin") },
             plugins: [
                 ...commonConfig.plugins,
                 new ModuleFederationPlugin({
+                    library: { type: "window", name: MODULE_FEDERATION_NAME },
                     name: MODULE_FEDERATION_NAME, // this is used to put the plugin on the target window scope by default
                     exposes: {
                         /**
                          * this is the main entry point providing info about the engine and plugin
                          * this allows us to only load the plugin and/or engine when needed
                          */
-                        [`./${MODULE_FEDERATION_NAME}_ENTRY`]: `./src/${MODULE_FEDERATION_NAME}_entry`,
+                        [`./${MODULE_FEDERATION_NAME}_ENTRY`]: `./src/${MODULE_FEDERATION_NAME}_entry/index.js`,
                         /**
                          * this is the entry to the plugin itself
                          */
-                        [`./${MODULE_FEDERATION_NAME}_PLUGIN`]: `./src/${MODULE_FEDERATION_NAME}`,
+                        [`./${MODULE_FEDERATION_NAME}_PLUGIN`]: `./src/${MODULE_FEDERATION_NAME}/index.js`,
                         /**
                          * this is the entry to the engine
                          */
-                        [`./${MODULE_FEDERATION_NAME}_ENGINE`]: `./src/${MODULE_FEDERATION_NAME}_engine`,
+                        [`./${MODULE_FEDERATION_NAME}_ENGINE`]: `./src/${MODULE_FEDERATION_NAME}_engine/index.js`,
                     },
 
                     // adds react as shared module
