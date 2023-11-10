@@ -1,0 +1,67 @@
+.custom-btn {
+  background-color: #00549f;
+  color: #fff;
+  border: none;
+  border-radius: 0;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 700;
+  padding: 4px 16px;
+  width: 150px;
+  text-transform: uppercase;
+}
+
+.custom-btn:hover {
+  background-color: #fff;
+  border: 2px solid #00549f;
+  padding: 2px 14px;
+  color: #00549f;
+}
+
+.popup-box {
+  width: 600px;
+  box-shadow: rgb(51, 51, 51, 0.08) 0px 16px 40px;
+  border-radius: 4px;
+  margin: 0;
+  padding: 16px;
+  position: fixed;
+  top: 54px;
+  right: 20px;
+  z-index: 100;
+}
+
+.popup-box > .close-icon {
+  position: absolute;
+  width: 12px;
+  top: 16px;
+  right: 12px;
+  cursor: pointer;
+}
+
+.popup-box-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.popup-box-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  color: #fff;
+  text-align: left;
+}
+
+.popup-box-body {
+  font-size: 12px;
+  color: #fff;
+  margin: 0;
+  text-align: left;
+}
+
+.popup-box-main-icon {
+  width: 60px;
+  margin-right: 20px;
+}
+
+.modal-backdrop {
+  z-index: 9999;
+}
