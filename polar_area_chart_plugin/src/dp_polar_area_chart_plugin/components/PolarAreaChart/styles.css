@@ -1,0 +1,5 @@
+.polar-area-wrapper {
+    position: relative;
+    display: flex;
+    flex: 1;
+}

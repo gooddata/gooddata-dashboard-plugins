@@ -1,24 +1,30 @@
-// (C) 2023 GoodData Corporation
-
 import React from "react";
+
 import {
-    useInsightWidgetDataView,
-    useDashboardSelector,
     selectColorPalette,
-    IDashboardInsightProps,
+    useDashboardSelector,
+    useInsightWidgetDataView,
 } from "@gooddata/sdk-ui-dashboard";
+import { IInsightWidget } from "@gooddata/sdk-model";
+import { IErrorProps, ILoadingProps } from "@gooddata/sdk-ui";
+
 import "chart.js/auto";
 import { PolarArea } from "react-chartjs-2";
 
-import { WIDGET_TITLE_SUFFIX } from "../Plugin.js";
+interface IPolarAreaChartProps {
+    widget: IInsightWidget;
+    ErrorComponent: React.ComponentType<IErrorProps>;
+    LoadingComponent: React.ComponentType<ILoadingProps>;
+}
 
-const PolarAreaChart: React.FC<IDashboardInsightProps> = (props) => {
-    const { LoadingComponent, ErrorComponent, widget } = props;
+export const PolarAreaChart: React.FC<IPolarAreaChartProps> = ({
+    widget,
+    LoadingComponent,
+    ErrorComponent,
+}) => {
     const colorPalette = useDashboardSelector(selectColorPalette).map(
         (color) => `rgba(${color.fill.r}, ${color.fill.g}, ${color.fill.b}, .5)`,
     );
-
-    widget.title = widget.title.replace(WIDGET_TITLE_SUFFIX, "").trim();
 
     const { result, error, status } = useInsightWidgetDataView({
         insightWidget: widget,
@@ -58,32 +64,28 @@ const PolarAreaChart: React.FC<IDashboardInsightProps> = (props) => {
     };
 
     return (
-        <div style={{ height: "100%", maxHeight: 334 }}>
-            <PolarArea
-                data={data}
-                options={{
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: "right",
-                            labels: {
-                                font: {
-                                    size: 12,
-                                },
+        <PolarArea
+            data={data}
+            options={{
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: "right",
+                        labels: {
+                            font: {
+                                size: 12,
                             },
                         },
                     },
-                    scales: {
-                        r: {
-                            ticks: {
-                                display: false,
-                            },
+                },
+                scales: {
+                    r: {
+                        ticks: {
+                            display: false,
                         },
                     },
-                }}
-            />
-        </div>
+                },
+            }}
+        />
     );
 };
-
-export default PolarAreaChart;
