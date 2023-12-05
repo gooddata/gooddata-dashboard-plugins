@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "declarationMap": true,
+        "target": "es2017",
+        "jsx": "react",
+        "lib": ["es2017", "dom"],
+        "module": "NodeNext",
+        "moduleResolution": "nodenext",
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "outDir": "esm",
+        "sourceMap": true,
+        "resolveJsonModule": true
+    },
+    "compileOnSave": false,
+    "exclude": ["**/node_modules", "esm"]
+}

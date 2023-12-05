@@ -7,14 +7,15 @@ You can find a number of Dashboard Plugins in this repository. Each folder conta
 -   [Insight groups](./insight_groups_plugin) - can group more insights.
 -   [Radial bar chart](./radial_bar_chart_plugin) - replace column charts with [Recharts](https://recharts.org/) radial bar charts.
 -   [Polar area chart](./polar_area_chart_plugin) - replace donut (or pie) charts with [Chart.js](https://www.chartjs.org/) polar area charts.
+-   [Whitelabelling bar](./whitelabelling_bar) - add custom branding that is always visible on the dashboards even when embedded using iFrame.
 
 ## Legacy Plugins
 
-You can find plugins that may no longer be actively used due to their functionality being incorporated into the GoodData product in [legacy plugins](./legacy_plugins/) folder. They can still serve as valuable starting points for creating similar plugins.
+You can find plugins that may no longer be actively used due to their functionality being incorporated into the GoodData product in [legacy plugins](./legacy_plugins) folder. They can still serve as valuable starting points for creating similar plugins.
 
--   [Single select attribute filter](./legacy/single_select_plugin) - render specified attribute filters as a single select attribute filters.
--   [Tooltip](./legacy/tooltip_plugin) - add a tooltip to the insight.
--   [Sankey dependency wheel](./sankey_dependency_wheel_plugin) - replace tables with one metric and two attributes with [Highcharts](https://www.highcharts.com/) sankey dependency wheels.
+-   [Single select attribute filter](./legacy_plugins/single_select_plugin) - render specified attribute filters as a single select attribute filters.
+-   [Tooltip](./legacy_plugins/tooltip_plugin) - add a tooltip to the insight.
+-   [Sankey dependency wheel](./legacy_plugins/sankey_dependency_wheel_plugin) - replace tables with one metric and two attributes with [Highcharts](https://www.highcharts.com/) sankey dependency wheels.
 
 # FAQ
 
