@@ -11,11 +11,12 @@ You can find a number of Dashboard Plugins in this repository. Each folder conta
 
 ## Legacy Plugins
 
-You can find plugins that may no longer be actively used due to their functionality being incorporated into the GoodData product in [legacy plugins](./legacy_plugins) folder. They can still serve as valuable starting points for creating similar plugins.
+You can find plugins that may no longer be actively used due to their functionality being incorporated into the GoodData product (or other reasons) in [legacy plugins](./legacy_plugins) folder. They can still serve as valuable starting points for creating similar plugins.
 
 -   [Single select attribute filter](./legacy_plugins/single_select_plugin) - render specified attribute filters as a single select attribute filters.
 -   [Tooltip](./legacy_plugins/tooltip_plugin) - add a tooltip to the insight.
 -   [Sankey dependency wheel](./legacy_plugins/sankey_dependency_wheel_plugin) - replace tables with one metric and two attributes with [Highcharts](https://www.highcharts.com/) sankey dependency wheels.
+-   [Insight to action](./legacy_plugins/insight_to_action) - pivot table with button for API calls
 
 # FAQ
 
