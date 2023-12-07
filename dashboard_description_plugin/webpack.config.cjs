@@ -1,9 +1,8 @@
-// (C) 2007-2023 GoodData Corporation
-/* eslint-disable @typescript-eslint/no-var-requires */
+// (C) 2007-2021 GoodData Corporation
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
-const { DefinePlugin, EnvironmentPlugin, ProvidePlugin } = require("webpack");
+const { DefinePlugin, EnvironmentPlugin } = require("webpack");
 const path = require("path");
 const { URL } = require("url");
 const deps = require("./package.json").dependencies;
@@ -16,10 +15,9 @@ const { MODULE_FEDERATION_NAME } = require("./src/metadata.json");
 
 const PORT = 3001;
 const DEFAULT_BACKEND_URL = "https://live-examples-proxy.herokuapp.com";
-const proxyPath = process.env.BACKEND_TYPE === "bear" ? "/gdc" : "/api"; // use tiger api path by default
+const proxyEndpoint = process.env.BACKEND_TYPE === "bear" ? "/gdc" : "/api";
 
-function generateGooddataSharePackagesEntries(options = { allowPrereleaseVersions: false }) {
-    const { allowPrereleaseVersions } = options;
+function generateGooddataSharePackagesEntries() {
     // add all the gooddata packages that absolutely need to be shared and singletons because of contexts
     // allow sharing @gooddata/sdk-ui-dashboard here so that multiple plugins can share it among themselves
     // this makes redux related contexts work for example
@@ -27,7 +25,8 @@ function generateGooddataSharePackagesEntries(options = { allowPrereleaseVersion
         .filter(([pkgName]) => pkgName.startsWith("@gooddata"))
         .reduce((acc, [pkgName, version]) => {
             acc[pkgName] = {
-                requiredVersion: allowPrereleaseVersions ? false : version,
+                singleton: true,
+                requiredVersion: false,
             };
             return acc;
         }, {});
@@ -40,16 +39,18 @@ module.exports = (_env, argv) => {
     const protocol = new URL(effectiveBackendUrl).protocol;
 
     const proxy = {
-        [proxyPath]: {
+        [proxyEndpoint]: {
             changeOrigin: true,
             cookieDomainRewrite: "127.0.0.1",
             secure: false,
             target: effectiveBackendUrl,
             headers: {
-                host: effectiveBackendUrl,
-                origin: null,
+                host: effectiveBackendUrl.replace(/^https?:\/\//, ""),
+                // This is essential for Tiger backends. To ensure 401 flies when not authenticated and using proxy
+                "X-Requested-With": "XMLHttpRequest",
             },
             onProxyReq(proxyReq) {
+                // changeOrigin: true does not work well for POST requests, so remove origin like this to be safe
                 proxyReq.removeHeader("origin");
                 proxyReq.setHeader("accept-encoding", "identity");
             },
@@ -58,30 +59,32 @@ module.exports = (_env, argv) => {
 
     const commonConfig = {
         mode: isProduction ? "production" : "development",
-        // support IE11 only in production, in dev it is not necessary and it also would prevent hot reload
-        target: isProduction ? ["web", "es5"] : "web",
+        target: "web",
         devtool: isProduction ? false : "eval-cheap-module-source-map",
+        experiments: {
+            outputModule: true,
+        },
         output: {
-            publicPath: "auto",
+            path: path.resolve("./esm"),
+            filename: "[name].mjs",
+            library: {
+                type: "module",
+            },
         },
         resolve: {
-            // Allow to omit extensions when requiring these files
-            extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
-
-            alias: {
-                // fixes tilde imports in CSS from sdk-ui-* packages
-                "@gooddata/sdk-ui-dashboard": path.resolve("./node_modules/@gooddata/sdk-ui-dashboard"),
-                "@gooddata/sdk-ui-ext": path.resolve("./node_modules/@gooddata/sdk-ui-ext"),
+            // Alias for ESM imports with .js suffix because
+            // `import { abc } from "../abc.js"` may be in fact importing from `abc.tsx` file
+            extensionAlias: {
+                ".js": [".ts", ".tsx", ".js", ".jsx"],
             },
 
             // Prefer ESM versions of packages to enable tree shaking
             mainFields: ["module", "browser", "main"],
 
-            // polyfill "process" and "util" for lru-cache, webpack 5 no longer does that automatically
-            // remove this after IE11 support is dropped and lru-cache can be finally upgraded
             fallback: {
-                process: require.resolve("process/browser"),
-                util: require.resolve("util/"),
+                // semver package depends on node `util`,
+                // but node API is no longer supported with webpack >= 5
+                util: false,
             },
         },
         module: {
@@ -144,7 +147,7 @@ module.exports = (_env, argv) => {
                 patterns: [
                     {
                         from: path.resolve(__dirname, "src", MODULE_FEDERATION_NAME, "texts.json"),
-                        to: path.join(__dirname, "dist"),
+                        to: path.join(__dirname, "esm"),
                     },
                 ],
             }),
@@ -154,20 +157,21 @@ module.exports = (_env, argv) => {
     return [
         {
             ...commonConfig,
-            entry: "./src/index",
+            entry: "./src/index.js",
+            experiments: { ...commonConfig.experiments, topLevelAwait: true },
             name: "harness",
+            ignoreWarnings: [/Failed to parse source map/], // some of the dependencies have invalid source maps, we do not care that much
             devServer: {
-                contentBase: path.join(__dirname, "dist"),
+                static: {
+                    directory: path.join(__dirname, "esm"),
+                },
                 port: PORT,
-                proxy,
                 host: "127.0.0.1",
+                proxy,
                 https: protocol === "https:",
             },
             plugins: [
                 ...commonConfig.plugins,
-                new ProvidePlugin({
-                    process: "process/browser.js",
-                }),
                 new DefinePlugin({
                     PORT: JSON.stringify(PORT),
                 }),
@@ -182,32 +186,34 @@ module.exports = (_env, argv) => {
                 }),
                 new HtmlWebpackPlugin({
                     template: "./src/harness/public/index.html",
+                    scriptLoading: "module",
                 }),
             ],
         },
         {
             ...commonConfig,
-            entry: `./src/${MODULE_FEDERATION_NAME}/index`,
+            entry: `./src/${MODULE_FEDERATION_NAME}/index.js`,
             name: "dashboardPlugin",
-            output: { ...commonConfig.output, path: path.join(__dirname, "dist", "dashboardPlugin") },
+            output: { ...commonConfig.output, path: path.join(__dirname, "esm", "dashboardPlugin") },
             plugins: [
                 ...commonConfig.plugins,
                 new ModuleFederationPlugin({
+                    library: { type: "window", name: MODULE_FEDERATION_NAME },
                     name: MODULE_FEDERATION_NAME, // this is used to put the plugin on the target window scope by default
                     exposes: {
                         /**
                          * this is the main entry point providing info about the engine and plugin
                          * this allows us to only load the plugin and/or engine when needed
                          */
-                        [`./${MODULE_FEDERATION_NAME}_ENTRY`]: `./src/${MODULE_FEDERATION_NAME}_entry`,
+                        [`./${MODULE_FEDERATION_NAME}_ENTRY`]: `./src/${MODULE_FEDERATION_NAME}_entry/index.js`,
                         /**
                          * this is the entry to the plugin itself
                          */
-                        [`./${MODULE_FEDERATION_NAME}_PLUGIN`]: `./src/${MODULE_FEDERATION_NAME}`,
+                        [`./${MODULE_FEDERATION_NAME}_PLUGIN`]: `./src/${MODULE_FEDERATION_NAME}/index.js`,
                         /**
                          * this is the entry to the engine
                          */
-                        [`./${MODULE_FEDERATION_NAME}_ENGINE`]: `./src/${MODULE_FEDERATION_NAME}_engine`,
+                        [`./${MODULE_FEDERATION_NAME}_ENGINE`]: `./src/${MODULE_FEDERATION_NAME}_engine/index.js`,
                     },
 
                     // adds react as shared module
@@ -225,10 +231,10 @@ module.exports = (_env, argv) => {
                             singleton: true,
                             requiredVersion: deps["react-dom"],
                         },
-                        // add all the packages that absolutely need to be shared and singletons because of contexts
+                         // add all the packages that absolutely need to be shared and singletons because of contexts
                         // change the allowPrereleaseVersions to true if you want to work with alpha or beta versions
                         // beware that alpha and beta versions may break and may contain bugs, use at your own risk
-                        ...generateGooddataSharePackagesEntries({ allowPrereleaseVersions: false }),
+                        ...generateGooddataSharePackagesEntries(),
                     },
                 }),
             ],

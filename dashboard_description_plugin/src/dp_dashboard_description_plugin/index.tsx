@@ -1,6 +1,7 @@
 // (C) 2021-2023 GoodData Corporation
 import { IDashboardPluginContract_V1 } from "@gooddata/sdk-ui-dashboard";
-import { Plugin } from "./Plugin";
+
+import { Plugin } from "./Plugin.js";
 
 /**
  * Wraps the plugin and reexports it as a default export. This makes its subsequent loading easier.
