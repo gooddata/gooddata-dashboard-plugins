@@ -8,7 +8,7 @@ import {
 import { insightVisualizationUrl, widgetTitle } from "@gooddata/sdk-model";
 
 import entryPoint from "../dp_polar_area_chart_plugin_entry/index.js";
-import PolarAreaChart from "./components/PolarAreaChart.js";
+import PolarAreaChartWrapper from "./components/PolarAreaChart/PolarAreaChartWrapper.js";
 
 export const WIDGET_TITLE_SUFFIX = "_polar_area_chart_plugin_";
 const RE = new RegExp(`(.*)${WIDGET_TITLE_SUFFIX}$`);
@@ -31,7 +31,7 @@ export class Plugin extends DashboardPluginV1 {
                     insightVisualizationUrl(insight) === "local:donut") &&
                 widgetTitle(widget).match(RE)
             ) {
-                return PolarAreaChart;
+                return PolarAreaChartWrapper;
             }
             return undefined;
         });

@@ -9,7 +9,7 @@ import { insightVisualizationUrl, widgetTitle } from "@gooddata/sdk-model";
 
 import entryPoint from "../dp_radial_bar_chart_plugin_entry/index.js";
 
-import RadialBarChart from "./components/RadialBarChart.js";
+import RadialBarChartWrapper from "./components/RadialBarChart/RadialBarChartWrapper.js";
 
 export const WIDGET_TITLE_SUFFIX = "_radial_bar_chart_plugin_";
 const RE = new RegExp(`(.*)${WIDGET_TITLE_SUFFIX}$`);
@@ -28,7 +28,7 @@ export class Plugin extends DashboardPluginV1 {
     ): void {
         customize.insightWidgets().withCustomProvider((insight, widget) => {
             if (insightVisualizationUrl(insight) === "local:column" && widgetTitle(widget).match(RE)) {
-                return RadialBarChart;
+                return RadialBarChartWrapper;
             }
             return undefined;
         });
