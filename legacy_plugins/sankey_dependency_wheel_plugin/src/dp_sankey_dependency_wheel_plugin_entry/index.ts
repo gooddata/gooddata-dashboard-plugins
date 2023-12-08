@@ -1,9 +1,21 @@
-// (C) 2021-2023 GoodData Corporation
+// (C) 2021-2022 GoodData Corporation
+import type { DashboardPluginDescriptor } from "@gooddata/sdk-ui-dashboard";
 
 import metadataJson from "../metadata.json";
 import packageJson from "../../package.json";
 
-const entryPoint = {
+type PluginEntryPoint = DashboardPluginDescriptor & {
+    /**
+     * Key to the module federation container where to find the engine bundle entry point.
+     */
+    engineKey: string;
+    /**
+     * Key to the module federation container where to find the plugin bundle entry point.
+     */
+    pluginKey: string;
+};
+
+const entryPoint: PluginEntryPoint = {
     author: packageJson.author,
     displayName: packageJson.name,
     version: packageJson.version,

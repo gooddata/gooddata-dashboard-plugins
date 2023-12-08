@@ -1,21 +1,28 @@
-// (C) 2021-2023 GoodData Corporation
-import { DashboardPluginV1 } from "@gooddata/sdk-ui-dashboard";
+// (C) 2021-2022 GoodData Corporation
+import {
+    DashboardContext,
+    DashboardPluginV1,
+    IDashboardCustomizer,
+    IDashboardEventHandling,
+} from "@gooddata/sdk-ui-dashboard";
 import { insightVisualizationUrl, widgetTitle } from "@gooddata/sdk-model";
 
-import entryPoint from "../dp_sankey_dependency_wheel_plugin_entry";
-import SankeyDependencyWheel from "./SankeyDependencyWheel";
+// this import will be renamed in plugin-toolkit
+import entryPoint from "../dp_sankey_dependency_wheel_plugin_entry/index.js";
 
-export const WIDGET_TITLE_SUFFIX = '_sankey_dependency_wheel_plugin_';
+import SankeyDependencyWheel from "./components/SankeyDependencyWheel/SankeyDependencyWheel.js";
+
+export const WIDGET_TITLE_SUFFIX = "_sankey_dependency_wheel_plugin_";
 const RE = new RegExp(`(.*)${WIDGET_TITLE_SUFFIX}$`);
 
 export class Plugin extends DashboardPluginV1 {
-    author = entryPoint.author;
-    displayName = entryPoint.displayName;
-    version = entryPoint.version;
-    minEngineVersion = entryPoint.minEngineVersion;
-    maxEngineVersion = entryPoint.maxEngineVersion;
+    public readonly author = entryPoint.author;
+    public readonly displayName = entryPoint.displayName;
+    public readonly version = entryPoint.version;
+    public readonly minEngineVersion = entryPoint.minEngineVersion;
+    public readonly maxEngineVersion = entryPoint.maxEngineVersion;
 
-    onPluginLoaded(_ctx, _parameters) {
+    public onPluginLoaded(_ctx: DashboardContext, _parameters?: string): Promise<void> | void {
         /*
          * This will be called when the plugin is loaded in context of some dashboard and before
          * the register() method.
@@ -29,13 +36,14 @@ export class Plugin extends DashboardPluginV1 {
          */
     }
 
-    register(_ctx, customize, handlers) {
+    public register(
+        _ctx: DashboardContext,
+        customize: IDashboardCustomizer,
+        handlers: IDashboardEventHandling,
+    ): void {
         customize.insightWidgets().withCustomProvider((insight, widget) => {
-            if (
-                insightVisualizationUrl(insight) === "local:table" &&
-                widgetTitle(widget).match(RE)
-                ) {
-              return SankeyDependencyWheel;
+            if (insightVisualizationUrl(insight) === "local:table" && widgetTitle(widget).match(RE)) {
+                return SankeyDependencyWheel;
             }
             return undefined;
         });
@@ -45,7 +53,7 @@ export class Plugin extends DashboardPluginV1 {
         });
     }
 
-    onPluginUnload(_ctx) {
+    public onPluginUnload(_ctx: DashboardContext): Promise<void> | void {
         /*
          * This will be called when user navigates away from the dashboard enhanced by the plugin. At this point,
          * your code may do additional teardown and cleanup.
