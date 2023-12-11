@@ -2,9 +2,10 @@
 import React from "react";
 import { IDashboardAttributeFilterProps } from "@gooddata/sdk-ui-dashboard";
 import { AttributeFilterButton } from "@gooddata/sdk-ui-filters";
-import { useIsSingleSelect } from "./useIsSingleSelect";
-import { SingleSelectAttributeFilter } from "./SingleSelectAttributeFilter/SingleSelectAttributeFilter";
-import { useAttributeFilterProps } from "./useAttributeFilterProps";
+
+import { useIsSingleSelect } from "./useIsSingleSelect.js";
+import { SingleSelectAttributeFilter } from "./SingleSelectAttributeFilter/SingleSelectAttributeFilter.js";
+import { useAttributeFilterProps } from "./useAttributeFilterProps.js";
 
 export function PluginAttributeFilter(props: IDashboardAttributeFilterProps): JSX.Element {
     const attributeFilterProps = useAttributeFilterProps(props);

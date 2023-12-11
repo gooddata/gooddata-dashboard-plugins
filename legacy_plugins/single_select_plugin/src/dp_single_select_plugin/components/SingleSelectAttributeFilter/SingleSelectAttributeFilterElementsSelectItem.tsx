@@ -3,7 +3,8 @@ import React, { useCallback } from "react";
 import cx from "classnames";
 import { IAttributeFilterElementsSelectItemProps, useAttributeFilterContext } from "@gooddata/sdk-ui-filters";
 import { IAttributeElement } from "@gooddata/sdk-model";
-import { ALL_ITEM } from "./constants";
+
+import { ALL_ITEM } from "./constants.js";
 
 function getElementTitle(element: IAttributeElement) {
     return element.title || "(empty value)";
@@ -29,10 +30,10 @@ function isElementSelected(
 /**
  * Renders elements selection list item as a single select list item.
  */
-export const SingleSelectAttributeFilterElementsSelectItem: React.VFC<
+export const SingleSelectAttributeFilterElementsSelectItem: React.FC<
     IAttributeFilterElementsSelectItemProps
 > = (props) => {
-    const { item, onSelectOnly } = props;
+    const { item } = props;
     const { workingSelectionElements, onSelect, isWorkingSelectionInverted } = useAttributeFilterContext();
 
     // Modify item click behavior to select only this particular item.
@@ -47,7 +48,7 @@ export const SingleSelectAttributeFilterElementsSelectItem: React.VFC<
                 onSelect([item], false);
             }
         },
-        [onSelectOnly],
+        [item, onSelect],
     );
 
     const isSelected = isElementSelected(workingSelectionElements, isWorkingSelectionInverted, item);

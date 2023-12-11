@@ -8,13 +8,14 @@ import {
     selectLocale,
 } from "@gooddata/sdk-ui-dashboard";
 import { IAttributeFilterButtonProps } from "@gooddata/sdk-ui-filters";
-import { attributeFilterToDashboardAttributeFilter } from "./utils";
 import { IAttributeFilter } from "@gooddata/sdk-model";
+
+import { attributeFilterToDashboardAttributeFilter } from "./utils.js";
 
 /**
  * Maps dashboard attribute filter props to the AttributeFilter component props.
  *
- * @param props - dashboard attribute filter props 
+ * @param props - dashboard attribute filter props
  * @returns attribute filter props
  */
 export function useAttributeFilterProps(props: IDashboardAttributeFilterProps): IAttributeFilterButtonProps {
@@ -33,7 +34,7 @@ export function useAttributeFilterProps(props: IDashboardAttributeFilterProps): 
                 attributeFilterToDashboardAttributeFilter(newFilter, filter.attributeFilter.localIdentifier),
             );
         },
-        [filter.attributeFilter.localIdentifier],
+        [filter.attributeFilter.localIdentifier, onFilterChanged],
     );
 
     return {
