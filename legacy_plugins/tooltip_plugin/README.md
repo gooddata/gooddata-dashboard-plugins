@@ -8,14 +8,21 @@ The tooltip texts are defined in the [fixtures](./src/dp_tooltip_plugin/fixtures
 
 ## How to work with tooltip plugin
 
-1.Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
-3. Navigate to `tooltip_plugin`
-4. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#Plugin development guide) section.
-5. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
-6. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build-plugin`. If you have this plugin already built, delete the `dist` folder first.
-7. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
-8. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin object id noted in the console output.
-9. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id>` command.
+1. Clone [dashboard-plugin-examples repository](https://github.com/gooddata/gooddata-plugin-examples)
+2. Navigate to `tooltip_plugin`
+3. Make sure you have your `.env` and `.env.secrets` files with correct values. See [development guide](#plugin-development-guide) section.
+4. Make sure that dependencies in `package.json` file are aligned with the version of SDK dashboard component you use in your project.
+5. Build a production version of the plugin with command `npm run build-plugin` or for yarn, `yarn build-plugin`. If you have this plugin already built, delete the `dist` folder first.
+6. Upload built plugin to your hosting. See [limitations for the hosting](https://sdk.gooddata.com/gooddata-ui/docs/dashboard_plugins.html#current-limitations).
+7. Create plugin MD object with `yarn add-plugin` command. For more information run the `yarn add-plugin --help` command. Remember or copy the plugin object id noted in the console output.
+8. Link the plugin to dashboard with the id set up in `.env` file with `yarn link-plugin -- <plugin-obj-id>` command.
+
+# GoodData.UI Dashboard Plugin project
+
+This is a one-stop project to help you develop, test and build your own dashboard plugin. Before you start, we
+encourage you to learn more about plugins in [our documentation](https://sdk.gooddata.com/gooddata-ui/docs/about_gooddataui.html).
+
+In case you don't feel like reading the documentation at this point, go at least through the following quick introduction.
 
 ## Quick Introduction into Dashboard Plugins
 
@@ -50,7 +57,7 @@ Building a new plugin is easy. Before you start, ensure that your `.env` and `.e
 
 0.  (Optional) Export catalog: `npm run refresh-md`
 
-    To make referencing various metadata objects easier in your plugin, you can use the [Export catalog](https://sdk.gooddata.com/gooddata-ui/docs/export_catalog.html) feature to get a easy-to-use list of the various MD objects in your workspace (insights, dashboards, attributes, etc.).
+    To make referencing various metadata objects easier in your plugin, you can use the [Export catalog](https://sdk.gooddata.com/gooddata-ui/docs/export_catalog.html) feature to get an easy-to-use list of the various MD objects in your workspace (insights, dashboards, attributes, etc.).
     For convenience, this was integrated to your plugin, just run `npm run refresh-md`.
     This will connect to the workspace specified in the `.env` file using the credentials from `.env.secrets`
     and populate the file `src/md/full.ts` with information about the metadata objects available in the specified workspace.
@@ -74,13 +81,13 @@ Building a new plugin is easy. Before you start, ensure that your `.env` and `.e
 
 3.  Build the plugin: `npm run build-plugin`
 
-    This will build plugin artifacts under `dist/dashboardPlugin`.
+    This will build plugin artifacts under `esm/dashboardPlugin`.
 
 4.  Upload plugin artifacts to your hosting
 
-    It is paramount that you upload all files from the `dist/dashboardPlugin`.
+    It is paramount that you upload all files from the `esm/dashboardPlugin`.
 
-    _IMPORTANT_: your hosting must support https and your GoodData domain must include the hosting location in the list
+    _IMPORTANT_: your hosting must support https, allow CORS to your GoodData domain and your GoodData domain must include the hosting location in the list
     of allowed hosts from where GoodData will load plugins. You should create a [support ticket](https://support.gooddata.com/hc/en-us/requests/new?ticket_form_id=582387) to explicitly allow the hosting
     location before we will load any plugins from it. You may host multiple plugins in separate directories within
     the allowed hosting location.
@@ -123,6 +130,14 @@ Building a new plugin is easy. Before you start, ensure that your `.env` and `.e
 
     _TIP_: you can use the `unlink` command to remove the link between dashboard and the plugin.
 
+7.  Update plugin parameters on a dashboard: `npm run update-plugin-params -- <plugin-object-id>`
+
+    This command is useful if you want to change or add the parameters in the already linked plugin. The tool will open an editor for you to enter the new parameters.
+
+8.  Remove plugin parameters on a dashboard: `npm run remove-plugin-params -- <plugin-object-id>`
+
+    This command is useful if you want to remove the parameters in the already linked plugin.
+
 ## Authentication & secrets
 
 Your plugin does not have to concern itself with the authentication against GoodData backend. When the plugin runs
@@ -158,7 +173,7 @@ code in this directory will not be part of the plugin build. You can start the h
 You should have no need to modify the code in the harness. We anticipate that at times you may need to tweak Analytical Backend setup
 that is contained in the [src/harness/backend.ts](src/harness/backend.ts) - this is a safe change.
 
-### How can I setup compatibility of the plugin?
+### How can I set up compatibility of the plugin?
 
 You can modify minEngineVersion and maxEngineVersion properties in `src/dp_tooltip_plugin\_entry/index`.
 By default, we guarantee that plugin will be compatible only with the exact version of the dashboard engine used during its build (`"bundled"` option). But if you are sure, that plugin is compatible also with the other engine versions, you can set concrete range of the versions (e.g. `"minEngineVersion": "8.8.0", "maxEngineVersion": "8.9.0"`). Note that combining multiple plugins created before version `8.8.0` may not work.
@@ -172,18 +187,18 @@ will be _provided_ by the runtime environment.
 ### Can I modify webpack config?
 
 This is generally not recommended and if needed should be approached by expert users only. In general, adding new
-loaders and _extending_ the resolve section are the safer types of changes. However we strongly discourage making
+loaders and _extending_ the resolve section are the safer types of changes. However, we strongly discourage making
 modifications to other parts of the webpack config: changes to how the `dashboardPlugin` is built can break your
 plugin and prevent it from loading correctly.
 
 ### How about Internet Explorer?
 
-GoodData applications [do not support Internet Explorer](https://help.gooddata.com/pages/viewpage.action?pageId=86775029) as of November 19th 2021.
+GoodData's applications [do not support Internet Explorer](https://help.gooddata.com/pages/viewpage.action?pageId=86775029) as of November 19th 2021.
 The plugin artifacts created during the plugin build are not compatible with Internet Explorer.
 
 ### How about Safari?
 
-GoodData applications do support Safari, however currently it's not possible to run this boilerplate locally with GoodData.CN backend running on https protocol, due to the fact how Safari is handling authentication in backend redirects.
+GoodData's applications do support Safari, however currently it's not possible to run this boilerplate locally with GoodData.CN backend running on https protocol, due to the fact how Safari is handling authentication in backend redirects.
 
 ## License
 

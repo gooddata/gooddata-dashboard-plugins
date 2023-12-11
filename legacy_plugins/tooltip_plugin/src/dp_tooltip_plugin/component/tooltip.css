@@ -1,7 +1,7 @@
 /* (C) 2022 GoodData Corporation */
 .gd-icon-circle-question__container {
     position: absolute;
-    top: 0px;
+    top: 0;
     height: 36px;
     width: 36px;
     z-index: 99;
@@ -36,6 +36,7 @@
   }
   
   .gd-icon-circle-question {
+    display: flex;
     color: #6f767f;
   }
   
@@ -49,7 +50,6 @@
     position: relative;
     background: rgba(70, 78, 86, 0.95);
     padding: 7px 10px;
-    font-size: 14px;
     color: #fff;
     border-radius: 3px;
     font-size: 14px;
