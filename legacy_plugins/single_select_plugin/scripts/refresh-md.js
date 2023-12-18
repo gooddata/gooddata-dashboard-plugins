@@ -1,14 +1,20 @@
 #!/usr/bin/env node
-// (C) 2022-2023 GoodData Corporation
+// (C) 2022 GoodData Corporation
 
-const dotenv = require("dotenv");
-const path = require("path");
+import dotenv from "dotenv";
+
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 dotenv.config({ path: path.resolve(__dirname, "../.env.secrets") });
 
 const workspace = process.env.WORKSPACE;
 const hostname = process.env.BACKEND_URL;
 const backend = "tiger";
+
 const output = "./src/md/full.ts";
 
 process.argv.push(
@@ -18,8 +24,8 @@ process.argv.push(
     hostname,
     "--workspace-id",
     workspace,
-    "--output",
+    "--catalog-output",
     output,
 );
 
-require("@gooddata/catalog-export");
+await import("@gooddata/catalog-export");
