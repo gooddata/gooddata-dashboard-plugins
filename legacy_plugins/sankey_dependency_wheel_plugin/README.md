@@ -5,21 +5,21 @@ This plugin replaces pivot tables with a widget title suffix `$WIDGET_TITLE_SUFF
 ## How to work with Sankey Dependency Wheel Plugin
 
 1. Clone this repository
-1. Navigate to `sankey_dependency_wheel_plugin`
-1. Provide backend, workspace and dashboard in `.env`
-1. Rename `.env.secrets.template` to `.env.secrets` and provide your preferred way of authentication
-1. Install the dependencies (`npm install` or `yarn install`)
-1. See instructions below how to build, deploy, and use this plugin
+2. Navigate to `sankey_dependency_wheel_plugin`
+3. Provide backend, workspace and dashboard in `.env`
+4. Rename `.env.secrets.template` to `.env.secrets` and provide your preferred way of authentication
+5. Install the dependencies (`npm install` or `yarn install`)
+6. See instructions below how to build, deploy, and use this plugin
 
 > Optional: There's an extra `sync-plugin` command in the `src/package.json` that uploads the plugin to an S3 bucket. It requires [s3cmd](https://s3tools.org/s3cmd) CLI and `src/.s3cmd` with bucket credentials config to work.
 
 ## Screenshot
 
-![screenshot](screenshot.png)
+![screenshot](assets/screenshot.png)
 
 ---
 
-This is a one stop project to help you develop, test and build your own dashboard plugin. Before you start, we
+This is a one-stop project to help you develop, test and build your own dashboard plugin. Before you start, we
 encourage you to learn more about plugins in [our documentation](https://sdk.gooddata.com/gooddata-ui/docs/about_gooddataui.html).
 
 In case you don't feel like reading the documentation at this point, go at least through the following quick introduction.
@@ -57,10 +57,10 @@ Building a new plugin is easy. Before you start, ensure that your `.env` and `.e
 
 0.  (Optional) Export catalog: `npm run refresh-md`
 
-    To make referencing various metadata objects easier in your plugin, you can use the [Export catalog](https://sdk.gooddata.com/gooddata-ui/docs/export_catalog.html) feature to get a easy-to-use list of the various MD objects in your workspace (insights, dashboards, attributes, etc.).
+    To make referencing various metadata objects easier in your plugin, you can use the [Export catalog](https://sdk.gooddata.com/gooddata-ui/docs/export_catalog.html) feature to get an easy-to-use list of the various MD objects in your workspace (insights, dashboards, attributes, etc.).
     For convenience, this was integrated to your plugin, just run `npm run refresh-md`.
     This will connect to the workspace specified in the `.env` file using the credentials from `.env.secrets`
-    and populate the file `src/md/full.js` with information about the metadata objects available in the specified workspace.
+    and populate the file `src/md/full.ts` with information about the metadata objects available in the specified workspace.
     See the [Export catalog](https://sdk.gooddata.com/gooddata-ui/docs/export_catalog.html) documentation page for more information.
 
 1.  Start the development server: `npm start`
@@ -72,7 +72,7 @@ Building a new plugin is easy. Before you start, ensure that your `.env` and `.e
 
 2.  Develop your plugin code in `src/dp_sankey_dependency_wheel_plugin`
 
-    The `src/dp_sankey_dependency_wheel_plugin/Plugin.jsx` is the main plugin file where you have to register all
+    The `src/dp_sankey_dependency_wheel_plugin/Plugin.tsx` is the main plugin file where you have to register all
     your custom content. However, you can create as many new files as you want under the `src/dp_sankey_dependency_wheel_plugin`
     directory. Just make sure to never place your custom code outside of this directory.
 
@@ -81,13 +81,13 @@ Building a new plugin is easy. Before you start, ensure that your `.env` and `.e
 
 3.  Build the plugin: `npm run build-plugin`
 
-    This will build plugin artifacts under `dist/dashboardPlugin`.
+    This will build plugin artifacts under `esm/dashboardPlugin`.
 
 4.  Upload plugin artifacts to your hosting
 
-    It is paramount that you upload all files from the `dist/dashboardPlugin`.
+    It is paramount that you upload all files from the `esm/dashboardPlugin`.
 
-    _IMPORTANT_: your hosting must support https and your GoodData domain must include the hosting location in the list
+    _IMPORTANT_: your hosting must support https, allow CORS to your GoodData domain and your GoodData domain must include the hosting location in the list
     of allowed hosts from where GoodData will load plugins. You should create a [support ticket](https://support.gooddata.com/hc/en-us/requests/new?ticket_form_id=582387) to explicitly allow the hosting
     location before we will load any plugins from it. You may host multiple plugins in separate directories within
     the allowed hosting location.
@@ -134,6 +134,10 @@ Building a new plugin is easy. Before you start, ensure that your `.env` and `.e
 
     This command is useful if you want to change or add the parameters in the already linked plugin. The tool will open an editor for you to enter the new parameters.
 
+8.  Remove plugin parameters on a dashboard: `npm run remove-plugin-params -- <plugin-object-id>`
+
+    This command is useful if you want to remove the parameters in the already linked plugin.
+
 ## Authentication & secrets
 
 Your plugin does not have to concern itself with the authentication against GoodData backend. When the plugin runs
@@ -169,7 +173,7 @@ code in this directory will not be part of the plugin build. You can start the h
 You should have no need to modify the code in the harness. We anticipate that at times you may need to tweak Analytical Backend setup
 that is contained in the [src/harness/backend.ts](src/harness/backend.ts) - this is a safe change.
 
-### How can I setup compatibility of the plugin?
+### How can I set up compatibility of the plugin?
 
 You can modify minEngineVersion and maxEngineVersion properties in `src/dp_sankey_dependency_wheel_plugin\_entry/index`.
 By default, we guarantee that plugin will be compatible only with the exact version of the dashboard engine used during its build (`"bundled"` option). But if you are sure, that plugin is compatible also with the other engine versions, you can set concrete range of the versions (e.g. `"minEngineVersion": "8.8.0", "maxEngineVersion": "8.9.0"`). Note that combining multiple plugins created before version `8.8.0` may not work.
@@ -183,18 +187,18 @@ will be _provided_ by the runtime environment.
 ### Can I modify webpack config?
 
 This is generally not recommended and if needed should be approached by expert users only. In general, adding new
-loaders and _extending_ the resolve section are the safer types of changes. However we strongly discourage making
+loaders and _extending_ the resolve section are the safer types of changes. However, we strongly discourage making
 modifications to other parts of the webpack config: changes to how the `dashboardPlugin` is built can break your
 plugin and prevent it from loading correctly.
 
 ### How about Internet Explorer?
 
-GoodData applications [do not support Internet Explorer](https://help.gooddata.com/pages/viewpage.action?pageId=86775029) as of November 19th 2021.
+GoodData's applications [do not support Internet Explorer](https://help.gooddata.com/pages/viewpage.action?pageId=86775029) as of November 19th 2021.
 The plugin artifacts created during the plugin build are not compatible with Internet Explorer.
 
 ### How about Safari?
 
-GoodData applications do support Safari, however currently it's not possible to run this boilerplate locally with GoodData.CN backend running on https protocol, due to the fact how Safari is handling authentication in backend redirects.
+GoodData's applications do support Safari, however currently it's not possible to run this boilerplate locally with GoodData.CN backend running on https protocol, due to the fact how Safari is handling authentication in backend redirects.
 
 ## License
 

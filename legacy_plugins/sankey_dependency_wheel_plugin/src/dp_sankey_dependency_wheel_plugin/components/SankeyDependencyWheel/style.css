@@ -1,0 +1,5 @@
+.sankey-dependency-wheel-wrapper {
+    position: relative;
+    display: flex;
+    flex: 1;
+}
