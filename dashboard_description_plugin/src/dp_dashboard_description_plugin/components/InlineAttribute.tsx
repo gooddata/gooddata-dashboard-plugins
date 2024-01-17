@@ -1,4 +1,4 @@
-// (C) 2022-2023 GoodData Corporation
+// (C) 2022-2024 GoodData Corporation
 import React, { useMemo } from "react";
 import { UseCancelablePromiseStatus } from "@gooddata/sdk-ui";
 

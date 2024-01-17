@@ -1,4 +1,4 @@
-// (C) 2023 GoodData Corporation
+// (C) 2023-2024 GoodData Corporation
 
 import { useEffect, useMemo, useState } from "react";
 import { IdentifierRef, idRef } from "@gooddata/sdk-model";
