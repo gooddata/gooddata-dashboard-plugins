@@ -1,4 +1,4 @@
-// (C) 2023 GoodData Corporation
+// (C) 2023-2024 GoodData Corporation
 
 export const WHITE_LABELLING_BAR_WIDGET_TYPE = "whiteLabellingBar";
 

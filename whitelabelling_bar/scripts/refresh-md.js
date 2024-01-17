@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// (C) 2022-2023 GoodData Corporation
+// (C) 2022-2024 GoodData Corporation
 
 import path from "path";
 import { fileURLToPath } from "url";

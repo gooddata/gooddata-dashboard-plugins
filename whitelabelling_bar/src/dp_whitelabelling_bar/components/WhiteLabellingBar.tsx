@@ -1,4 +1,4 @@
-// (C) 2023 GoodData Corporation
+// (C) 2023-2024 GoodData Corporation
 
 import React, { CSSProperties, useMemo, useRef, useState } from "react";
 import {
