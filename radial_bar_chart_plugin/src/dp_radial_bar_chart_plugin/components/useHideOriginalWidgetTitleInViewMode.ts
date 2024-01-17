@@ -1,4 +1,4 @@
-// (C) 2023 GoodData Corporation
+// (C) 2023-2024 GoodData Corporation
 import { IInsightWidget } from "@gooddata/sdk-model";
 import { changeInsightWidgetVisConfiguration, useDispatchDashboardCommand } from "@gooddata/sdk-ui-dashboard";
 import { useEffect } from "react";
