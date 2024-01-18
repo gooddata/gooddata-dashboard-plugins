@@ -1,8 +1,12 @@
-// (C) 2023 GoodData Corporation
+// (C) 2024 GoodData Corporation
+
+import { PluginParams } from "../interface.js";
 import invariant from "ts-invariant";
 
-import { PluginParams } from "./interface.js";
-
+/**
+ * Validates plugin parameters
+ * @param params
+ */
 export function validateParameters(params: unknown): asserts params is PluginParams {
     invariant(typeof params === "object", `"Invalid type of plugin parameters: ${typeof params}`);
 

@@ -1,4 +1,4 @@
-// (C) 2021-2023 GoodData Corporation
+// (C) 2024 GoodData Corporation
 import { newDashboardEngine } from "@gooddata/sdk-ui-dashboard";
 
 export default newDashboardEngine;

@@ -1,18 +1,16 @@
-// (C) 2023 GoodData Corporation
+// (C) 2024 GoodData Corporation
+import { IDashboardLayoutItem, IInsightWidget } from "@gooddata/sdk-model";
+
 export interface IGroupsConfig {
     [groupKey: string]: string[];
-}
-
-export interface IGroupsSelection {
-    [groupKey: string]: string;
-}
-
-export interface IGroupsHidingHooks {
-    [insightIdentifier: string]: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface IWidgetTitles {
     [insightIdentifier: string]: string;
 }
+
+export type NonNullableIDashboardLayoutItem<T> = Omit<IDashboardLayoutItem<T>, "widget"> & {
+    widget: IInsightWidget;
+};
 
 export type PluginParams = IGroupsConfig;

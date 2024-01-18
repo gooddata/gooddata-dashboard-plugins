@@ -1,7 +1,7 @@
-// (C) 2022 GoodData Corporation
+// (C) 2024 GoodData Corporation
 import React, { CSSProperties } from "react";
 
-const ChevronIcon: React.VFC<{ rotation: number; style: CSSProperties; color: string }> = ({
+const ChevronIcon: React.FC<{ rotation: number; style: CSSProperties; color: string }> = ({
     rotation,
     style,
     color,

@@ -1,17 +1,17 @@
-// (C) 2022 GoodData Corporation
+// (C) 2022-2024 GoodData Corporation
 import React, { useMemo, useState } from "react";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Bubble } from "@gooddata/sdk-ui-kit";
+import { IInsightWidget } from "@gooddata/sdk-model";
+
 import GroupIcon from "./icons/GroupIcon.js";
 import ChevronIcon from "./icons/ChevronIcon.js";
 import CircleIcon from "./icons/CircleIcon.js";
 import "./bubble.css";
-import { IInsightWidget } from "@gooddata/sdk-model";
 import { useHideWidgetTitle } from "./useHideWidgetTitle.js";
 
 export interface ICustomHeaderProps {
     selectedIdentifier: string;
-    hideColumn: boolean;
     groupInsightsIdentifiers: string[];
     onGroupInsightSelected: (identifier: string) => void;
     widgetTitles: { [insightIdentifier: string]: string };
@@ -56,27 +56,7 @@ const StyledBulletList = styled.div`
     }
 `;
 
-function setColumnVisibilityByChildId(childId: string, visible: boolean) {
-    const el = document.getElementById(childId);
-    let currentTraversingEl = el;
-    while (currentTraversingEl) {
-        if (currentTraversingEl.className.includes("gd-fluidlayout-column")) {
-            if (visible) {
-                currentTraversingEl.style.opacity = "1";
-                currentTraversingEl.style.position = "relative";
-                currentTraversingEl.style.pointerEvents = "auto";
-            } else {
-                currentTraversingEl.style.opacity = "0";
-                currentTraversingEl.style.position = "absolute";
-                currentTraversingEl.style.pointerEvents = "none";
-            }
-        }
-        currentTraversingEl = currentTraversingEl.parentElement;
-    }
-}
-
-export const GroupedWidgetHeader: React.VFC<ICustomHeaderProps> = ({
-    hideColumn,
+export const GroupedWidgetHeader: React.FC<ICustomHeaderProps> = ({
     groupInsightsIdentifiers,
     onGroupInsightSelected,
     widgetTitles,
@@ -86,8 +66,6 @@ export const GroupedWidgetHeader: React.VFC<ICustomHeaderProps> = ({
     const randomId = useMemo(() => "cls_" + (Math.random() * 10e20).toString(10), []);
     const [bubbleOpen, setBubbleOpen] = useState(false);
     const [hovered, setHovered] = useState(false);
-
-    setColumnVisibilityByChildId(randomId, !hideColumn);
 
     // hiding the insight title
     useHideWidgetTitle(widget);
@@ -102,7 +80,11 @@ export const GroupedWidgetHeader: React.VFC<ICustomHeaderProps> = ({
         <>
             <StyledTitleOuter onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
                 <StyledTitle>
-                    <span id={randomId} onClick={() => setBubbleOpen(!bubbleOpen)}>
+                    <span
+                        id={randomId}
+                        onClick={() => setBubbleOpen(!bubbleOpen)}
+                        className="s-plugin-group-title"
+                    >
                         <GroupIcon style={{ verticalAlign: "middle" }} color={iconsColor} />
                         {widgetTitles[selectedIdentifier]}
                         <ChevronIcon
@@ -130,12 +112,12 @@ export const GroupedWidgetHeader: React.VFC<ICustomHeaderProps> = ({
                     alignPoints={[{ align: "bc tc" }]}
                     className="bubble-light options-menu-bubble plugin-group-bubble"
                 >
-                    <StyledBubbleContent>
+                    <StyledBubbleContent className="s-plugin-group-menu">
                         {groupInsightsIdentifiers.map((item) => {
                             return (
                                 <div
                                     key={item}
-                                    className={`gd-list-item ${
+                                    className={`gd-list-item s-plugin-group-menu-item ${
                                         item === selectedIdentifier ? "is-selected" : ""
                                     }`}
                                     onClick={() => {

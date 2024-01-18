@@ -1,7 +1,7 @@
-// (C) 2022 GoodData Corporation
+// (C) 2024 GoodData Corporation
 import React, { CSSProperties } from "react";
 
-const GroupIcon: React.VFC<{ style: CSSProperties; color: string }> = ({ style, color }) => (
+const GroupIcon: React.FC<{ style: CSSProperties; color: string }> = ({ style, color }) => (
     <svg
         width="30"
         height="22"

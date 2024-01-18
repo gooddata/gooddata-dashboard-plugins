@@ -1,0 +1,4 @@
+// (C) 2024 GoodData Corporation
+
+export const DASHBOARD_EVENT_INITIALIZED = "GDC.DASH/EVT.INITIALIZED";
+export const DASHBOARD_EVENT_SAVED = "GDC.DASH/EVT.SAVED";
