@@ -23,7 +23,7 @@ function generateGooddataSharePackagesEntries() {
     // this makes redux related contexts work for example
     return [...Object.entries(deps), ...Object.entries(peerDeps)]
         .filter(([pkgName]) => pkgName.startsWith("@gooddata"))
-        .reduce((acc, [pkgName, version]) => {
+        .reduce((acc, [pkgName, _version]) => {
             acc[pkgName] = {
                 singleton: true,
                 requiredVersion: false,
