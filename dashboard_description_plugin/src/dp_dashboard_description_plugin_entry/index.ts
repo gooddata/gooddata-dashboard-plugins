@@ -3,6 +3,7 @@ import type { DashboardPluginDescriptor } from "@gooddata/sdk-ui-dashboard";
 
 import metadataJson from "../metadata.json";
 import packageJson from "../../package.json";
+import { ensureSemverPrefix } from '../utils/index.js';
 
 type PluginEntryPoint = DashboardPluginDescriptor & {
     /**
@@ -21,8 +22,7 @@ const entryPoint: PluginEntryPoint = {
     version: packageJson.version,
     minEngineVersion: "bundled",
     maxEngineVersion: "bundled",
-    // @ts-expect-error till we will have version 9.5.0
-    compatibility: `^${packageJson.peerDependencies["@gooddata/sdk-ui-dashboard"]}`,
+    compatibility: ensureSemverPrefix(packageJson.peerDependencies["@gooddata/sdk-ui-dashboard"]),
     // These two must fit the values in the webpack config. Do not edit them unless you know what you are doing
     engineKey: `./${metadataJson.MODULE_FEDERATION_NAME}_ENGINE`,
     pluginKey: `./${metadataJson.MODULE_FEDERATION_NAME}_PLUGIN`,
