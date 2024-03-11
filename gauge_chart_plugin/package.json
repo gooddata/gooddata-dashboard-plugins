@@ -1,6 +1,6 @@
 {
     "name": "gauge_chart_plugin",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Simple plugin that replace Bullet chart for Gauge chart",
     "author": "Open-sourced by GoodData - feel free to change",
     "private": false,

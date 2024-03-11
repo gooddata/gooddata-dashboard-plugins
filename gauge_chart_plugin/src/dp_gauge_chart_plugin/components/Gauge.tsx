@@ -65,8 +65,9 @@ export const Gauge: React.FC<{
     const percent = value / max;
 
     return (
-        <div style={{ padding: "1rem" }}>
+        <div data-testid="gauge-chart-container" style={{ padding: "1rem" }}>
             <GaugeChart
+                data-testid="gauge-chart"
                 animate={false}
                 nrOfLevels={20}
                 percent={percent}
@@ -82,10 +83,10 @@ export const Gauge: React.FC<{
             />
             {showLabels && (
                 <svg viewBox="0 0 250 25">
-                    <text x="15%" y="20">
+                    <text data-testid="gauge-chart-label-min" x="15%" y="20">
                         {format === "#" ? "0" : "0%"}
                     </text>
-                    <text x="75%" y="20">
+                    <text data-testid="gauge-chart-label-max" x="75%" y="20">
                         {format === "#" ? max : "100%"}
                     </text>
                 </svg>
