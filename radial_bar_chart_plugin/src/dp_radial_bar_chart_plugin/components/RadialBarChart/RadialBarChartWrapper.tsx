@@ -22,7 +22,7 @@ const RadialBarChartWrapper: React.FC<IDashboardInsightProps> = (props) => {
         [ErrorComponent],
     );
 
-    // replace original widget title with a new one without the suffix
+    // replace the original widget title with a new one without the suffix
     useHideOriginalWidgetTitleInViewMode(widget, isInViewMode);
     const customWidgetTitleComponent = useMemo(() => {
         const titleWithoutSuffix = widget.title.replace(WIDGET_TITLE_SUFFIX, "");
@@ -33,7 +33,7 @@ const RadialBarChartWrapper: React.FC<IDashboardInsightProps> = (props) => {
     return (
         <ErrorBoundary ErrorComponent={GeneralError}>
             {customWidgetTitleComponent}
-            <div ref={wrapperRef} className={"radial-bar-wrapper"}>
+            <div ref={wrapperRef} className="radial-bar-wrapper" data-testid="radial-bar-chart">
                 <RadialBarChart
                     wrapperHeight={wrapperRef.current?.offsetHeight}
                     widget={widget}
