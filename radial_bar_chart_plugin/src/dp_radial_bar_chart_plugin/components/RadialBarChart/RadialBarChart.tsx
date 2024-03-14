@@ -15,6 +15,8 @@ interface IRadialBarChartProps {
     wrapperHeight?: number;
 }
 
+const wrapperStyle = { fontSize: 12 };
+
 export const RadialBarChart: React.FC<IRadialBarChartProps> = ({
     wrapperHeight,
     widget,
@@ -22,6 +24,7 @@ export const RadialBarChart: React.FC<IRadialBarChartProps> = ({
     LoadingComponent,
 }) => {
     const colorPalette = useDashboardSelector(selectColorPalette);
+
     const colors = useMemo(
         () => colorPalette.map((color) => `rgb(${color.fill.r}, ${color.fill.g}, ${color.fill.b})`),
         [colorPalette],
@@ -31,6 +34,20 @@ export const RadialBarChart: React.FC<IRadialBarChartProps> = ({
         insightWidget: widget,
     });
 
+    const data = useMemo(
+        () =>
+            result
+                ?.data()
+                .slices()
+                .toArray()
+                .map((slice, i) => ({
+                    name: slice.sliceTitles()[0],
+                    value: parseFloat(`${slice.rawData()[0] ?? ""}`),
+                    fill: colors[i % colors.length],
+                })),
+        [result, colors],
+    );
+
     if (status === "loading" || status === "pending") {
         return <LoadingComponent />;
     }
@@ -39,25 +56,13 @@ export const RadialBarChart: React.FC<IRadialBarChartProps> = ({
         return <ErrorComponent message={error?.message ?? "Unknown error"} />;
     }
 
-    const data = result
-        .data()
-        .slices()
-        .toArray()
-        .map((slice, i) => ({
-            name: slice.sliceTitles()[0],
-            value: parseFloat(`${slice.rawData()[0] ?? ""}`),
-            fill: colors[i % colors.length],
-        }));
-
     return (
         <ResponsiveContainer width={"100%"} height={wrapperHeight}>
             <RBC innerRadius="10%" outerRadius="100%" barSize={10} data={data}>
                 <RadialBar
-                    minAngle={15}
                     // uncomment the following line to display labels
                     // label={{ position: 'insideStart', fill: '#fff' }}
                     background
-                    clockWise
                     dataKey="value"
                 />
                 <Legend
@@ -65,7 +70,7 @@ export const RadialBarChart: React.FC<IRadialBarChartProps> = ({
                     verticalAlign="top"
                     align="right"
                     iconSize={12}
-                    wrapperStyle={{ fontSize: 12 }}
+                    wrapperStyle={wrapperStyle}
                 />
             </RBC>
         </ResponsiveContainer>
