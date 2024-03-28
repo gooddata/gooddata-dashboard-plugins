@@ -65,6 +65,7 @@ export const PolarAreaChart: React.FC<IPolarAreaChartProps> = ({
 
     return (
         <PolarArea
+            data-testid="polar-area-chart"
             data={data}
             options={{
                 maintainAspectRatio: false,
