@@ -1,5 +1,4 @@
 .env.secrets
-esm
 node_modules
 .s3cfg
 .env.local
