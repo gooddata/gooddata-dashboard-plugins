@@ -1,0 +1,1 @@
+(self.webpackChunkwhitelabelling_bar=self.webpackChunkwhitelabelling_bar||[]).push([[4134],{84134:(e,l,a)=>{Object.defineProperty(l,"__esModule",{value:!0});const n=a(38865);l.default=n.newDashboardEngine}}]);
