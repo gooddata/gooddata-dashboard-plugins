@@ -1,4 +1,5 @@
 .env.secrets
+esm
 node_modules
 
 yarn-error.log
