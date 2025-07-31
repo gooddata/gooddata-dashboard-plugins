@@ -3,7 +3,7 @@ import type { DashboardPluginDescriptor } from "@gooddata/sdk-ui-dashboard";
 
 import metadataJson from "../metadata.json";
 import packageJson from "../../package.json";
-import { ensureSemverPrefix } from '../utils/index.js';
+import { ensureSemverPrefix } from "../utils/index.js";
 
 type PluginEntryPoint = DashboardPluginDescriptor & {
     /**
