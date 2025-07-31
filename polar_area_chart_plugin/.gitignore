@@ -2,3 +2,4 @@
 node_modules
 .s3cfg
 .env.local
+esm/

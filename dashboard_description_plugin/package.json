@@ -53,7 +53,6 @@
         "@gooddata/sdk-ui-dashboard": "^10.35.0",
         "@gooddata/sdk-model": "^10.35.0",
         "@gooddata/sdk-backend-spi": "^10.35.0",
-        "@gooddata/sdk-backend-bear": "^10.35.0",
         "@gooddata/sdk-backend-tiger": "^10.35.0",
         "@gooddata/sdk-ui": "^10.35.0",
         "@gooddata/sdk-ui-charts": "^10.35.0",
