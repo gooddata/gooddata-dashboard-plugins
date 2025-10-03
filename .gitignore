@@ -2,6 +2,3 @@ node_modules
 .DS_Store
 .idea
 dist
-.env
-.env.secrets
-yarn.lock
